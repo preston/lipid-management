@@ -20,6 +20,7 @@ import {
   RowLoadStatus,
 } from '../../services/fhir-bundle-loader.service';
 import { SettingsService } from '../../services/settings.service';
+import { isHttpOfflineOrServerError, ToastService } from '../../services/toast.service';
 
 interface CqlRow {
   catalogId: string;
@@ -52,6 +53,8 @@ interface ExampleRow {
   message?: string;
 }
 
+type SummaryCounts = { ok: number; errors: number; other: number };
+
 @Component({
   selector: 'app-loader',
   imports: [FormsModule, RouterLink],
@@ -62,6 +65,7 @@ export class Loader {
   protected readonly settingsService = inject(SettingsService);
   private readonly libraries = inject(FhirLibraryService);
   private readonly bundles = inject(FhirBundleLoaderService);
+  private readonly toasts = inject(ToastService);
 
   protected readonly fhirBaseUrl = computed(() => this.settingsService.getEffectiveFhirBaseUrl());
 
@@ -150,11 +154,7 @@ export class Loader {
   }
 
   async loadAll(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('Load', async () => {
       const cqlResults = await this.libraries.loadCatalogLibraries();
       this.applyCqlResults(cqlResults);
       await this.bundles.loadValueSets(VALUE_SET_CATALOG, {
@@ -171,48 +171,32 @@ export class Loader {
           onProgress: (row) => this.patchExampleRow(row),
         });
       }
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary('Load finished', this.allRowStatuses());
+    });
   }
 
   async checkAll(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('Check', async () => {
       await this.runCqlAudit();
       await this.runValueSetCheck();
       await this.runExampleCheck();
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary('Check finished', this.allRowStatuses());
+    });
   }
 
   async loadCql(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('CQL load', async () => {
       const results = await this.libraries.loadCatalogLibraries();
       this.applyCqlResults(results);
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary('CQL load finished', this.cqlRows().map((r) => r.status));
+    });
   }
 
   async checkCql(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('CQL check', async () => {
       await this.runCqlAudit();
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary('CQL check finished', this.cqlRows().map((r) => r.status));
+    });
   }
 
   async auditCql(): Promise<void> {
@@ -228,36 +212,29 @@ export class Loader {
   }
 
   async loadValueSets(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('ValueSet load', async () => {
       await this.bundles.loadValueSets(VALUE_SET_CATALOG, {
         continueOnError: this.continueOnError(),
         onProgress: (row) => this.patchValueSetRow(row),
       });
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary(
+        'ValueSet load finished',
+        this.valueSetRows().map((r) => r.status),
+      );
+    });
   }
 
   async checkValueSets(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('ValueSet check', async () => {
       await this.runValueSetCheck();
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary(
+        'ValueSet check finished',
+        this.valueSetRows().map((r) => r.status),
+      );
+    });
   }
 
   async loadExampleData(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
     const selectedIds = new Set(
       this.exampleRows().filter((r) => r.selected).map((r) => r.id),
     );
@@ -265,33 +242,95 @@ export class Loader {
     if (selected.length === 0) {
       return;
     }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('Example load', async () => {
       await this.bundles.loadExampleData(selected, {
         continueOnError: this.continueOnError(),
         onProgress: (row) => this.patchExampleRow(row),
       });
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary(
+        'Example load finished',
+        this.exampleRows()
+          .filter((r) => selectedIds.has(r.id))
+          .map((r) => r.status),
+      );
+    });
   }
 
   async checkExampleData(): Promise<void> {
-    if (this.busy()) {
-      return;
-    }
-    this.busy.set(true);
-    try {
+    await this.runBusyOp('Example check', async () => {
       await this.runExampleCheck();
-    } finally {
-      this.busy.set(false);
-    }
+      this.toastSummary(
+        'Example check finished',
+        this.exampleRows().map((r) => r.status),
+      );
+    });
   }
 
   toggleExampleSelected(id: string, selected: boolean): void {
     this.exampleRows.update((rows) =>
       rows.map((r) => (r.id === id ? { ...r, selected } : r)),
     );
+  }
+
+  private async runBusyOp(label: string, op: () => Promise<void>): Promise<void> {
+    if (this.busy()) {
+      return;
+    }
+    this.busy.set(true);
+    try {
+      await op();
+    } catch (err) {
+      if (!isHttpOfflineOrServerError(err)) {
+        const detail = err instanceof Error ? err.message : String(err);
+        this.toasts.danger(`${label} failed: ${detail}`);
+      }
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  private allRowStatuses(): string[] {
+    return [
+      ...this.cqlRows().map((r) => r.status),
+      ...this.valueSetRows().map((r) => r.status),
+      ...this.exampleRows().map((r) => r.status),
+    ];
+  }
+
+  private countStatuses(statuses: string[]): SummaryCounts {
+    let ok = 0;
+    let errors = 0;
+    let other = 0;
+    for (const status of statuses) {
+      if (status === 'idle' || status === 'loading_asset' || status === 'uploading') {
+        continue;
+      }
+      if (status === 'error') {
+        errors += 1;
+      } else if (status === 'match' || status === 'present' || status === 'ok') {
+        ok += 1;
+      } else {
+        other += 1;
+      }
+    }
+    return { ok, errors, other };
+  }
+
+  private toastSummary(prefix: string, statuses: string[]): void {
+    const { ok, errors, other } = this.countStatuses(statuses);
+    const parts = [`${ok} ok`];
+    if (errors > 0) {
+      parts.push(`${errors} error${errors === 1 ? '' : 's'}`);
+    }
+    if (other > 0) {
+      parts.push(`${other} other`);
+    }
+    const message = `${prefix}: ${parts.join(', ')}`;
+    if (errors > 0) {
+      this.toasts.warning(message);
+    } else {
+      this.toasts.success(message);
+    }
   }
 
   private async runCqlAudit(): Promise<void> {

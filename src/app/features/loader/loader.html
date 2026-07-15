@@ -178,9 +178,7 @@
                 </td>
                 <td>
                   <span
-                    class="badge"
-                    [class.text-bg-primary]="row.origin === 'vsac'"
-                    [class.text-bg-secondary]="row.origin === 'asu'"
+                    class="badge text-bg-secondary"
                     [id]="'loader-valueset-origin-' + row.id"
                     >{{ row.origin === 'vsac' ? 'VSAC' : 'ASU' }}</span
                   >
@@ -229,9 +227,11 @@
     </div>
     <div class="card-body p-0">
       <div class="px-3 py-3 border-bottom">
-        <p class="small text-body-secondary mb-3">
-          Recommended order: hospital → practitioner → patients. Large uploads may take a minute.
-          Check verifies presence (patient id where applicable), not resource version.
+        <p class="small text-body-secondary mb-3" id="loader-example-help">
+          Recommended order: hospital → practitioner → patients. Patient fixtures are Synthea
+          veterans chosen for lipid / CVD / PREVENT coverage (~49 MB selected patients). Large
+          uploads may take several minutes. Check verifies presence (patient id where applicable),
+          not resource version.
         </p>
         <div class="form-check form-switch mb-0">
           <input

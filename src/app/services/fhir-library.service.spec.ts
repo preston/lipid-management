@@ -129,11 +129,11 @@ describe('FhirLibraryService', () => {
 
   it('builds Library with text/cql content from CQL source', () => {
     const library = service.buildLibraryFromCql(
-      "library OpenCVDRisk version '0.3.0'",
+      "library OpenCVDRisk version '0.4.0'",
       'OpenCVDRisk.cql',
     );
     expect(library.id).toBe('OpenCVDRisk');
-    expect(library.version).toBe('0.3.0');
+    expect(library.version).toBe('0.4.0');
     expect(library.content?.[0]?.contentType).toBe('text/cql');
     expect(library.content?.[0]?.data).toBeTruthy();
   });

@@ -13,10 +13,22 @@ import {
   type PreventExclusion,
   type PreventExclusionId,
 } from '../../services/calculator-prefill.service';
-import { CqlEvaluateService } from '../../services/cql-evaluate.service';
+import {
+  CqlEvaluateService,
+  type CqlLibraryParameterValue,
+} from '../../services/cql-evaluate.service';
 import { SmartLaunchService } from '../../services/smart-launch.service';
+import {
+  parseClientFhirJson,
+  validateClientFhirPatientBundle,
+} from '../../services/client-fhir-bundle';
+import { isHttpOfflineOrServerError, ToastService } from '../../services/toast.service';
 
 const PLACEHOLDER = '—';
+
+type PatientSource = 'server' | 'file';
+
+type FileStatus = { message: string };
 
 const EMPTY_FORM: OpenCVDRiskCalculatorForm = {
   age: null,
@@ -45,10 +57,12 @@ export class OpenCVDRiskCalculator implements OnInit {
   private readonly prefillService = inject(CalculatorPrefillService);
   private readonly cqlEvaluate = inject(CqlEvaluateService);
   private readonly smartLaunch = inject(SmartLaunchService);
+  private readonly toasts = inject(ToastService);
 
   protected readonly model = signal<OpenCVDRiskCalculatorForm>({ ...EMPTY_FORM });
   protected readonly provenances = signal<Partial<Record<string, FieldProvenance>>>({});
-  protected readonly overriddenFields = signal<Set<string>>(new Set());
+  /** Form values immediately after last successful prefill; used for override provenance. */
+  private readonly prefillBaseline = signal<OpenCVDRiskCalculatorForm | null>(null);
 
   protected readonly chartExclusions = signal<PreventExclusion[]>([]);
   protected readonly dismissedExclusionIds = signal<Set<PreventExclusionId>>(new Set());
@@ -59,12 +73,11 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected readonly searchQuery = signal('');
   protected readonly searchHits = signal<PatientSearchHit[]>([]);
-  protected readonly searchError = signal<string | null>(null);
   protected readonly searchLoading = signal(false);
+  protected readonly patientSource = signal<PatientSource>('server');
+  protected readonly fileStatus = signal<FileStatus | null>(null);
   protected readonly prefillLoading = signal(false);
-  protected readonly prefillError = signal<string | null>(null);
   protected readonly calculateLoading = signal(false);
-  protected readonly calculateError = signal<string | null>(null);
 
   protected readonly risk10yTotal = signal<string>(PLACEHOLDER);
   protected readonly risk10yAscvd = signal<string>(PLACEHOLDER);
@@ -73,11 +86,12 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected readonly isSmart = this.patientContext.isSmart;
   protected readonly selectedPatient = this.patientContext.selectedPatient;
+  protected readonly hasClientData = this.patientContext.hasClientData;
 
   protected readonly openCvdRiskForm = form(this.model, (fields) => {
     required(fields.age);
-    min(fields.age, 30);
-    max(fields.age, 79);
+    min(fields.age, 1);
+    max(fields.age, 120);
     required(fields.sex);
     required(fields.heightCm);
     min(fields.heightCm, 1);
@@ -90,8 +104,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     required(fields.systolicBpMmHg);
     min(fields.systolicBpMmHg, 0);
     required(fields.egfrMlMin173m2);
-    min(fields.egfrMlMin173m2, 15);
-    max(fields.egfrMlMin173m2, 140);
+    min(fields.egfrMlMin173m2, 0);
   });
 
   protected readonly bmiKgM2 = computed(() => {
@@ -104,27 +117,42 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected readonly bmiDisplay = computed(() => this.formatNumber(this.bmiKgM2(), 1));
 
+  /** Required PREVENT inputs have values (presence only; age band is a separate applicability check). */
   protected readonly inputsComplete = computed(() => {
     const m = this.model();
     return (
       m.age != null &&
-      m.age >= 30 &&
-      m.age <= 79 &&
       this.isSex(m.sex) &&
       m.totalCholesterolMgDl != null &&
       m.hdlMgDl != null &&
       m.systolicBpMmHg != null &&
       this.bmiKgM2() != null &&
-      m.egfrMlMin173m2 != null &&
-      m.egfrMlMin173m2 >= 15 &&
-      m.egfrMlMin173m2 <= 140
+      m.egfrMlMin173m2 != null
     );
+  });
+
+  protected readonly ageInPreventRange = computed(() => {
+    const age = this.model().age;
+    return age != null && age >= 30 && age <= 79;
   });
 
   protected readonly activeExclusions = computed((): PreventExclusion[] => {
     const dismissed = this.dismissedExclusionIds();
     const fromChart = this.chartExclusions().filter((e) => !dismissed.has(e.id));
     const clinician: PreventExclusion[] = [];
+    if (
+      this.model().age != null &&
+      !this.ageInPreventRange() &&
+      !dismissed.has('age-out-of-range') &&
+      !fromChart.some((e) => e.id === 'age-out-of-range')
+    ) {
+      clinician.push({
+        id: 'age-out-of-range',
+        message: 'Age outside 30–79 years',
+        source: 'clinician',
+        provenance: 'PREVENT equations require age 30–79.',
+      });
+    }
     if (this.lifeExpectancyLimited()) {
       clinician.push({
         id: 'life-expectancy-limited',
@@ -151,7 +179,6 @@ export class OpenCVDRiskCalculator implements OnInit {
     }
     return {
       name: this.patientContext.patientDisplayName(patient),
-      id: patient.id ?? '—',
       gender: patient.gender ?? '—',
       birthDate: patient.birthDate ?? '—',
       ageYears: this.ageFromBirthDate(patient.birthDate),
@@ -159,7 +186,7 @@ export class OpenCVDRiskCalculator implements OnInit {
   });
 
   protected readonly canCalculate = computed(() => {
-    if (this.selectedPatient() == null || this.calculateLoading()) {
+    if (this.selectedPatient() == null || this.calculateLoading() || !this.inputsComplete()) {
       return false;
     }
     if (this.hasActiveExclusions() && !this.proceedDespiteExclusions()) {
@@ -184,9 +211,18 @@ export class OpenCVDRiskCalculator implements OnInit {
     }
   }
 
+  protected setPatientSource(source: PatientSource): void {
+    if (this.patientSource() === source) {
+      return;
+    }
+    this.patientSource.set(source);
+    this.searchHits.set([]);
+    this.searchQuery.set('');
+    this.fileStatus.set(null);
+  }
+
   protected searchPatients(): void {
     this.searchLoading.set(true);
-    this.searchError.set(null);
     this.fhirPatients.searchByName(this.searchQuery()).subscribe({
       next: (hits) => {
         this.searchHits.set(hits);
@@ -194,7 +230,7 @@ export class OpenCVDRiskCalculator implements OnInit {
       },
       error: (err) => {
         this.searchLoading.set(false);
-        this.searchError.set(err instanceof Error ? err.message : String(err));
+        this.toastDomainError(err);
       },
     });
   }
@@ -203,27 +239,61 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.patientContext.setStandalonePatient(hit.patient);
     this.searchHits.set([]);
     this.searchQuery.set('');
+    this.fileStatus.set(null);
     this.resetFormAndResults();
     this.applyPatientDemographics(hit.patient);
     this.runPrefill();
   }
 
+  protected async onClientBundleFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    this.fileStatus.set({ message: `Reading ${file.name}…` });
+    try {
+      const text = await file.text();
+      const parsed = parseClientFhirJson(text);
+      if ('error' in parsed) {
+        this.fileStatus.set(null);
+        this.toasts.danger(parsed.error);
+        input.value = '';
+        return;
+      }
+
+      const result = validateClientFhirPatientBundle(parsed.value);
+      if ('error' in result) {
+        this.fileStatus.set(null);
+        this.toasts.danger(result.error);
+        input.value = '';
+        return;
+      }
+
+      this.patientContext.setClientDataPatient(result.bundle, result.patient);
+      this.fileStatus.set(null);
+      this.resetFormAndResults();
+      this.applyPatientDemographics(result.patient);
+      this.runPrefill();
+    } catch (err) {
+      this.fileStatus.set(null);
+      this.toasts.danger(err instanceof Error ? err.message : String(err));
+      input.value = '';
+    }
+  }
+
   protected clearPatient(): void {
     this.patientContext.clearPatient();
+    this.fileStatus.set(null);
     this.resetFormAndResults();
   }
 
   protected provenanceFor(field: string): string | null {
-    if (this.overriddenFields().has(field)) {
-      return 'Overridden locally (chart value unchanged for $evaluate).';
+    if (this.isLocallyOverridden(field)) {
+      return 'Overridden locally; Calculate sends this value as a CQL library parameter.';
     }
     return this.provenances()[field]?.summary ?? null;
-  }
-
-  protected markOverride(field: string): void {
-    const next = new Set(this.overriddenFields());
-    next.add(field);
-    this.overriddenFields.set(next);
   }
 
   protected dismissExclusion(id: PreventExclusionId): void {
@@ -259,14 +329,17 @@ export class OpenCVDRiskCalculator implements OnInit {
     }
     const hadExclusions = this.hasActiveExclusions();
     this.calculateLoading.set(true);
-    this.calculateError.set(null);
     this.cqlEvaluate
-      .evaluateLibrary('OpenCVDRisk', [
-        'TenYearTotalCvdPercent',
-        'TenYearAscvdProbability',
-        'TenYearHeartFailureProbability',
-        'ThirtyYearTotalCvdPercent',
-      ])
+      .evaluateLibrary(
+        'OpenCVDRisk',
+        [
+          'TenYearTotalCvdPercent',
+          'TenYearAscvdProbability',
+          'TenYearHeartFailureProbability',
+          'ThirtyYearTotalCvdPercent',
+        ],
+        this.buildLibraryParameters(),
+      )
       .subscribe({
         next: (results) => {
           this.risk10yTotal.set(this.formatPercent(results['TenYearTotalCvdPercent']));
@@ -282,14 +355,51 @@ export class OpenCVDRiskCalculator implements OnInit {
         },
         error: (err) => {
           this.calculateLoading.set(false);
-          this.calculateError.set(err instanceof Error ? err.message : String(err));
+          this.toastDomainError(err);
         },
       });
   }
 
+  /** Map the current form (and clinician exclusion flags) to OpenCVDRisk library parameters. */
+  protected buildLibraryParameters(): Record<string, CqlLibraryParameterValue> {
+    const m = this.model();
+    const params: Record<string, CqlLibraryParameterValue> = {
+      LifeExpectancyLimited: this.lifeExpectancyLimited(),
+      PathogenicGeneticCvdVariant: this.pathogenicGeneticVariant(),
+      OverrideDiabetes: m.diabetes === 'yes',
+      OverrideCurrentSmoker: m.currentSmoker === 'yes',
+      OverrideAntihypertensive: m.onAntihypertensive === 'yes',
+      OverrideStatin: m.onStatin === 'yes',
+    };
+
+    if (m.age != null && Number.isFinite(m.age)) {
+      params['OverrideAgeYears'] = { integer: Math.trunc(m.age) };
+    }
+    if (m.sex === 'female' || m.sex === 'male') {
+      params['OverrideIsFemale'] = m.sex === 'female';
+    }
+    if (m.totalCholesterolMgDl != null && Number.isFinite(m.totalCholesterolMgDl)) {
+      params['OverrideTotalCholMgDl'] = { decimal: m.totalCholesterolMgDl };
+    }
+    if (m.hdlMgDl != null && Number.isFinite(m.hdlMgDl)) {
+      params['OverrideHdlMgDl'] = { decimal: m.hdlMgDl };
+    }
+    if (m.systolicBpMmHg != null && Number.isFinite(m.systolicBpMmHg)) {
+      params['OverrideSbpMmHg'] = { decimal: m.systolicBpMmHg };
+    }
+    if (m.egfrMlMin173m2 != null && Number.isFinite(m.egfrMlMin173m2)) {
+      params['OverrideEgfr'] = { decimal: m.egfrMlMin173m2 };
+    }
+    const bmi = this.bmiKgM2();
+    if (bmi != null && Number.isFinite(bmi)) {
+      params['OverrideBmiKgM2'] = { decimal: bmi };
+    }
+
+    return params;
+  }
+
   private runPrefill(): void {
     this.prefillLoading.set(true);
-    this.prefillError.set(null);
     this.prefillService.prefillFromChart().subscribe({
       next: (result) => {
         this.model.update((m) => ({ ...m, ...result.form }));
@@ -298,7 +408,7 @@ export class OpenCVDRiskCalculator implements OnInit {
           map[p.field] = p;
         }
         this.provenances.set(map);
-        this.overriddenFields.set(new Set());
+        this.prefillBaseline.set({ ...this.model() });
         this.chartExclusions.set(result.exclusions);
         this.dismissedExclusionIds.set(new Set());
         this.proceedDespiteExclusions.set(false);
@@ -307,7 +417,7 @@ export class OpenCVDRiskCalculator implements OnInit {
       error: (err) => {
         this.prefillLoading.set(false);
         this.chartExclusions.set([]);
-        this.prefillError.set(err instanceof Error ? err.message : String(err));
+        this.toastDomainError(err, 'Prefill failed: ', 'warning');
       },
     });
   }
@@ -329,13 +439,13 @@ export class OpenCVDRiskCalculator implements OnInit {
     if (age != null) {
       provenances['age'] = {
         field: 'age',
-        summary: `Derived from Patient.birthDate ${patient.birthDate ?? '—'}. Override if age for scoring should differ.`,
+        summary: `Derived from date of birth${patient.birthDate ? ` (${patient.birthDate})` : ''}. Override if age for scoring should differ.`,
       };
     }
     if (sex) {
       provenances['sex'] = {
         field: 'sex',
-        summary: `From Patient.gender (${patient.gender}). Override if administrative sex is not appropriate for PREVENT.`,
+        summary: `From recorded gender (${patient.gender}). Override if administrative sex is not appropriate for PREVENT.`,
       };
     }
     this.provenances.set(provenances);
@@ -344,19 +454,47 @@ export class OpenCVDRiskCalculator implements OnInit {
   private resetFormAndResults(): void {
     this.model.set({ ...EMPTY_FORM });
     this.provenances.set({});
-    this.overriddenFields.set(new Set());
+    this.prefillBaseline.set(null);
     this.chartExclusions.set([]);
     this.dismissedExclusionIds.set(new Set());
     this.lifeExpectancyLimited.set(false);
     this.pathogenicGeneticVariant.set(false);
     this.proceedDespiteExclusions.set(false);
     this.calculatedWithExclusions.set(false);
-    this.prefillError.set(null);
-    this.calculateError.set(null);
     this.risk10yTotal.set(PLACEHOLDER);
     this.risk10yAscvd.set(PLACEHOLDER);
     this.risk10yHf.set(PLACEHOLDER);
     this.risk30yTotal.set(PLACEHOLDER);
+  }
+
+  private isLocallyOverridden(field: string): boolean {
+    const baseline = this.prefillBaseline();
+    if (!baseline) {
+      return false;
+    }
+    const current = this.model();
+    if (field === 'bmi') {
+      const currentBmi = this.bmiKgM2();
+      const baselineBmi =
+        baseline.heightCm != null &&
+        baseline.weightKg != null &&
+        baseline.heightCm > 0 &&
+        baseline.weightKg > 0
+          ? computeBmiKgM2(baseline.heightCm, baseline.weightKg)
+          : null;
+      if (currentBmi == null || baselineBmi == null) {
+        return currentBmi !== baselineBmi;
+      }
+      return Math.abs(currentBmi - baselineBmi) > 0.05;
+    }
+    if (field === 'heightCm' || field === 'weightKg') {
+      return current.heightCm !== baseline.heightCm || current.weightKg !== baseline.weightKg;
+    }
+    if (!(field in current)) {
+      return false;
+    }
+    const key = field as keyof OpenCVDRiskCalculatorForm;
+    return current[key] !== baseline[key];
   }
 
   private ageFromBirthDate(birthDate: string | undefined): number | null {
@@ -378,6 +516,18 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   private isSex(value: string): value is OpenCVDRiskSex {
     return value === 'female' || value === 'male';
+  }
+
+  private toastDomainError(
+    err: unknown,
+    prefix = '',
+    variant: 'danger' | 'warning' = 'danger',
+  ): void {
+    if (isHttpOfflineOrServerError(err)) {
+      return;
+    }
+    const detail = err instanceof Error ? err.message : String(err);
+    this.toasts.show(`${prefix}${detail}`, variant);
   }
 
   private formatNumber(value: number | null, fractionDigits: number): string {

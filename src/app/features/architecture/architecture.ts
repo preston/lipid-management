@@ -7,14 +7,14 @@ import {
   inject,
   viewChild,
 } from '@angular/core';
-import { ABOUT_DIAGRAMS } from './about.diagrams';
+import { ARCHITECTURE_DIAGRAMS } from './architecture.diagrams';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.html',
-  styleUrl: './about.scss',
+  selector: 'app-architecture',
+  templateUrl: './architecture.html',
+  styleUrl: './architecture.scss',
 })
-export class About {
+export class Architecture {
   private readonly host = inject(ElementRef<HTMLElement>);
 
   private readonly overviewHost = viewChild<ElementRef<HTMLElement>>('overviewDiagram');
@@ -30,10 +30,10 @@ export class About {
 
   private async renderDiagrams(): Promise<void> {
     const hostsById: Record<string, ElementRef<HTMLElement> | undefined> = {
-      [ABOUT_DIAGRAMS[0].hostId]: this.overviewHost(),
-      [ABOUT_DIAGRAMS[1].hostId]: this.standaloneHost(),
-      [ABOUT_DIAGRAMS[2].hostId]: this.smartHost(),
-      [ABOUT_DIAGRAMS[3].hostId]: this.packagingHost(),
+      [ARCHITECTURE_DIAGRAMS[0].hostId]: this.overviewHost(),
+      [ARCHITECTURE_DIAGRAMS[1].hostId]: this.standaloneHost(),
+      [ARCHITECTURE_DIAGRAMS[2].hostId]: this.smartHost(),
+      [ARCHITECTURE_DIAGRAMS[3].hostId]: this.packagingHost(),
     };
 
     const { default: mermaid } = await import('mermaid');
@@ -43,7 +43,7 @@ export class About {
       theme: 'default',
     });
 
-    for (const diagram of ABOUT_DIAGRAMS) {
+    for (const diagram of ARCHITECTURE_DIAGRAMS) {
       const hostRef = hostsById[diagram.hostId];
       const el = hostRef?.nativeElement;
       if (!el) {
@@ -61,6 +61,6 @@ export class About {
     }
 
     // Keep a stable hook for tests that the page finished attempting render.
-    this.host.nativeElement.setAttribute('data-about-diagrams-rendered', 'true');
+    this.host.nativeElement.setAttribute('data-architecture-diagrams-rendered', 'true');
   }
 }

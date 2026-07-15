@@ -67,31 +67,30 @@ describe('FhirBundleLoaderService', () => {
   });
 
   it('orders example data hospital → practitioner → patients', () => {
-    const shuffled = [
-      EXAMPLE_DATA_CATALOG[3],
-      EXAMPLE_DATA_CATALOG[0],
-      EXAMPLE_DATA_CATALOG[2],
-      EXAMPLE_DATA_CATALOG[1],
-    ];
+    const hospital = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'hospital')!;
+    const practitioner = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'practitioner')!;
+    const marco = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'marco')!;
+    const aja = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'aja')!;
+    const shuffled = [aja, hospital, marco, practitioner];
     const ordered = service.orderExampleEntries(shuffled);
-    expect(ordered.map((e) => e.id)).toEqual(['hospital', 'practitioner', 'dakota', 'dori']);
+    expect(ordered.map((e) => e.id)).toEqual(['hospital', 'practitioner', 'marco', 'aja']);
   });
 
   it('checks patient example as present on 200', async () => {
-    const dori = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'dori')!;
-    const promise = service.checkExampleData([dori]);
+    const marco = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'marco')!;
+    const promise = service.checkExampleData([marco]);
     http
-      .expectOne(`http://fhir.test/fhir/Patient/${dori.resourceId}`)
-      .flush({ resourceType: 'Patient', id: dori.resourceId });
+      .expectOne(`http://fhir.test/fhir/Patient/${marco.resourceId}`)
+      .flush({ resourceType: 'Patient', id: marco.resourceId });
     const results = await promise;
     expect(results[0].status).toBe('present');
   });
 
   it('checks patient example as missing on 404', async () => {
-    const dori = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'dori')!;
-    const promise = service.checkExampleData([dori]);
+    const marco = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'marco')!;
+    const promise = service.checkExampleData([marco]);
     http
-      .expectOne(`http://fhir.test/fhir/Patient/${dori.resourceId}`)
+      .expectOne(`http://fhir.test/fhir/Patient/${marco.resourceId}`)
       .flush(null, { status: 404, statusText: 'Not Found' });
     const results = await promise;
     expect(results[0].status).toBe('missing');
@@ -127,17 +126,17 @@ describe('FhirBundleLoaderService', () => {
   });
 
   it('rewrites example Patient POST to PUT by id on load', async () => {
-    const dori = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'dori')!;
-    const promise = service.loadExampleData([dori]);
-    (await nextRequest(http, (r) => r.url === dori.assetPath)).flush({
+    const marco = EXAMPLE_DATA_CATALOG.find((e) => e.id === 'marco')!;
+    const promise = service.loadExampleData([marco]);
+    (await nextRequest(http, (r) => r.url === marco.assetPath)).flush({
       resourceType: 'Bundle',
       type: 'transaction',
       entry: [
         {
-          fullUrl: `urn:uuid:${dori.resourceId}`,
+          fullUrl: `urn:uuid:${marco.resourceId}`,
           resource: {
             resourceType: 'Patient',
-            id: dori.resourceId,
+            id: marco.resourceId,
           },
           request: { method: 'POST', url: 'Patient' },
         },
@@ -148,7 +147,7 @@ describe('FhirBundleLoaderService', () => {
       entry?: { request?: { method?: string; url?: string } }[];
     };
     expect(body.entry?.[0]?.request?.method).toBe('PUT');
-    expect(body.entry?.[0]?.request?.url).toBe(`Patient/${dori.resourceId}`);
+    expect(body.entry?.[0]?.request?.url).toBe(`Patient/${marco.resourceId}`);
     post.flush({
       resourceType: 'Bundle',
       type: 'transaction-response',

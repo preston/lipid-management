@@ -2,10 +2,11 @@
 
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { OpenCVDRiskCalculator } from './open-cvd-risk-calculator';
 import { PatientContextService } from '../../services/patient-context.service';
 import { CalculatorPrefillService } from '../../services/calculator-prefill.service';
+import { CqlEvaluateService } from '../../services/cql-evaluate.service';
 import type { Patient } from 'fhir/r4';
 
 const SAMPLE_PATIENT: Patient = {
@@ -51,8 +52,24 @@ describe('OpenCVDRiskCalculator', () => {
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
     fixture.detectChanges();
     const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('#open-cvd-risk-patient-mode-server')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-mode-file')).toBeTruthy();
     expect(root.querySelector('#open-cvd-risk-patient-search')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-file-input')).toBeNull();
     expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeNull();
+  });
+
+  it('should show file input in custom file mode', () => {
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    component['setPatientSource']('file');
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('#open-cvd-risk-patient-file-input')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-search')).toBeNull();
   });
 
   it('should render required field controls when a patient is selected', () => {
@@ -62,6 +79,8 @@ describe('OpenCVDRiskCalculator', () => {
     const root = fixture.nativeElement as HTMLElement;
 
     expect(root.querySelector('#open-cvd-risk-patient-banner')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-clear')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-search')).toBeNull();
     expect(root.querySelector('#open-cvd-risk-age')).toBeTruthy();
     expect(root.querySelector('#open-cvd-risk-sex-female')).toBeTruthy();
     expect(root.querySelector('#open-cvd-risk-sex-male')).toBeTruthy();
@@ -73,6 +92,53 @@ describe('OpenCVDRiskCalculator', () => {
     expect(root.querySelector('#open-cvd-risk-egfr')).toBeTruthy();
     expect(root.querySelector('#open-cvd-risk-calculate')).toBeTruthy();
     expect(root.querySelector('#open-cvd-risk-results')).toBeTruthy();
+  });
+
+  it('should hide the form and results while prefill is loading', () => {
+    const prefill$ = new Subject<{
+      form: Record<string, unknown>;
+      provenances: unknown[];
+      exclusions: unknown[];
+    }>();
+    TestBed.overrideProvider(CalculatorPrefillService, {
+      useValue: { prefillFromChart: () => prefill$.asObservable() },
+    });
+
+    selectSamplePatient();
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    fixture.detectChanges();
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('#open-cvd-risk-prefill-loading')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-banner')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeNull();
+    expect(root.querySelector('#open-cvd-risk-results')).toBeNull();
+
+    prefill$.next({ form: {}, provenances: [], exclusions: [] });
+    prefill$.complete();
+    fixture.detectChanges();
+
+    expect(root.querySelector('#open-cvd-risk-prefill-loading')).toBeNull();
+    expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-results')).toBeTruthy();
+  });
+
+  it('should show Custom bundle in the banner for client data patients', () => {
+    const ctx = TestBed.inject(PatientContextService);
+    ctx.setClientDataPatient(
+      {
+        resourceType: 'Bundle',
+        type: 'collection',
+        entry: [{ resource: SAMPLE_PATIENT }],
+      },
+      SAMPLE_PATIENT,
+    );
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    fixture.detectChanges();
+    const meta = fixture.nativeElement.querySelector(
+      '#open-cvd-risk-patient-banner-meta',
+    ) as HTMLElement;
+    expect(meta.textContent).toContain('Custom bundle');
   });
 
   it('should not render optional add-on fields', () => {
@@ -159,14 +225,7 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['bmiKgM2']()).toBeCloseTo(24.2, 1);
   });
 
-  it('should mark inputs complete when required fields are present', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    const component = fixture.componentInstance;
-    fixture.detectChanges();
-
-    expect(component['inputsComplete']()).toBe(false);
-
+  function fillCompleteForm(component: OpenCVDRiskCalculator): void {
     component['model'].set({
       age: 55,
       sex: 'female',
@@ -181,18 +240,68 @@ describe('OpenCVDRiskCalculator', () => {
       onAntihypertensive: 'no',
       onStatin: 'no',
     });
+  }
+
+  it('should mark inputs complete when required fields are present', () => {
+    selectSamplePatient();
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(component['inputsComplete']()).toBe(false);
+    expect(component['canCalculate']()).toBe(false);
+
+    fillCompleteForm(component);
     fixture.detectChanges();
 
     expect(component['inputsComplete']()).toBe(true);
+    expect(component['canCalculate']()).toBe(true);
     expect(
       fixture.nativeElement.querySelector('#open-cvd-risk-results-message')?.textContent,
     ).toContain('Form inputs look complete');
+  });
+
+  it('should treat out-of-range age as complete inputs but PREVENT-gated', () => {
+    selectSamplePatient();
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    component['model'].set({
+      age: 16,
+      sex: 'female',
+      heightCm: 170,
+      weightKg: 70,
+      totalCholesterolMgDl: 200,
+      hdlMgDl: 50,
+      systolicBpMmHg: 120,
+      egfrMlMin173m2: 90,
+      diabetes: 'no',
+      currentSmoker: 'no',
+      onAntihypertensive: 'no',
+      onStatin: 'no',
+    });
+    fixture.detectChanges();
+
+    expect(component['model']().age).toBe(16);
+    expect(component['inputsComplete']()).toBe(true);
+    expect(component['ageInPreventRange']()).toBe(false);
+    expect(component['hasActiveExclusions']()).toBe(true);
+    expect(component['canCalculate']()).toBe(false);
+    expect(
+      fixture.nativeElement.querySelector('#open-cvd-risk-results-message')?.textContent,
+    ).toContain('Form inputs look complete');
+
+    component['setProceedDespiteExclusions'](true);
+    fixture.detectChanges();
+    expect(component['canCalculate']()).toBe(true);
   });
 
   it('should show PREVENT applicability banner and gate Calculate until proceed', () => {
     selectSamplePatient();
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
     const component = fixture.componentInstance;
+    fillCompleteForm(component);
     fixture.detectChanges();
 
     component['chartExclusions'].set([
@@ -200,7 +309,7 @@ describe('OpenCVDRiskCalculator', () => {
         id: 'known-cvd',
         message: 'Chart suggests known cardiovascular disease',
         source: 'chart',
-        provenance: 'Condition/cvd-1',
+        provenance: 'Chart condition: Coronary artery disease',
       },
     ]);
     fixture.detectChanges();
@@ -225,6 +334,7 @@ describe('OpenCVDRiskCalculator', () => {
     selectSamplePatient();
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
     const component = fixture.componentInstance;
+    fillCompleteForm(component);
     fixture.detectChanges();
 
     component['chartExclusions'].set([
@@ -249,6 +359,7 @@ describe('OpenCVDRiskCalculator', () => {
     selectSamplePatient();
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
     const component = fixture.componentInstance;
+    fillCompleteForm(component);
     fixture.detectChanges();
 
     expect(component['hasActiveExclusions']()).toBe(false);
@@ -260,6 +371,71 @@ describe('OpenCVDRiskCalculator', () => {
     expect(
       fixture.nativeElement.querySelector('#open-cvd-risk-clinical-context-card'),
     ).toBeTruthy();
+  });
+
+  it('should map the current form to OpenCVDRisk library parameters', () => {
+    selectSamplePatient();
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    fillCompleteForm(component);
+    component['setLifeExpectancyLimited'](true);
+    component['setPathogenicGeneticVariant'](false);
+    fixture.detectChanges();
+
+    const params = component['buildLibraryParameters']();
+    expect(params['OverrideAgeYears']).toEqual({ integer: 55 });
+    expect(params['OverrideIsFemale']).toBe(true);
+    expect(params['OverrideTotalCholMgDl']).toEqual({ decimal: 200 });
+    expect(params['OverrideHdlMgDl']).toEqual({ decimal: 50 });
+    expect(params['OverrideSbpMmHg']).toEqual({ decimal: 120 });
+    expect(params['OverrideEgfr']).toEqual({ decimal: 90 });
+    expect(params['OverrideDiabetes']).toBe(false);
+    expect(params['OverrideCurrentSmoker']).toBe(false);
+    expect(params['OverrideAntihypertensive']).toBe(false);
+    expect(params['OverrideStatin']).toBe(false);
+    expect(params['LifeExpectancyLimited']).toBe(true);
+    expect(params['PathogenicGeneticCvdVariant']).toBe(false);
+    expect(params['OverrideBmiKgM2']).toEqual({ decimal: expect.any(Number) });
+    expect((params['OverrideBmiKgM2'] as { decimal: number }).decimal).toBeCloseTo(24.2, 1);
+  });
+
+  it('should pass library parameters when calculating risk', () => {
+    const evaluateLibrary = vi.fn(() =>
+      of({
+        TenYearTotalCvdPercent: 8.1,
+        TenYearAscvdProbability: 0.05,
+        TenYearHeartFailureProbability: 0.04,
+        ThirtyYearTotalCvdPercent: 22.3,
+      }),
+    );
+    TestBed.overrideProvider(CqlEvaluateService, {
+      useValue: { evaluateLibrary },
+    });
+
+    selectSamplePatient();
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    fillCompleteForm(component);
+    fixture.detectChanges();
+
+    component['calculateRisk']();
+
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'OpenCVDRisk',
+      [
+        'TenYearTotalCvdPercent',
+        'TenYearAscvdProbability',
+        'TenYearHeartFailureProbability',
+        'ThirtyYearTotalCvdPercent',
+      ],
+      expect.objectContaining({
+        OverrideAgeYears: { integer: 55 },
+        OverrideIsFemale: true,
+        OverrideTotalCholMgDl: { decimal: 200 },
+      }),
+    );
   });
 });
 

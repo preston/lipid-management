@@ -4,6 +4,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import { SettingsService } from '../../services/settings.service';
+import { ToastService } from '../../services/toast.service';
 import { ThemeType } from '../../models/settings.model';
 
 @Component({
@@ -15,9 +16,9 @@ import { ThemeType } from '../../models/settings.model';
 export class Settings implements OnInit {
   protected readonly settingsService = inject(SettingsService);
   private readonly location = inject(Location);
+  private readonly toasts = inject(ToastService);
 
   protected readonly themeTypes = signal(ThemeType);
-  protected readonly savedMessage = signal<string | null>(null);
 
   ngOnInit(): void {
     this.settingsService.reload();
@@ -30,12 +31,12 @@ export class Settings implements OnInit {
   save(): void {
     this.settingsService.saveSettings();
     this.settingsService.setEffectiveTheme();
-    this.savedMessage.set('Settings saved to this browser.');
+    this.toasts.success('Settings saved to this browser.');
     this.location.back();
   }
 
   restoreDefaults(): void {
     this.settingsService.forceResetToDefaults();
-    this.savedMessage.set('Settings reset to defaults.');
+    this.toasts.success('Settings reset to defaults.');
   }
 }

@@ -62,8 +62,14 @@ describe('CalculatorPrefillService mapChartExclusions', () => {
       'eskd',
     ]);
     expect(exclusions.every((e) => e.source === 'chart')).toBe(true);
-    expect(exclusions.find((e) => e.id === 'known-cvd')?.provenance).toContain('Condition/cvd-1');
+    expect(exclusions.find((e) => e.id === 'known-cvd')?.provenance).toContain(
+      'Coronary artery disease',
+    );
+    expect(exclusions.find((e) => e.id === 'known-cvd')?.provenance).not.toContain('Condition/');
     expect(exclusions.find((e) => e.id === 'lvef-below-40')?.provenance).toContain('LVEF 35%');
+    expect(exclusions.find((e) => e.id === 'lvef-below-40')?.provenance).not.toContain(
+      'Observation/',
+    );
     expect(exclusions.find((e) => e.id === 'hfref')?.message).toContain('reduced ejection');
   });
 

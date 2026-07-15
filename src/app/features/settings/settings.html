@@ -1,10 +1,6 @@
 <div id="settings" class="container mt-4 mb-5">
   <h1 class="h3 mb-4">Settings</h1>
 
-  @if (savedMessage(); as message) {
-    <div class="alert alert-success" id="settings-saved-message" role="status">{{ message }}</div>
-  }
-
   <div class="row mb-3">
     <div class="col-12 d-flex flex-wrap gap-2">
       <button type="button" class="btn btn-primary" id="save-settings-btn" (click)="save()">
@@ -98,7 +94,7 @@
               [placeholder]="settingsService.getDefaultFhirBaseUrl()"
             />
             <small class="form-text text-body-secondary d-block mt-1"
-              >Used in standalone mode for Patient search, chart reads, and CQL `$evaluate`.</small
+              >Used in standalone mode for Patient search, chart reads, and CQL evaluation.</small
             >
           </div>
         </div>

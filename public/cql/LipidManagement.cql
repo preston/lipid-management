@@ -17,12 +17,12 @@
 
   Author: Preston Lee (original scaffolding); algorithm mapping per December 2025 CPG.
 */
-library LipidManagement version '0.0.5'
+library LipidManagement version '0.0.6'
 
 using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.0.1'
-include OpenCVDRisk version '0.3.0' called OpenCVDRisk
+include OpenCVDRisk version '0.4.0' called OpenCVDRisk
 
 codesystem "SNOMED": 'http://snomed.info/sct'
 codesystem "ICD10CM": 'http://hl7.org/fhir/sid/icd-10-cm'

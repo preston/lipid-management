@@ -18,7 +18,7 @@
 
   This library is decision support only, not a substitute for clinical judgment.
 */
-library OpenCVDRisk version '0.3.0'
+library OpenCVDRisk version '0.4.0'
 
 using FHIR version '4.0.1'
 
@@ -45,6 +45,23 @@ valueset "LeftVentricularEjectionFraction": 'https://asu.edu/fhir/ValueSet/left-
 valueset "CoronaryArteryCalciumScore": 'https://asu.edu/fhir/ValueSet/coronary-artery-calcium-score'
 valueset "InheritedCardiovascularCondition": 'https://asu.edu/fhir/ValueSet/inherited-cardiovascular-condition'
 valueset "HeartFailureWithReducedEjectionFraction": 'https://asu.edu/fhir/ValueSet/heart-failure-with-reduced-ejection-fraction'
+
+/*
+  Optional clinical overrides from the host as FHIR library Parameters.
+  Null / omitted → use chart-derived values. When provided, Effective* defines
+  prefer the override for InputsComplete and PREVENT term construction.
+*/
+parameter OverrideAgeYears Integer
+parameter OverrideIsFemale Boolean
+parameter OverrideTotalCholMgDl Decimal
+parameter OverrideHdlMgDl Decimal
+parameter OverrideSbpMmHg Decimal
+parameter OverrideBmiKgM2 Decimal
+parameter OverrideEgfr Decimal
+parameter OverrideDiabetes Boolean
+parameter OverrideCurrentSmoker Boolean
+parameter OverrideAntihypertensive Boolean
+parameter OverrideStatin Boolean
 
 /* Clinician-attested PREVENT exclusions (sparse in FHIR). */
 parameter LifeExpectancyLimited Boolean default false
@@ -304,43 +321,85 @@ define ActiveAntihypertensiveMedicationRequest:
 define ActiveAntihypertensiveTherapy:
   ActiveAntihypertensiveMedicationRequest is not null
 
-define EgfrFromCreatinine:
+define ChartEgfrFromCreatinine:
   case
     when LatestCreatinineMgDl is null then null
-    when not ( IsFemale
-        or IsMale
+    when not ( EffectiveIsFemale
+        or EffectiveIsMale
     ) then null 
-    else Egfr2021Creatinine(LatestCreatinineMgDl, AgeInYears(), IsFemale) end
+    else Egfr2021Creatinine(LatestCreatinineMgDl, EffectiveAgeYears, EffectiveIsFemale) end
+
+/* Alias retained for hosts / LipidManagement consumers that reference chart eGFR. */
+define EgfrFromCreatinine:
+  ChartEgfrFromCreatinine
+
+define EffectiveAgeYears:
+  Coalesce(OverrideAgeYears, AgeInYears())
+
+define EffectiveIsFemale:
+  if OverrideIsFemale is not null then OverrideIsFemale 
+    else IsFemale
+
+define EffectiveIsMale:
+  if OverrideIsFemale is not null then not OverrideIsFemale 
+    else IsMale
+
+define EffectiveTotalCholMgDl:
+  Coalesce(OverrideTotalCholMgDl, LatestTotalCholMgDl)
+
+define EffectiveHdlMgDl:
+  Coalesce(OverrideHdlMgDl, LatestHdlMgDl)
+
+define EffectiveSbpMmHg:
+  Coalesce(OverrideSbpMmHg, LatestSbpMmHg)
+
+define EffectiveBmiKgM2:
+  Coalesce(OverrideBmiKgM2, BestBmiKgM2)
+
+define EffectiveEgfr:
+  Coalesce(OverrideEgfr, ChartEgfrFromCreatinine)
+
+define EffectiveDiabetes:
+  Coalesce(OverrideDiabetes, HasDiabetesMellitusType2)
+
+define EffectiveCurrentSmoker:
+  Coalesce(OverrideCurrentSmoker, CurrentSmokingFromObservation)
+
+define EffectiveAntihypertensive:
+  Coalesce(OverrideAntihypertensive, ActiveAntihypertensiveTherapy)
+
+define EffectiveStatin:
+  Coalesce(OverrideStatin, ActiveStatinTherapy)
 
 define InputsComplete:
-  AgeInYears() >= 30
-    and AgeInYears() <= 79
-    and ( IsFemale
-        or IsMale
+  EffectiveAgeYears >= 30
+    and EffectiveAgeYears <= 79
+    and ( EffectiveIsFemale
+        or EffectiveIsMale
     )
-    and LatestTotalCholMgDl is not null
-    and LatestHdlMgDl is not null
-    and LatestSbpMmHg is not null
-    and BestBmiKgM2 is not null
-    and EgfrFromCreatinine is not null
+    and EffectiveTotalCholMgDl is not null
+    and EffectiveHdlMgDl is not null
+    and EffectiveSbpMmHg is not null
+    and EffectiveBmiKgM2 is not null
+    and EffectiveEgfr is not null
 
 /* Only build term vectors when inputs are complete; avoids null arithmetic when OpenCVDRisk cannot run. */
 
 
 define PrepTerms10:
   case
-    when InputsComplete then PrepTerms10YrBase(AgeInYears(), LatestTotalCholMgDl, LatestHdlMgDl, LatestSbpMmHg, HasDiabetesMellitusType2, CurrentSmokingFromObservation, BestBmiKgM2, EgfrFromCreatinine, ActiveAntihypertensiveTherapy, ActiveStatinTherapy) 
+    when InputsComplete then PrepTerms10YrBase(EffectiveAgeYears, EffectiveTotalCholMgDl, EffectiveHdlMgDl, EffectiveSbpMmHg, EffectiveDiabetes, EffectiveCurrentSmoker, EffectiveBmiKgM2, EffectiveEgfr, EffectiveAntihypertensive, EffectiveStatin) 
     else null end
 
 define PrepTerms30:
   case
-    when InputsComplete then PrepTerms30YrBase(AgeInYears(), LatestTotalCholMgDl, LatestHdlMgDl, LatestSbpMmHg, HasDiabetesMellitusType2, CurrentSmokingFromObservation, BestBmiKgM2, EgfrFromCreatinine, ActiveAntihypertensiveTherapy, ActiveStatinTherapy) 
+    when InputsComplete then PrepTerms30YrBase(EffectiveAgeYears, EffectiveTotalCholMgDl, EffectiveHdlMgDl, EffectiveSbpMmHg, EffectiveDiabetes, EffectiveCurrentSmoker, EffectiveBmiKgM2, EffectiveEgfr, EffectiveAntihypertensive, EffectiveStatin) 
     else null end
 
 define TenYearTotalCvdProbability:
   case
     when not InputsComplete then null
-    when IsMale then Risk10YrFromBetas(Beta10MaleTotalCvd, PrepTerms10) 
+    when EffectiveIsMale then Risk10YrFromBetas(Beta10MaleTotalCvd, PrepTerms10) 
     else Risk10YrFromBetas(Beta10FemaleTotalCvd, PrepTerms10) end
 
 define TenYearTotalCvdPercent:
@@ -351,7 +410,7 @@ define TenYearTotalCvdPercent:
 define ThirtyYearTotalCvdProbability:
   case
     when not InputsComplete then null
-    when IsMale then Risk30YrFromBetas(Beta30MaleTotalCvd, PrepTerms30) 
+    when EffectiveIsMale then Risk30YrFromBetas(Beta30MaleTotalCvd, PrepTerms30) 
     else Risk30YrFromBetas(Beta30FemaleTotalCvd, PrepTerms30) end
 
 define ThirtyYearTotalCvdPercent:
@@ -362,13 +421,13 @@ define ThirtyYearTotalCvdPercent:
 define TenYearAscvdProbability:
   case
     when not InputsComplete then null
-    when IsMale then Risk10YrFromBetas(Beta10MaleAscvd, PrepTerms10) 
+    when EffectiveIsMale then Risk10YrFromBetas(Beta10MaleAscvd, PrepTerms10) 
     else Risk10YrFromBetas(Beta10FemaleAscvd, PrepTerms10) end
 
 define TenYearHeartFailureProbability:
   case
     when not InputsComplete then null
-    when IsMale then Risk10YrFromBetas(Beta10MaleHf, PrepTerms10) 
+    when EffectiveIsMale then Risk10YrFromBetas(Beta10MaleHf, PrepTerms10) 
     else Risk10YrFromBetas(Beta10FemaleHf, PrepTerms10) end
 
 /* --- PREVENT applicability (advisory; does not change risk math) ---
@@ -388,8 +447,8 @@ define function QuantityAsPercent(q FHIR.Quantity):
     else q.value end
 
 define PreventExclusionAgeOutOfRange:
-  AgeInYears() < 30
-    or AgeInYears() > 79
+  EffectiveAgeYears < 30
+    or EffectiveAgeYears > 79
 
 define ActiveKnownCvdCondition:
   First([Condition: "AtheroscleroticCardiovascularDisease"] C

@@ -11,8 +11,13 @@ export interface CqlExpressionResult {
   value: unknown;
 }
 
-/** Named Boolean (or other primitive) library parameters for CQL $evaluate. */
-export type CqlLibraryParameterValue = boolean | number | string;
+/** Named library parameters for CQL $evaluate (nested FHIR Parameters). */
+export type CqlLibraryParameterValue =
+  | boolean
+  | string
+  | number
+  | { integer: number }
+  | { decimal: number };
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +37,7 @@ export class CqlEvaluateService {
     }
 
     const base = this.patientContext.activeFhirBaseUrl();
+    const clientData = this.patientContext.clientDataBundle();
     const body: Parameters = {
       resourceType: 'Parameters',
       parameter: [
@@ -40,6 +46,12 @@ export class CqlEvaluateService {
           valueString: `Patient/${patient.id}`,
         },
         ...this.libraryParameterParts(libraryParameters),
+        ...(clientData
+          ? ([
+              { name: 'useServerData', valueBoolean: false },
+              { name: 'data', resource: clientData },
+            ] satisfies ParametersParameter[])
+          : []),
         ...(expressionNames ?? []).map(
           (name): ParametersParameter => ({
             name: 'expression',
@@ -62,19 +74,7 @@ export class CqlEvaluateService {
     }
     const nested: ParametersParameter[] = [];
     for (const [name, value] of Object.entries(libraryParameters)) {
-      const part: ParametersParameter = { name };
-      if (typeof value === 'boolean') {
-        part.valueBoolean = value;
-      } else if (typeof value === 'number') {
-        if (Number.isInteger(value)) {
-          part.valueInteger = value;
-        } else {
-          part.valueDecimal = value;
-        }
-      } else {
-        part.valueString = value;
-      }
-      nested.push(part);
+      nested.push(this.toLibraryParameterPart(name, value));
     }
     return [
       {
@@ -85,6 +85,32 @@ export class CqlEvaluateService {
         } as Parameters,
       },
     ];
+  }
+
+  private toLibraryParameterPart(name: string, value: CqlLibraryParameterValue): ParametersParameter {
+    const part: ParametersParameter = { name };
+    if (typeof value === 'boolean') {
+      part.valueBoolean = value;
+      return part;
+    }
+    if (typeof value === 'string') {
+      part.valueString = value;
+      return part;
+    }
+    if (typeof value === 'number') {
+      if (Number.isInteger(value)) {
+        part.valueInteger = value;
+      } else {
+        part.valueDecimal = value;
+      }
+      return part;
+    }
+    if ('integer' in value) {
+      part.valueInteger = value.integer;
+      return part;
+    }
+    part.valueDecimal = value.decimal;
+    return part;
   }
 
   private parametersToMap(parameters: Parameters): Record<string, unknown> {

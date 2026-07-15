@@ -30,25 +30,38 @@
         </li>
       </ul>
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <li class="nav-item dropdown">
           <a
-            class="nav-link"
-            id="app-nav-resources"
-            routerLink="/resources"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-            >Resources</a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="app-nav-documentation"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            >Documentation</a
           >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            id="app-nav-about"
-            routerLink="/about"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-            >About</a
-          >
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="app-nav-documentation">
+            <li>
+              <a
+                class="dropdown-item"
+                id="app-nav-architecture"
+                routerLink="/architecture"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Architecture</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                id="app-nav-resources"
+                routerLink="/resources"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                >Resources</a
+              >
+            </li>
+          </ul>
         </li>
         @if (settingsService.settings().developer) {
           <li class="nav-item">
@@ -78,3 +91,5 @@
 </nav>
 
 <router-outlet />
+
+<app-toast-host />

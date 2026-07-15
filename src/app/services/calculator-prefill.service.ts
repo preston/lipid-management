@@ -112,7 +112,7 @@ export class CalculatorPrefillService {
         id: 'age-out-of-range',
         message: 'Age outside 30–79 years',
         source: 'chart',
-        provenance: 'Derived from Patient.birthDate via CQL AgeInYears().',
+        provenance: 'Derived from recorded date of birth.',
       });
     }
 
@@ -333,20 +333,20 @@ export class CalculatorPrefillService {
   ): FieldProvenance {
     const obs = raw as Observation | null;
     if (!obs || obs.resourceType !== 'Observation') {
-      return { field, summary: 'Chart value from OpenCVDRisk / BMI CQL (source observation unavailable).' };
+      return { field, summary: 'Chart value from clinical data (source details unavailable).' };
     }
     const coding = obs.code?.coding?.[0];
-    const codeDisplay = coding?.display || coding?.code || obs.code?.text;
+    const codeDisplay = coding?.display || obs.code?.text;
     const effective =
       typeof obs.effectiveDateTime === 'string'
         ? obs.effectiveDateTime
         : obs.effectivePeriod?.start;
     const status = obs.status;
     const bits = [
-      `Observation/${obs.id ?? '?'}`,
-      effective ? `effective ${effective}` : null,
-      status ? `status ${status}` : null,
-      codeDisplay ? `code ${codeDisplay}` : null,
+      'From chart observation',
+      codeDisplay ?? null,
+      effective ? `dated ${effective}` : null,
+      status && status !== 'final' ? `status ${status}` : null,
       'Consider override if outdated, wrong specimen, or not reflective of usual values.',
     ].filter(Boolean);
     return {
@@ -363,16 +363,15 @@ export class CalculatorPrefillService {
   private conditionProvenance(field: FieldProvenance['field'], raw: unknown): FieldProvenance {
     const condition = raw as Condition | null;
     if (!condition || condition.resourceType !== 'Condition') {
-      return { field, summary: 'Active diabetes condition matched by OpenCVDRisk ValueSet.' };
+      return { field, summary: 'Active diabetes diagnosis found in chart.' };
     }
     const coding = condition.code?.coding?.[0];
-    const codeDisplay = coding?.display || coding?.code || condition.code?.text;
+    const codeDisplay = coding?.display || condition.code?.text;
+    const clinicalStatus = condition.clinicalStatus?.coding?.[0]?.code;
     const bits = [
-      `Condition/${condition.id ?? '?'}`,
-      condition.clinicalStatus?.coding?.[0]?.code
-        ? `clinicalStatus ${condition.clinicalStatus.coding[0].code}`
-        : null,
-      codeDisplay ? `code ${codeDisplay}` : null,
+      'From chart condition',
+      codeDisplay ?? null,
+      clinicalStatus ? `status ${clinicalStatus}` : null,
       'Override if the diagnosis is inactive, historical, or not applicable.',
     ].filter(Boolean);
     return {
@@ -380,7 +379,7 @@ export class CalculatorPrefillService {
       summary: bits.join(' · '),
       resourceType: 'Condition',
       resourceId: condition.id,
-      status: condition.clinicalStatus?.coding?.[0]?.code,
+      status: clinicalStatus,
       codeDisplay: codeDisplay ?? undefined,
     };
   }
@@ -388,18 +387,18 @@ export class CalculatorPrefillService {
   private medicationProvenance(field: FieldProvenance['field'], raw: unknown): FieldProvenance {
     const med = raw as MedicationRequest | null;
     if (!med || med.resourceType !== 'MedicationRequest') {
-      return { field, summary: 'Active MedicationRequest matched by therapy ValueSet.' };
+      return { field, summary: 'Active therapy found in chart medications.' };
     }
     const concept =
       med.medicationCodeableConcept ??
       (typeof med.medicationReference === 'object' ? undefined : undefined);
     const coding = concept?.coding?.[0];
-    const codeDisplay = coding?.display || coding?.code || concept?.text;
+    const codeDisplay = coding?.display || concept?.text;
     const bits = [
-      `MedicationRequest/${med.id ?? '?'}`,
-      med.status ? `status ${med.status}` : null,
-      med.authoredOn ? `authoredOn ${med.authoredOn}` : null,
-      codeDisplay ? `medication ${codeDisplay}` : null,
+      'From chart medication',
+      codeDisplay ?? null,
+      med.status && med.status !== 'active' ? `status ${med.status}` : null,
+      med.authoredOn ? `authored ${med.authoredOn}` : null,
       'Override if the order is not currently taken or not a true statin/antihypertensive.',
     ].filter(Boolean);
     return {
@@ -419,13 +418,8 @@ export class CalculatorPrefillService {
       return undefined;
     }
     const coding = condition.code?.coding?.[0];
-    const codeDisplay = coding?.display || coding?.code || condition.code?.text;
-    return [
-      `Condition/${condition.id ?? '?'}`,
-      codeDisplay ? `code ${codeDisplay}` : null,
-    ]
-      .filter(Boolean)
-      .join(' · ');
+    const codeDisplay = coding?.display || condition.code?.text;
+    return codeDisplay ? `Chart condition: ${codeDisplay}` : 'Matched chart condition.';
   }
 
   private observationEvidenceSummary(raw: unknown): string | undefined {
@@ -434,15 +428,14 @@ export class CalculatorPrefillService {
       return undefined;
     }
     const coding = obs.code?.coding?.[0];
-    const codeDisplay = coding?.display || coding?.code || obs.code?.text;
+    const codeDisplay = coding?.display || obs.code?.text;
     const effective =
       typeof obs.effectiveDateTime === 'string'
         ? obs.effectiveDateTime
         : obs.effectivePeriod?.start;
     return [
-      `Observation/${obs.id ?? '?'}`,
-      effective ? `effective ${effective}` : null,
-      codeDisplay ? `code ${codeDisplay}` : null,
+      codeDisplay ? `Chart observation: ${codeDisplay}` : 'Matched chart observation',
+      effective ? `dated ${effective}` : null,
     ]
       .filter(Boolean)
       .join(' · ');

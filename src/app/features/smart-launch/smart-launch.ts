@@ -4,6 +4,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { SmartLaunchService } from '../../services/smart-launch.service';
 import { PatientContextService } from '../../services/patient-context.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-smart-launch',
@@ -13,9 +14,9 @@ export class SmartLaunch implements OnInit {
   private readonly smartLaunch = inject(SmartLaunchService);
   private readonly patientContext = inject(PatientContextService);
   private readonly router = inject(Router);
+  private readonly toasts = inject(ToastService);
 
   protected readonly status = signal('Starting SMART launch…');
-  protected readonly error = signal<string | null>(null);
 
   async ngOnInit(): Promise<void> {
     try {
@@ -31,8 +32,8 @@ export class SmartLaunch implements OnInit {
       await this.router.navigateByUrl('/');
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
-      this.error.set(message);
       this.status.set('SMART launch failed.');
+      this.toasts.danger(message);
     }
   }
 }
