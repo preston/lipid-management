@@ -1,0 +1,353 @@
+<div class="container py-4" id="open-cvd-risk-calculator-page">
+  <header class="mb-4">
+    <h1 class="h2 mb-2" id="open-cvd-risk-calculator-title">OpenCVDRisk Calculator</h1>
+    <p class="text-muted mb-0" id="open-cvd-risk-calculator-subtitle">
+      Ages 30&ndash;79, no known cardiovascular disease. Decision support only; not a substitute for
+      clinical judgment.
+    </p>
+    <p class="text-muted small mt-2 mb-0" id="open-cvd-risk-calculator-disclaimer">
+      Open-source implementation of the American Heart Association (AHA) PREVENT&trade; algorithms. Not
+      affiliated with or endorsed by the AHA.
+    </p>
+  </header>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <form class="d-flex flex-column gap-3" id="open-cvd-risk-calculator-form" novalidate>
+        <div class="card">
+          <div class="card-header">Demographics</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="open-cvd-risk-age">Age (years)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="open-cvd-risk-age"
+                step="1"
+                [formField]="openCvdRiskForm.age"
+              />
+              <div class="form-text">Valid range: 30&ndash;79</div>
+            </div>
+            <fieldset>
+              <legend class="form-label fs-6 mb-2">Sex</legend>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-sex-female"
+                    value="female"
+                    [formField]="openCvdRiskForm.sex"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-sex-female">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-sex-male"
+                    value="male"
+                    [formField]="openCvdRiskForm.sex"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-sex-male">Male</label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Body measurements</div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="form-label" for="open-cvd-risk-height-cm">Height</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="open-cvd-risk-height-cm"
+                    step="0.1"
+                    [formField]="openCvdRiskForm.heightCm"
+                  />
+                  <span class="input-group-text">cm</span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="open-cvd-risk-weight-kg">Weight</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="open-cvd-risk-weight-kg"
+                    step="0.1"
+                    [formField]="openCvdRiskForm.weightKg"
+                  />
+                  <span class="input-group-text">kg</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-text mt-2">BMI is calculated from height and weight.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Lipids &amp; blood pressure</div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="form-label" for="open-cvd-risk-total-cholesterol">Total cholesterol</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="open-cvd-risk-total-cholesterol"
+                    step="1"
+                    [formField]="openCvdRiskForm.totalCholesterolMgDl"
+                  />
+                  <span class="input-group-text">mg/dL</span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="open-cvd-risk-hdl-cholesterol">HDL cholesterol</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="open-cvd-risk-hdl-cholesterol"
+                    step="1"
+                    [formField]="openCvdRiskForm.hdlMgDl"
+                  />
+                  <span class="input-group-text">mg/dL</span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic blood pressure</label>
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="open-cvd-risk-systolic-bp"
+                    step="1"
+                    [formField]="openCvdRiskForm.systolicBpMmHg"
+                  />
+                  <span class="input-group-text">mmHg</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Kidney</div>
+          <div class="card-body">
+            <label class="form-label" for="open-cvd-risk-serum-creatinine">Serum creatinine</label>
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="open-cvd-risk-serum-creatinine"
+                step="0.01"
+                [formField]="openCvdRiskForm.serumCreatinineMgDl"
+              />
+              <span class="input-group-text">mg/dL</span>
+            </div>
+            <div class="form-text mt-2">eGFR is calculated from creatinine, age, and sex.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Clinical history &amp; medications</div>
+          <div class="card-body d-flex flex-column gap-3">
+            <fieldset>
+              <legend class="form-label fs-6 mb-2">Diabetes</legend>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-diabetes-no"
+                    value="no"
+                    [formField]="openCvdRiskForm.diabetes"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-diabetes-no">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-diabetes-yes"
+                    value="yes"
+                    [formField]="openCvdRiskForm.diabetes"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-diabetes-yes">Yes</label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="form-label fs-6 mb-2">Current smoker</legend>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-smoking-no"
+                    value="no"
+                    [formField]="openCvdRiskForm.currentSmoker"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-smoking-no">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-smoking-yes"
+                    value="yes"
+                    [formField]="openCvdRiskForm.currentSmoker"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-smoking-yes">Yes</label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="form-label fs-6 mb-2">On antihypertensive medication</legend>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-antihypertensive-no"
+                    value="no"
+                    [formField]="openCvdRiskForm.onAntihypertensive"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-antihypertensive-no">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-antihypertensive-yes"
+                    value="yes"
+                    [formField]="openCvdRiskForm.onAntihypertensive"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-antihypertensive-yes">Yes</label>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="form-label fs-6 mb-2">On lipid-lowering (statin) therapy</legend>
+              <div class="d-flex flex-wrap gap-3">
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-statin-no"
+                    value="no"
+                    [formField]="openCvdRiskForm.onStatin"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-statin-no">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="open-cvd-risk-statin-yes"
+                    value="yes"
+                    [formField]="openCvdRiskForm.onStatin"
+                  />
+                  <label class="form-check-label" for="open-cvd-risk-statin-yes">Yes</label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary align-self-start"
+          id="open-cvd-risk-calculate"
+          disabled
+          title="Risk calculation will use FHIR $evaluate and CQL libraries in a future release."
+        >
+          Calculate risk
+        </button>
+      </form>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card sticky-lg-top" id="open-cvd-risk-results" style="top: 1rem">
+        <div class="card-header">Results</div>
+        <div class="card-body">
+          <h2 class="h6 text-muted text-uppercase">Derived measures</h2>
+          <dl class="row mb-4">
+            <dt class="col-sm-7">BMI</dt>
+            <dd class="col-sm-5 text-end mb-2" id="open-cvd-risk-result-bmi">
+              {{ bmiDisplay() }}
+              @if (bmiKgM2() != null) {
+                <span class="text-muted">kg/m&sup2;</span>
+              }
+            </dd>
+            <dt class="col-sm-7">eGFR</dt>
+            <dd class="col-sm-5 text-end mb-0" id="open-cvd-risk-result-egfr">
+              {{ egfrDisplay() }}
+              @if (egfrMlMin() != null) {
+                <span class="text-muted">mL/min/1.73m&sup2;</span>
+              }
+            </dd>
+          </dl>
+
+          <h2 class="h6 text-muted text-uppercase">10-year risk</h2>
+          <dl class="row mb-4">
+            <dt class="col-sm-8">Total CVD</dt>
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-10y-total-cvd">
+              {{ riskPlaceholder }}%
+            </dd>
+            <dt class="col-sm-8">ASCVD</dt>
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-10y-ascvd">
+              {{ riskPlaceholder }}%
+            </dd>
+            <dt class="col-sm-8">Heart failure</dt>
+            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-10y-hf">
+              {{ riskPlaceholder }}%
+            </dd>
+          </dl>
+
+          <h2 class="h6 text-muted text-uppercase">30-year risk</h2>
+          <dl class="row mb-0">
+            <dt class="col-sm-8">Total CVD</dt>
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-30y-total-cvd">
+              {{ riskPlaceholder }}%
+            </dd>
+            <dt class="col-sm-8">ASCVD</dt>
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-30y-ascvd">
+              {{ riskPlaceholder }}%
+            </dd>
+            <dt class="col-sm-8">Heart failure</dt>
+            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-30y-hf">
+              {{ riskPlaceholder }}%
+            </dd>
+          </dl>
+        </div>
+        <div class="card-footer p-0">
+          <div
+            class="alert mb-0 rounded-0 rounded-bottom border-0"
+            [class.alert-warning]="!inputsComplete()"
+            [class.alert-success]="inputsComplete()"
+            id="open-cvd-risk-results-message"
+            role="status"
+          >
+            @if (inputsComplete()) {
+              Required inputs are complete. Risk estimates will be available when calculation is
+              connected to FHIR $evaluate.
+            } @else {
+              Inputs must be complete to perform calculation.
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
