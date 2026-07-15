@@ -1,6 +1,6 @@
 # Lipid Management
 
-
+[![Build Status](https://ci.prestonlee.com/api/badges/preston/lipid-management/status.svg)](https://ci.prestonlee.com/preston/lipid-management)
 
 ## Quick Start with Docker
 
