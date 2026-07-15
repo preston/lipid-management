@@ -2,7 +2,7 @@
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Library, Bundle } from 'fhir/r4';
+import { Library } from 'fhir/r4';
 import { firstValueFrom } from 'rxjs';
 import { SettingsService } from './settings.service';
 import { decodeUtf8Base64, encodeUtf8Base64 } from './utf8-encoding.lib';
@@ -128,26 +128,6 @@ export class FhirLibraryService {
     return text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
   }
 
-  async checkFhirHelpers(): Promise<'present' | 'missing' | 'error'> {
-    try {
-      const byId = await this.getLibrary('FHIRHelpers');
-      if (byId) {
-        return 'present';
-      }
-      const search = await firstValueFrom(
-        this.http.get<Bundle>(`${this.baseUrl()}/Library`, {
-          params: { name: 'FHIRHelpers', _count: '1' },
-        }),
-      );
-      return (search.entry?.length ?? 0) > 0 ? 'present' : 'missing';
-    } catch (err) {
-      if (err instanceof HttpErrorResponse && err.status === 404) {
-        return 'missing';
-      }
-      return 'error';
-    }
-  }
-
   async loadCatalogLibraries(
     entries: readonly CqlLibraryCatalogEntry[] = CQL_LIBRARY_CATALOG,
   ): Promise<LibraryAuditResult[]> {
@@ -218,12 +198,16 @@ export class FhirLibraryService {
         const contentMatch = this.normalizeCql(appCql) === this.normalizeCql(serverCql);
         const versionMatch = appVersion === serverVersion;
         let status: LibraryContentStatus = 'match';
+        let message: string | undefined;
         if (!contentMatch && !versionMatch) {
           status = 'differs';
+          message = `Content differs; server version must be ${appVersion ?? '(unknown)'}`;
         } else if (!contentMatch) {
           status = 'differs';
+          message = 'Content differs';
         } else if (!versionMatch) {
           status = 'version_mismatch';
+          message = `Server version must be ${appVersion ?? '(unknown)'}`;
         }
         results.push({
           catalogId: entry.id,
@@ -231,6 +215,7 @@ export class FhirLibraryService {
           appVersion,
           serverVersion,
           status,
+          message,
           appCql,
           serverCql,
         });

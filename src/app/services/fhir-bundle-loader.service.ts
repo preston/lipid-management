@@ -2,7 +2,7 @@
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Bundle, OperationOutcome, Patient } from 'fhir/r4';
+import { Bundle, OperationOutcome, Patient, ValueSet } from 'fhir/r4';
 import { firstValueFrom } from 'rxjs';
 import { SettingsService } from './settings.service';
 import {
@@ -12,13 +12,24 @@ import {
   ValueSetCatalogEntry,
 } from '../features/loader/loader.catalog';
 
-export type RowLoadStatus = 'idle' | 'loading_asset' | 'uploading' | 'ok' | 'error' | 'present' | 'missing';
+export type RowLoadStatus =
+  | 'idle'
+  | 'loading_asset'
+  | 'uploading'
+  | 'ok'
+  | 'error'
+  | 'present'
+  | 'missing'
+  | 'match'
+  | 'version_mismatch';
 
 export interface BundleLoadRowResult {
   id: string;
   label: string;
   status: RowLoadStatus;
   message?: string;
+  appVersion?: string | null;
+  serverVersion?: string | null;
 }
 
 @Injectable({
@@ -56,11 +67,34 @@ export class FhirBundleLoaderService {
       options?.onProgress?.(row);
       try {
         const bundle = await firstValueFrom(this.http.get<Bundle>(entry.assetPath));
+        const appVersion = this.normalizeVersion(this.valueSetVersionFromBundle(bundle));
+        row.appVersion = appVersion;
+        if (appVersion == null) {
+          row.status = 'error';
+          row.message = 'App ValueSet asset has no version';
+          results.push({ ...row });
+          options?.onProgress?.(row);
+          if (!continueOnError) {
+            break;
+          }
+          continue;
+        }
         row.status = 'uploading';
         options?.onProgress?.(row);
         await this.postBundle(bundle);
-        row.status = 'ok';
-        row.message = 'Loaded';
+        const server = await this.getValueSet(entry.id);
+        const serverVersion = this.normalizeVersion(server?.version ?? null);
+        row.serverVersion = serverVersion;
+        if (!server) {
+          row.status = 'missing';
+          row.message = 'Upload completed but ValueSet not found on server';
+        } else if (serverVersion !== appVersion) {
+          row.status = 'version_mismatch';
+          row.message = `Server version must be ${appVersion}`;
+        } else {
+          row.status = 'match';
+          row.message = 'Loaded';
+        }
       } catch (err) {
         row.status = 'error';
         row.message = this.errorMessage(err);
@@ -83,19 +117,58 @@ export class FhirBundleLoaderService {
     const results: BundleLoadRowResult[] = [];
     for (const entry of entries) {
       try {
-        await firstValueFrom(this.http.get(`${this.baseUrl()}/ValueSet/${entry.id}`));
-        results.push({ id: entry.id, label: entry.label, status: 'present' });
-      } catch (err) {
-        if (err instanceof HttpErrorResponse && err.status === 404) {
-          results.push({ id: entry.id, label: entry.label, status: 'missing' });
-        } else {
+        const appBundle = await firstValueFrom(this.http.get<Bundle>(entry.assetPath));
+        const appVersion = this.normalizeVersion(this.valueSetVersionFromBundle(appBundle));
+        if (appVersion == null) {
           results.push({
             id: entry.id,
             label: entry.label,
             status: 'error',
-            message: this.errorMessage(err),
+            appVersion: null,
+            message: 'App ValueSet asset has no version',
+          });
+          continue;
+        }
+
+        const server = await this.getValueSet(entry.id);
+        if (!server) {
+          results.push({
+            id: entry.id,
+            label: entry.label,
+            status: 'missing',
+            appVersion,
+            serverVersion: null,
+            message: 'Not found on server',
+          });
+          continue;
+        }
+
+        const serverVersion = this.normalizeVersion(server.version ?? null);
+        if (serverVersion !== appVersion) {
+          results.push({
+            id: entry.id,
+            label: entry.label,
+            status: 'version_mismatch',
+            appVersion,
+            serverVersion,
+            message: `Server version must be ${appVersion}`,
+          });
+        } else {
+          results.push({
+            id: entry.id,
+            label: entry.label,
+            status: 'match',
+            appVersion,
+            serverVersion,
           });
         }
+      } catch (err) {
+        results.push({
+          id: entry.id,
+          label: entry.label,
+          status: 'error',
+          message: this.errorMessage(err),
+        });
       }
     }
     return results;
@@ -120,7 +193,7 @@ export class FhirBundleLoaderService {
         const bundle = await firstValueFrom(this.http.get<Bundle>(entry.assetPath));
         row.status = 'uploading';
         options?.onProgress?.(row);
-        const response = await this.postBundle(bundle);
+        const response = await this.postBundle(this.preserveResourceIds(bundle));
         row.status = 'ok';
         row.message = this.summarizeBundleResponse(response);
       } catch (err) {
@@ -173,6 +246,60 @@ export class FhirBundleLoaderService {
   ): ExampleDataCatalogEntry[] {
     const order = new Map(EXAMPLE_DATA_CATALOG.map((e, i) => [e.id, i]));
     return [...entries].sort((a, b) => (order.get(a.id) ?? 99) - (order.get(b.id) ?? 99));
+  }
+
+  private valueSetVersionFromBundle(bundle: Bundle): string | null {
+    const resource = bundle.entry?.[0]?.resource;
+    if (!resource || resource.resourceType !== 'ValueSet') {
+      return null;
+    }
+    return (resource as ValueSet).version ?? null;
+  }
+
+  private normalizeVersion(version: string | null | undefined): string | null {
+    if (version == null) {
+      return null;
+    }
+    const trimmed = version.trim();
+    return trimmed === '' ? null : trimmed;
+  }
+
+  private async getValueSet(id: string): Promise<ValueSet | null> {
+    try {
+      return await firstValueFrom(
+        this.http.get<ValueSet>(`${this.baseUrl()}/ValueSet/${encodeURIComponent(id)}`),
+      );
+    } catch (err) {
+      if (err instanceof HttpErrorResponse && err.status === 404) {
+        return null;
+      }
+      throw err;
+    }
+  }
+
+  /**
+   * Synthea transaction bundles use POST, so HAPI assigns new ids. Rewrite to PUT by
+   * resource id so catalog Patient/{resourceId} checks and app patient selection work.
+   */
+  private preserveResourceIds(bundle: Bundle): Bundle {
+    const entries = bundle.entry?.map((entry) => {
+      const resource = entry.resource;
+      if (!resource || resource.resourceType === 'Bundle') {
+        return entry;
+      }
+      const id = 'id' in resource ? resource.id : undefined;
+      if (!id) {
+        return entry;
+      }
+      return {
+        ...entry,
+        request: {
+          method: 'PUT' as const,
+          url: `${resource.resourceType}/${id}`,
+        },
+      };
+    });
+    return { ...bundle, entry: entries };
   }
 
   private async isExampleEntryPresent(entry: ExampleDataCatalogEntry): Promise<boolean> {

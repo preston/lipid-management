@@ -11,6 +11,7 @@
         "name": "AntihypertensiveTherapy",
         "title": "Antihypertensive Therapy",
         "status": "active",
+        "version": "2026-07-15",
         "experimental": false,
         "date": "2026-07-15",
         "publisher": "ASU CDS",
@@ -20,32 +21,110 @@
             {
               "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
               "concept": [
-                { "code": "29046", "display": "lisinopril" },
-                { "code": "3827", "display": "enalapril" },
-                { "code": "35296", "display": "ramipril" },
-                { "code": "52175", "display": "losartan" },
-                { "code": "69749", "display": "valsartan" },
-                { "code": "321064", "display": "olmesartan" },
-                { "code": "214354", "display": "candesartan" },
-                { "code": "83818", "display": "irbesartan" },
-                { "code": "73494", "display": "telmisartan" },
-                { "code": "17767", "display": "amlodipine" },
-                { "code": "7417", "display": "nifedipine" },
-                { "code": "3443", "display": "diltiazem" },
-                { "code": "11170", "display": "verapamil" },
-                { "code": "6918", "display": "metoprolol" },
-                { "code": "1202", "display": "atenolol" },
-                { "code": "20352", "display": "carvedilol" },
-                { "code": "5487", "display": "hydrochlorothiazide" },
-                { "code": "2409", "display": "chlorthalidone" },
-                { "code": "9997", "display": "spironolactone" },
-                { "code": "1656339", "display": "sacubitril / valsartan" },
-                { "code": "314076", "display": "lisinopril 10 MG Oral Tablet" },
-                { "code": "314077", "display": "lisinopril 20 MG Oral Tablet" },
-                { "code": "197361", "display": "amlodipine 5 MG Oral Tablet" },
-                { "code": "310798", "display": "hydrochlorothiazide 25 MG Oral Tablet" },
-                { "code": "866924", "display": "metoprolol tartrate 25 MG Oral Tablet" },
-                { "code": "1656340", "display": "sacubitril 24 MG / valsartan 26 MG Oral Tablet" }
+                {
+                  "code": "29046",
+                  "display": "lisinopril"
+                },
+                {
+                  "code": "3827",
+                  "display": "enalapril"
+                },
+                {
+                  "code": "35296",
+                  "display": "ramipril"
+                },
+                {
+                  "code": "52175",
+                  "display": "losartan"
+                },
+                {
+                  "code": "69749",
+                  "display": "valsartan"
+                },
+                {
+                  "code": "321064",
+                  "display": "olmesartan"
+                },
+                {
+                  "code": "214354",
+                  "display": "candesartan"
+                },
+                {
+                  "code": "83818",
+                  "display": "irbesartan"
+                },
+                {
+                  "code": "73494",
+                  "display": "telmisartan"
+                },
+                {
+                  "code": "17767",
+                  "display": "amlodipine"
+                },
+                {
+                  "code": "7417",
+                  "display": "nifedipine"
+                },
+                {
+                  "code": "3443",
+                  "display": "diltiazem"
+                },
+                {
+                  "code": "11170",
+                  "display": "verapamil"
+                },
+                {
+                  "code": "6918",
+                  "display": "metoprolol"
+                },
+                {
+                  "code": "1202",
+                  "display": "atenolol"
+                },
+                {
+                  "code": "20352",
+                  "display": "carvedilol"
+                },
+                {
+                  "code": "5487",
+                  "display": "hydrochlorothiazide"
+                },
+                {
+                  "code": "2409",
+                  "display": "chlorthalidone"
+                },
+                {
+                  "code": "9997",
+                  "display": "spironolactone"
+                },
+                {
+                  "code": "1656339",
+                  "display": "sacubitril / valsartan"
+                },
+                {
+                  "code": "314076",
+                  "display": "lisinopril 10 MG Oral Tablet"
+                },
+                {
+                  "code": "314077",
+                  "display": "lisinopril 20 MG Oral Tablet"
+                },
+                {
+                  "code": "197361",
+                  "display": "amlodipine 5 MG Oral Tablet"
+                },
+                {
+                  "code": "310798",
+                  "display": "hydrochlorothiazide 25 MG Oral Tablet"
+                },
+                {
+                  "code": "866924",
+                  "display": "metoprolol tartrate 25 MG Oral Tablet"
+                },
+                {
+                  "code": "1656340",
+                  "display": "sacubitril 24 MG / valsartan 26 MG Oral Tablet"
+                }
               ]
             }
           ]

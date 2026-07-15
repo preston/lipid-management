@@ -87,6 +87,46 @@ describe('FhirLibraryService', () => {
     expect(results[0].status).toBe('match');
   });
 
+  it('reports version_mismatch when content matches but Library.version differs', async () => {
+    const cql = "library BMI version '1.0.0'\ndefine X: 1";
+    const library: Library = {
+      resourceType: 'Library',
+      id: 'BMI',
+      version: '0.9.0',
+      status: 'active',
+      type: {},
+      content: [{ contentType: 'text/cql', data: encodeUtf8Base64(cql) }],
+    };
+    const promise = service.auditCatalogLibraries([
+      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+    ]);
+    (await nextRequest(http, (r) => r.url === '/cql/BMI.cql')).flush(cql);
+    (await nextRequest(http, (r) => r.url === 'http://fhir.test/fhir/Library/BMI')).flush(library);
+    const results = await promise;
+    expect(results[0].status).toBe('version_mismatch');
+    expect(results[0].message).toBe('Server version must be 1.0.0');
+  });
+
+  it('reports version_mismatch when content matches but server version is null', async () => {
+    const cql = "library BMI version '1.0.0'\ndefine X: 1";
+    const library: Library = {
+      resourceType: 'Library',
+      id: 'BMI',
+      status: 'active',
+      type: {},
+      content: [{ contentType: 'text/cql', data: encodeUtf8Base64(cql) }],
+    };
+    const promise = service.auditCatalogLibraries([
+      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+    ]);
+    (await nextRequest(http, (r) => r.url === '/cql/BMI.cql')).flush(cql);
+    (await nextRequest(http, (r) => r.url === 'http://fhir.test/fhir/Library/BMI')).flush(library);
+    const results = await promise;
+    expect(results[0].status).toBe('version_mismatch');
+    expect(results[0].serverVersion).toBeNull();
+    expect(results[0].message).toBe('Server version must be 1.0.0');
+  });
+
   it('builds Library with text/cql content from CQL source', () => {
     const library = service.buildLibraryFromCql(
       "library OpenCVDRisk version '0.3.0'",

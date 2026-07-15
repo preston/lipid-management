@@ -11,6 +11,7 @@
         "name": "LeftVentricularEjectionFraction",
         "title": "Left Ventricular Ejection Fraction",
         "status": "active",
+        "version": "2026-07-15",
         "experimental": false,
         "date": "2026-07-15",
         "publisher": "ASU CDS",

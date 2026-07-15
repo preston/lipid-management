@@ -1,52 +1,35 @@
 <div id="loader" class="container mt-4 mb-5">
-  <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+  <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
     <div>
-      <h1 class="h3 mb-1">Loader</h1>
-      <p class="text-body-secondary mb-0">
-        Load and audit app CQL libraries, ValueSets, and example data on the configured FHIR
-        server.
+      <h1 class="h3 mb-1">Application Dependency Loader</h1>
+      <p class="small text-body-secondary mb-0" id="loader-fhir-base">
+        FHIR base:
+        <span class="font-monospace">{{ fhirBaseUrl() }}</span>
+        ·
+        <a id="loader-settings-link" routerLink="/settings">Settings</a>
       </p>
     </div>
-    <button
-      type="button"
-      class="btn btn-outline-primary"
-      id="loader-check-all-btn"
-      [disabled]="busy()"
-      (click)="checkAll()"
-    >
-      Check all
-    </button>
-  </div>
-
-  <div class="border rounded p-3 bg-body-secondary mb-4" id="loader-fhir-base">
-    <div class="small text-body-secondary mb-1">FHIR base URL</div>
-    <div class="font-monospace">{{ fhirBaseUrl() }}</div>
-    <a class="small" id="loader-settings-link" routerLink="/settings">Open Settings</a>
-  </div>
-
-  <div
-    class="d-flex flex-wrap gap-2 mb-4"
-    id="loader-readiness"
-    aria-label="Bootstrap readiness"
-  >
-    <span class="badge" [class]="statusBadgeClass(fhirHelpersStatus())" id="loader-fhirhelpers-badge">
-      FHIRHelpers: {{ statusLabel(fhirHelpersStatus()) }}
-    </span>
-    <span class="badge text-bg-secondary" id="loader-cql-summary">CQL: {{ cqlSummary() }}</span>
-    <span class="badge text-bg-secondary" id="loader-valueset-summary"
-      >ValueSets: {{ valueSetSummary() }}</span
-    >
-    <span class="badge text-bg-secondary" id="loader-example-summary"
-      >Example: {{ examplePatientSummary() }}</span
-    >
-  </div>
-
-  @if (fhirHelpersStatus() === 'missing') {
-    <div class="alert alert-warning" id="loader-fhirhelpers-warning" role="status">
-      FHIRHelpers is missing on this server. Load it outside this app before relying on
-      <code>$evaluate</code>.
+    <div class="btn-group" role="group" aria-label="Loader bulk actions">
+      <button
+        type="button"
+        class="btn btn-primary"
+        id="loader-load-all-btn"
+        [disabled]="busy()"
+        (click)="loadAll()"
+      >
+        Load all
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        id="loader-check-all-btn"
+        [disabled]="busy()"
+        (click)="checkAll()"
+      >
+        Check all
+      </button>
     </div>
-  }
+  </div>
 
   <div class="card mb-4" id="loader-cql-card">
     <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
@@ -123,18 +106,16 @@
               @if (row.expanded) {
                 <tr [id]="'loader-cql-diff-row-' + row.catalogId">
                   <td colspan="5">
-                    <div class="row g-3 p-2">
+                    <div class="row g-3 p-3">
                       <div class="col-md-6">
                         <div class="small text-body-secondary mb-1">App</div>
-                        <pre class="small border rounded p-2 bg-body-secondary mb-0"
-                          style="max-height: 16rem; overflow: auto"
+                        <pre class="small border rounded p-3 bg-body-secondary mb-0"
                           >{{ row.appCql || '(none)' }}</pre
                         >
                       </div>
                       <div class="col-md-6">
                         <div class="small text-body-secondary mb-1">Server</div>
-                        <pre class="small border rounded p-2 bg-body-secondary mb-0"
-                          style="max-height: 16rem; overflow: auto"
+                        <pre class="small border rounded p-3 bg-body-secondary mb-0"
                           >{{ row.serverCql || '(none)' }}</pre
                         >
                       </div>
@@ -146,7 +127,7 @@
           </tbody>
         </table>
       </div>
-      <p class="small text-body-secondary px-3 py-2 mb-0">
+      <p class="small text-body-secondary border-top px-3 py-3 mb-0">
         Load order: BMI → OpenCVDRisk → LipidManagement.
       </p>
     </div>
@@ -177,12 +158,14 @@
       </div>
     </div>
     <div class="card-body p-0">
-      <div class="table-responsive" style="max-height: 20rem; overflow: auto">
+      <div class="table-responsive">
         <table class="table table-sm mb-0 align-middle" id="loader-valueset-table">
           <thead>
             <tr>
               <th scope="col">ValueSet</th>
               <th scope="col">Origin</th>
+              <th scope="col">App version</th>
+              <th scope="col">Server version</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -202,6 +185,8 @@
                     >{{ row.origin === 'vsac' ? 'VSAC' : 'ASU' }}</span
                   >
                 </td>
+                <td class="font-monospace">{{ row.appVersion || '—' }}</td>
+                <td class="font-monospace">{{ row.serverVersion || '—' }}</td>
                 <td>
                   <span class="badge" [class]="statusBadgeClass(row.status)">{{
                     statusLabel(row.status)
@@ -242,24 +227,27 @@
         </button>
       </div>
     </div>
-    <div class="card-body">
-      <p class="small text-body-secondary">
-        Recommended order: hospital → practitioner → patients. Large uploads may take a minute.
-      </p>
-      <div class="form-check form-switch mb-3">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="loader-continue-on-error"
-          [ngModel]="continueOnError()"
-          (ngModelChange)="continueOnError.set($event)"
-        />
-        <label class="form-check-label" for="loader-continue-on-error"
-          >Continue on error</label
-        >
+    <div class="card-body p-0">
+      <div class="px-3 py-3 border-bottom">
+        <p class="small text-body-secondary mb-3">
+          Recommended order: hospital → practitioner → patients. Large uploads may take a minute.
+          Check verifies presence (patient id where applicable), not resource version.
+        </p>
+        <div class="form-check form-switch mb-0">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="loader-continue-on-error"
+            [ngModel]="continueOnError()"
+            (ngModelChange)="continueOnError.set($event)"
+          />
+          <label class="form-check-label" for="loader-continue-on-error"
+            >Continue on error</label
+          >
+        </div>
       </div>
-      <div class="list-group" id="loader-example-list">
+      <div class="list-group list-group-flush" id="loader-example-list">
         @for (row of exampleRows(); track row.id) {
           <label
             class="list-group-item d-flex flex-wrap align-items-center gap-3"

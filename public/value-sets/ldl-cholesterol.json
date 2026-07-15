@@ -11,6 +11,7 @@
         "name": "LdlCholesterol",
         "title": "LDL Cholesterol Laboratory Test",
         "status": "active",
+        "version": "2026-07-15",
         "experimental": false,
         "date": "2026-07-15",
         "publisher": "ASU CDS",

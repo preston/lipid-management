@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
@@ -37,6 +37,8 @@ interface ValueSetRow {
   id: string;
   label: string;
   origin: ValueSetOrigin;
+  appVersion: string | null;
+  serverVersion: string | null;
   status: RowLoadStatus;
   message?: string;
 }
@@ -56,16 +58,13 @@ interface ExampleRow {
   templateUrl: './loader.html',
   styleUrl: './loader.scss',
 })
-export class Loader implements OnInit {
+export class Loader {
   protected readonly settingsService = inject(SettingsService);
   private readonly libraries = inject(FhirLibraryService);
   private readonly bundles = inject(FhirBundleLoaderService);
 
   protected readonly fhirBaseUrl = computed(() => this.settingsService.getEffectiveFhirBaseUrl());
 
-  protected readonly fhirHelpersStatus = signal<'unknown' | 'present' | 'missing' | 'error'>(
-    'unknown',
-  );
   protected readonly busy = signal(false);
   protected readonly continueOnError = signal(false);
 
@@ -85,6 +84,8 @@ export class Loader implements OnInit {
       id: e.id,
       label: e.label,
       origin: e.origin,
+      appVersion: null,
+      serverVersion: null,
       status: 'idle' as RowLoadStatus,
     })),
   );
@@ -99,35 +100,15 @@ export class Loader implements OnInit {
     })),
   );
 
-  protected readonly cqlSummary = computed(() => {
-    const rows = this.cqlRows();
-    const known = rows.filter((r) => r.status !== 'idle').length;
-    if (known === 0) {
-      return `${rows.length} libraries`;
-    }
-    const match = rows.filter((r) => r.status === 'match').length;
-    return `${match}/${rows.length} match`;
-  });
-
   protected readonly valueSetSummary = computed(() => {
     const rows = this.valueSetRows();
-    const present = rows.filter((r) => r.status === 'present' || r.status === 'ok').length;
     const known = rows.filter((r) => r.status !== 'idle').length;
     if (known === 0) {
       return `${rows.length} packs`;
     }
-    return `${present}/${rows.length} present`;
+    const match = rows.filter((r) => r.status === 'match').length;
+    return `${match}/${rows.length} match`;
   });
-
-  protected readonly examplePatientSummary = computed(() => {
-    const patients = this.exampleRows().filter((r) => r.id === 'dakota' || r.id === 'dori');
-    const present = patients.filter((r) => r.status === 'present' || r.status === 'ok').length;
-    return `${present}/${patients.length} patients`;
-  });
-
-  ngOnInit(): void {
-    void this.refreshFhirHelpers();
-  }
 
   protected statusBadgeClass(status: string): string {
     switch (status) {
@@ -168,9 +149,31 @@ export class Loader implements OnInit {
     }
   }
 
-  async refreshFhirHelpers(): Promise<void> {
-    const status = await this.libraries.checkFhirHelpers();
-    this.fhirHelpersStatus.set(status);
+  async loadAll(): Promise<void> {
+    if (this.busy()) {
+      return;
+    }
+    this.busy.set(true);
+    try {
+      const cqlResults = await this.libraries.loadCatalogLibraries();
+      this.applyCqlResults(cqlResults);
+      await this.bundles.loadValueSets(VALUE_SET_CATALOG, {
+        continueOnError: this.continueOnError(),
+        onProgress: (row) => this.patchValueSetRow(row),
+      });
+      const selectedIds = new Set(
+        this.exampleRows().filter((r) => r.selected).map((r) => r.id),
+      );
+      const selected = EXAMPLE_DATA_CATALOG.filter((e) => selectedIds.has(e.id));
+      if (selected.length > 0) {
+        await this.bundles.loadExampleData(selected, {
+          continueOnError: this.continueOnError(),
+          onProgress: (row) => this.patchExampleRow(row),
+        });
+      }
+    } finally {
+      this.busy.set(false);
+    }
   }
 
   async checkAll(): Promise<void> {
@@ -179,7 +182,6 @@ export class Loader implements OnInit {
     }
     this.busy.set(true);
     try {
-      await this.refreshFhirHelpers();
       await this.runCqlAudit();
       await this.runValueSetCheck();
       await this.runExampleCheck();
@@ -333,7 +335,16 @@ export class Loader implements OnInit {
   private patchValueSetRow(row: BundleLoadRowResult): void {
     this.valueSetRows.update((rows) =>
       rows.map((r) =>
-        r.id === row.id ? { ...r, status: row.status, message: row.message } : r,
+        r.id === row.id
+          ? {
+              ...r,
+              status: row.status,
+              message: row.message,
+              appVersion: row.appVersion !== undefined ? row.appVersion ?? null : r.appVersion,
+              serverVersion:
+                row.serverVersion !== undefined ? row.serverVersion ?? null : r.serverVersion,
+            }
+          : r,
       ),
     );
   }

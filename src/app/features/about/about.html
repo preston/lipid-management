@@ -22,53 +22,55 @@
     <h2 class="h5" id="about-architecture-heading">How the application works</h2>
     <p class="text-muted" id="about-architecture-intro">
       The browser application talks to a FHIR server that stores patient data, clinical terminology (ValueSets),
-      and decision-support logic (CQL Libraries). The same FHIR server also evaluates that logic when you open the
-      calculator.
+      and decision-support logic (CQL Libraries). Risk scoring uses that server’s
+      <code>Library/$evaluate</code> operation: once to preload chart values into the form, and again when the
+      clinician calculates risk. Local form overrides for review do not change the chart data sent to
+      <code>$evaluate</code>.
     </p>
 
     <section class="mb-4" id="about-arch-overview">
-      <h3 class="h6" id="about-arch-overview-heading">What connects to what</h3>
+      <h3 class="h6" id="about-arch-overview-heading">Risk scoring interaction</h3>
       <p class="small text-muted" id="about-arch-overview-caption">
-        The app in your browser asks the FHIR server for the patient's chart and for decision-support results.
-        The same server holds the clinical logic and also runs it.
+        Major steps when using the OpenCVDRisk calculator: CQL preload of chart inputs, form prepopulation,
+        optional clinician overrides, manual recalculation, server-side CQL processing, and returning scores to
+        the UI.
       </p>
       <div
         class="about-diagram border rounded p-2 bg-body-tertiary"
         id="about-arch-overview-diagram"
         #overviewDiagram
         role="img"
-        aria-label="Overview of clinician, browser app, and FHIR server"
+        aria-label="Sequence of risk scoring preload, prefill, overrides, recalculation, and results"
       ></div>
     </section>
 
     <section class="mb-4" id="about-arch-standalone">
       <h3 class="h6" id="about-arch-standalone-heading">Standalone mode</h3>
       <p class="small text-muted" id="about-arch-standalone-caption">
-        In demos and local setups, you point the app at a FHIR server, optionally upload logic and terminology with
-        the Loader, then search for a patient. The calculator asks that server to run CQL against the selected
-        patient.
+        In demos and local setups, optionally upload Libraries and ValueSets with the Loader, search and select a
+        patient, then run the same preload → prefill → calculate path against that FHIR server.
       </p>
       <div
         class="about-diagram border rounded p-2 bg-body-tertiary"
         id="about-arch-standalone-diagram"
         #standaloneDiagram
         role="img"
-        aria-label="Standalone mode sequence between browser app and FHIR server"
+        aria-label="Standalone mode sequence from loader setup through risk calculation"
       ></div>
     </section>
 
     <section class="mb-4" id="about-arch-smart">
       <h3 class="h6" id="about-arch-smart-heading">SMART-on-FHIR mode</h3>
       <p class="small text-muted" id="about-arch-smart-caption">
-        In clinic systems, the electronic health record starts the app and points it at that system's FHIR server.
-        After login, the app uses the same kind of "run the logic" call as in standalone mode.
+        The EHR launches the app against its FHIR server. After SMART authorization and patient context, the
+        calculator uses the same CQL preload and risk <code>$evaluate</code> steps as standalone mode.
       </p>
       <div
         class="about-diagram border rounded p-2 bg-body-tertiary"
         id="about-arch-smart-diagram"
         #smartDiagram
         role="img"
-        aria-label="SMART-on-FHIR launch and evaluate sequence"
+        aria-label="SMART-on-FHIR launch then risk scoring evaluate sequence"
       ></div>
     </section>
 
@@ -83,7 +85,7 @@
         id="about-arch-cql-packaging-diagram"
         #packagingDiagram
         role="img"
-        aria-label="How CQL and ValueSets become FHIR Library and ValueSet resources"
+        aria-label="Sequence of packaging CQL and ValueSets onto the FHIR server for evaluate"
       ></div>
       <ul class="small mt-3 mb-0" id="about-arch-cql-packaging-notes">
         <li>
