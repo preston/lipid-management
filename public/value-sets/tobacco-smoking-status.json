@@ -1,0 +1,38 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/tobacco-smoking-status",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "tobacco-smoking-status",
+        "url": "https://asu.edu/fhir/ValueSet/tobacco-smoking-status",
+        "name": "TobaccoSmokingStatus",
+        "title": "Tobacco Smoking Status",
+        "status": "active",
+        "experimental": false,
+        "date": "2026-07-15",
+        "publisher": "ASU CDS",
+        "description": "Observation code for smoking status (LOINC 72166-2).",
+        "compose": {
+          "include": [
+            {
+              "system": "http://loinc.org",
+              "concept": [
+                {
+                  "code": "72166-2",
+                  "display": "Tobacco smoking status"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/tobacco-smoking-status"
+      }
+    }
+  ]
+}

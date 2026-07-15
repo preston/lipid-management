@@ -1,6 +1,77 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom" id="app-navbar">
   <div class="container">
-    <span class="navbar-brand mb-0 h1" id="app-navbar-title">Lipid Management</span>
+    <a class="navbar-brand mb-0 h1" id="app-navbar-title" routerLink="/" ariaCurrentWhenActive="page"
+      >Lipid Management</a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#app-navbar-collapse"
+      aria-controls="app-navbar-collapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      id="app-navbar-toggler"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="app-navbar-collapse">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="app-nav-calculator"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            ariaCurrentWhenActive="page"
+            >OpenCVDRisk Calculator</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="app-nav-resources"
+            routerLink="/resources"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Resources</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="app-nav-about"
+            routerLink="/about"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >About</a
+          >
+        </li>
+        @if (settingsService.settings().developer) {
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              id="app-nav-loader"
+              routerLink="/loader"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              >Loader</a
+            >
+          </li>
+        }
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="app-nav-settings"
+            routerLink="/settings"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            >Settings</a
+          >
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 

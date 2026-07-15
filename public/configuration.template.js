@@ -1,4 +1,9 @@
 (function(window) {
-    // Environment variables
+    // Environment variables (substituted by entrypoint.sh / envsubst at container start)
     window["LIPID_MANAGEMENT_FHIR_BASE_URL"] = "${LIPID_MANAGEMENT_FHIR_BASE_URL}";
+    window["LIPID_MANAGEMENT_VSAC_FHIR_BASE_URL"] = "${LIPID_MANAGEMENT_VSAC_FHIR_BASE_URL}";
+    window["LIPID_MANAGEMENT_VSAC_API_USERNAME"] = "${LIPID_MANAGEMENT_VSAC_API_USERNAME}";
+    window["LIPID_MANAGEMENT_VSAC_API_PASSWORD"] = "${LIPID_MANAGEMENT_VSAC_API_PASSWORD}";
+    window["LIPID_MANAGEMENT_SMART_CLIENT_ID"] = "${LIPID_MANAGEMENT_SMART_CLIENT_ID}";
+    window["LIPID_MANAGEMENT_SMART_REDIRECT_URI"] = "${LIPID_MANAGEMENT_SMART_REDIRECT_URI}";
 })(this);

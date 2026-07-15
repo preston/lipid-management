@@ -12,7 +12,7 @@ export interface OpenCVDRiskCalculatorForm {
   totalCholesterolMgDl: number | null;
   hdlMgDl: number | null;
   systolicBpMmHg: number | null;
-  serumCreatinineMgDl: number | null;
+  egfrMlMin173m2: number | null;
   diabetes: OpenCVDRiskYesNo;
   currentSmoker: OpenCVDRiskYesNo;
   onAntihypertensive: OpenCVDRiskYesNo;

@@ -1,0 +1,50 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/statin-therapy",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "statin-therapy",
+        "url": "https://asu.edu/fhir/ValueSet/statin-therapy",
+        "name": "StatinTherapy",
+        "title": "Statin Therapy",
+        "status": "active",
+        "experimental": false,
+        "date": "2026-07-15",
+        "publisher": "ASU CDS",
+        "description": "Custom ASU RxNorm statin ingredients and representative oral solid dose forms for OpenCVDRisk ActiveStatinTherapy MedicationRequest matching.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "concept": [
+                { "code": "83367", "display": "atorvastatin" },
+                { "code": "36567", "display": "simvastatin" },
+                { "code": "301542", "display": "rosuvastatin" },
+                { "code": "42463", "display": "pravastatin" },
+                { "code": "6472", "display": "lovastatin" },
+                { "code": "41127", "display": "fluvastatin" },
+                { "code": "861634", "display": "pitavastatin" },
+                { "code": "617312", "display": "atorvastatin 10 MG Oral Tablet" },
+                { "code": "259255", "display": "atorvastatin 80 MG Oral Tablet" },
+                { "code": "314231", "display": "simvastatin 10 MG Oral Tablet" },
+                { "code": "312961", "display": "simvastatin 20 MG Oral Tablet" },
+                { "code": "198211", "display": "simvastatin 40 MG Oral Tablet" },
+                { "code": "200345", "display": "simvastatin 80 MG Oral Tablet" },
+                { "code": "859747", "display": "rosuvastatin calcium 10 MG Oral Tablet" },
+                { "code": "197903", "display": "lovastatin 10 MG Oral Tablet" },
+                { "code": "904458", "display": "pravastatin sodium 10 MG Oral Tablet" }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/statin-therapy"
+      }
+    }
+  ]
+}

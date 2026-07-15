@@ -17,17 +17,17 @@
 
   Author: Preston Lee (original scaffolding); algorithm mapping per December 2025 CPG.
 */
-library LipidManagement version '0.0.2'
+library LipidManagement version '0.0.5'
 
 using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.0.1'
-include OpenCVDRisk version '0.0.2' called OpenCVDRisk
+include OpenCVDRisk version '0.3.0' called OpenCVDRisk
 
 codesystem "SNOMED": 'http://snomed.info/sct'
 codesystem "ICD10CM": 'http://hl7.org/fhir/sid/icd-10-cm'
 
-valueset "CardiovascularDiseases": 'https://asu.edu/fhir/ValueSet/cardiovascular-diseases'
+valueset "AtheroscleroticCardiovascularDisease": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1178.149'
 valueset "DiabetesMellitusType2": 'https://asu.edu/fhir/ValueSet/diabetes-mellitus-type-2'
 
 parameter LifeExpectancyLimited Boolean default false
@@ -42,7 +42,7 @@ define IsAdult:
   AgeInYears() >= 18
 
 define HasEstablishedCvd:
-  exists ( [Condition: "CardiovascularDiseases"] C
+  exists ( [Condition: "AtheroscleroticCardiovascularDisease"] C
       where exists ( C.clinicalStatus.coding CS
           where CS.code ~ 'active'
       )

@@ -1,16 +1,153 @@
 <div class="container py-4" id="open-cvd-risk-calculator-page">
   <header class="mb-4">
     <h1 class="h2 mb-2" id="open-cvd-risk-calculator-title">OpenCVDRisk Calculator</h1>
-    <p class="text-muted mb-0" id="open-cvd-risk-calculator-subtitle">
+    <p class="text-body-secondary mb-0" id="open-cvd-risk-calculator-subtitle">
       Ages 30&ndash;79, no known cardiovascular disease. Decision support only; not a substitute for
       clinical judgment.
     </p>
-    <p class="text-muted small mt-2 mb-0" id="open-cvd-risk-calculator-disclaimer">
+    <p class="text-body-secondary small mt-2 mb-0" id="open-cvd-risk-calculator-disclaimer">
       Open-source implementation of the American Heart Association (AHA) PREVENT&trade; algorithms. Not
       affiliated with or endorsed by the AHA.
     </p>
   </header>
 
+  @if (!isSmart()) {
+    <div class="card mb-4" id="open-cvd-risk-patient-search-card">
+      <div class="card-header">Patient</div>
+      <div class="card-body">
+        @if (!selectedPatient()) {
+          <label class="form-label" for="open-cvd-risk-patient-search">Search patients</label>
+          <div class="input-group">
+            <input
+              type="search"
+              class="form-control"
+              id="open-cvd-risk-patient-search"
+              placeholder="Patient name"
+              [value]="searchQuery()"
+              (input)="searchQuery.set($any($event.target).value)"
+              (keyup.enter)="searchPatients()"
+            />
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              id="open-cvd-risk-patient-search-btn"
+              (click)="searchPatients()"
+              [disabled]="searchLoading()"
+            >
+              Search
+            </button>
+          </div>
+          <p class="form-text mb-0 mt-2">A patient must be selected before the calculator form is shown.</p>
+          @if (searchError(); as err) {
+            <div class="alert alert-danger mt-3 mb-0" id="open-cvd-risk-patient-search-error" role="alert">
+              {{ err }}
+            </div>
+          }
+          @if (searchHits().length) {
+            <ul class="list-group mt-3" id="open-cvd-risk-patient-search-results">
+              @for (hit of searchHits(); track hit.id) {
+                <li class="list-group-item list-group-item-action" role="button" (click)="selectPatient(hit)">
+                  <div class="fw-semibold">{{ hit.displayName }}</div>
+                  <div class="small text-body-secondary">
+                    {{ hit.id }} · {{ hit.gender || '—' }} · {{ hit.birthDate || '—' }}
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        } @else {
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            id="open-cvd-risk-patient-clear"
+            (click)="clearPatient()"
+          >
+            Clear patient
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  @if (patientBanner(); as banner) {
+    <div class="border rounded p-3 mb-4 bg-body-secondary" id="open-cvd-risk-patient-banner" role="status">
+      <div class="fw-semibold" id="open-cvd-risk-patient-banner-name">{{ banner.name }}</div>
+      <div class="small mb-0" id="open-cvd-risk-patient-banner-meta">
+        ID {{ banner.id }} · Gender {{ banner.gender }} · Birth {{ banner.birthDate }}
+        @if (banner.ageYears != null) {
+          · Age {{ banner.ageYears }}
+        }
+        @if (isSmart()) {
+          · SMART launch
+        }
+      </div>
+    </div>
+  }
+
+  @if (prefillLoading()) {
+    <div class="alert alert-info" id="open-cvd-risk-prefill-loading" role="status">
+      Loading chart values via CQL $evaluate…
+    </div>
+  }
+  @if (prefillError(); as err) {
+    <div class="alert alert-warning" id="open-cvd-risk-prefill-error" role="alert">
+      Prefill failed: {{ err }}
+    </div>
+  }
+
+  @if (selectedPatient() && hasActiveExclusions()) {
+    <div
+      class="alert alert-warning mb-4"
+      id="open-cvd-risk-prevent-applicability"
+      role="alert"
+    >
+      <div class="fw-semibold" id="open-cvd-risk-prevent-applicability-title">
+        PREVENT equations may not apply
+      </div>
+      <p class="mb-2 small" id="open-cvd-risk-prevent-applicability-intro">
+        AHA PREVENT guidance is for adults ages 30&ndash;79 without known CVD and without the
+        exclusions below. You may still calculate risk after acknowledging.
+      </p>
+      <ul class="mb-2" id="open-cvd-risk-prevent-applicability-reasons">
+        @for (reason of activeExclusions(); track reason.id) {
+          <li class="mb-2" [id]="'open-cvd-risk-prevent-reason-' + reason.id">
+            <div class="d-flex flex-wrap align-items-start justify-content-between gap-2">
+              <div>
+                <div>{{ reason.message }}</div>
+                @if (reason.provenance) {
+                  <div class="small text-body-secondary">{{ reason.provenance }}</div>
+                }
+              </div>
+              @if (reason.source === 'chart') {
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  [id]="'open-cvd-risk-prevent-dismiss-' + reason.id"
+                  (click)="dismissExclusion(reason.id)"
+                >
+                  Not applicable
+                </button>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+      <div class="form-check mb-0">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="open-cvd-risk-prevent-proceed"
+          [checked]="proceedDespiteExclusions()"
+          (change)="setProceedDespiteExclusions($any($event.target).checked)"
+        />
+        <label class="form-check-label" for="open-cvd-risk-prevent-proceed">
+          Proceed knowing PREVENT may not apply
+        </label>
+      </div>
+    </div>
+  }
+
+  @if (selectedPatient()) {
   <div class="row g-4">
     <div class="col-lg-6">
       <form class="d-flex flex-column gap-3" id="open-cvd-risk-calculator-form" novalidate>
@@ -24,9 +161,14 @@
                 class="form-control"
                 id="open-cvd-risk-age"
                 step="1"
+                placeholder="30-79"
+                aria-describedby="open-cvd-risk-age-help"
                 [formField]="openCvdRiskForm.age"
               />
-              <div class="form-text">Valid range: 30&ndash;79</div>
+              <div class="form-text" id="open-cvd-risk-age-help">Valid range: 30&ndash;79</div>
+              @if (provenanceFor('age'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-age-provenance">{{ blurb }}</div>
+              }
             </div>
             <fieldset>
               <legend class="form-label fs-6 mb-2">Sex</legend>
@@ -53,6 +195,9 @@
                 </div>
               </div>
             </fieldset>
+              @if (provenanceFor('sex'); as blurb) {
+                <div class="form-text text-body-secondary mt-2" id="open-cvd-risk-sex-provenance">{{ blurb }}</div>
+              }
           </div>
         </div>
 
@@ -68,6 +213,7 @@
                     class="form-control"
                     id="open-cvd-risk-height-cm"
                     step="0.1"
+                    aria-describedby="open-cvd-risk-bmi-help"
                     [formField]="openCvdRiskForm.heightCm"
                   />
                   <span class="input-group-text">cm</span>
@@ -81,13 +227,25 @@
                     class="form-control"
                     id="open-cvd-risk-weight-kg"
                     step="0.1"
+                    aria-describedby="open-cvd-risk-bmi-help"
                     [formField]="openCvdRiskForm.weightKg"
                   />
                   <span class="input-group-text">kg</span>
                 </div>
               </div>
             </div>
-            <div class="form-text mt-2">BMI is calculated from height and weight.</div>
+            <div class="form-text mt-2" id="open-cvd-risk-bmi-help">
+              BMI is calculated from height and weight. Valid BMI range: 18.5&ndash;39.9&nbsp;kg/m&sup2;
+            </div>
+              @if (provenanceFor('heightCm'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-height-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('weightKg'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-weight-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('bmi'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-bmi-provenance">{{ blurb }}</div>
+              }
           </div>
         </div>
 
@@ -103,10 +261,20 @@
                     class="form-control"
                     id="open-cvd-risk-total-cholesterol"
                     step="1"
+                    placeholder="130-320"
+                    aria-describedby="open-cvd-risk-total-cholesterol-help"
                     [formField]="openCvdRiskForm.totalCholesterolMgDl"
                   />
                   <span class="input-group-text">mg/dL</span>
                 </div>
+                <div class="form-text" id="open-cvd-risk-total-cholesterol-help">
+                  Valid range: 130&ndash;320
+                </div>
+                @if (provenanceFor('totalCholesterolMgDl'); as blurb) {
+                  <div class="form-text text-body-secondary" id="open-cvd-risk-total-cholesterol-provenance">
+                    {{ blurb }}
+                  </div>
+                }
               </div>
               <div class="col-sm-6">
                 <label class="form-label" for="open-cvd-risk-hdl-cholesterol">HDL cholesterol</label>
@@ -116,10 +284,16 @@
                     class="form-control"
                     id="open-cvd-risk-hdl-cholesterol"
                     step="1"
+                    placeholder="20-100"
+                    aria-describedby="open-cvd-risk-hdl-cholesterol-help"
                     [formField]="openCvdRiskForm.hdlMgDl"
                   />
                   <span class="input-group-text">mg/dL</span>
                 </div>
+                <div class="form-text" id="open-cvd-risk-hdl-cholesterol-help">Valid range: 20&ndash;100</div>
+                @if (provenanceFor('hdlMgDl'); as blurb) {
+                  <div class="form-text text-body-secondary" id="open-cvd-risk-hdl-provenance">{{ blurb }}</div>
+                }
               </div>
               <div class="col-sm-6">
                 <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic blood pressure</label>
@@ -129,10 +303,16 @@
                     class="form-control"
                     id="open-cvd-risk-systolic-bp"
                     step="1"
+                    placeholder="90-200"
+                    aria-describedby="open-cvd-risk-systolic-bp-help"
                     [formField]="openCvdRiskForm.systolicBpMmHg"
                   />
                   <span class="input-group-text">mmHg</span>
                 </div>
+                <div class="form-text" id="open-cvd-risk-systolic-bp-help">Valid range: 90&ndash;200</div>
+                @if (provenanceFor('systolicBpMmHg'); as blurb) {
+                  <div class="form-text text-body-secondary" id="open-cvd-risk-sbp-provenance">{{ blurb }}</div>
+                }
               </div>
             </div>
           </div>
@@ -141,18 +321,22 @@
         <div class="card">
           <div class="card-header">Kidney</div>
           <div class="card-body">
-            <label class="form-label" for="open-cvd-risk-serum-creatinine">Serum creatinine</label>
-            <div class="input-group">
-              <input
-                type="number"
-                class="form-control"
-                id="open-cvd-risk-serum-creatinine"
-                step="0.01"
-                [formField]="openCvdRiskForm.serumCreatinineMgDl"
-              />
-              <span class="input-group-text">mg/dL</span>
-            </div>
-            <div class="form-text mt-2">eGFR is calculated from creatinine, age, and sex.</div>
+            <label class="form-label" for="open-cvd-risk-egfr">
+              eGFR (mL/min/1.73m&sup2;)
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="open-cvd-risk-egfr"
+              step="1"
+              placeholder="15-140"
+              aria-describedby="open-cvd-risk-egfr-help"
+              [formField]="openCvdRiskForm.egfrMlMin173m2"
+            />
+            <div class="form-text" id="open-cvd-risk-egfr-help">Valid range: 15&ndash;140</div>
+            @if (provenanceFor('egfrMlMin173m2'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-egfr-provenance">{{ blurb }}</div>
+            }
           </div>
         </div>
 
@@ -160,8 +344,11 @@
           <div class="card-header">Clinical history &amp; medications</div>
           <div class="card-body d-flex flex-column gap-3">
             <fieldset>
-              <legend class="form-label fs-6 mb-2">Diabetes</legend>
-              <div class="d-flex flex-wrap gap-3">
+              <legend class="form-label fs-6 mb-1">Diabetes</legend>
+              <div class="form-text mb-2" id="open-cvd-risk-diabetes-help">
+                Any history of diabetes.
+              </div>
+              <div class="d-flex flex-wrap gap-3" aria-describedby="open-cvd-risk-diabetes-help">
                 <div class="form-check form-check-inline">
                   <input
                     class="form-check-input"
@@ -184,10 +371,16 @@
                 </div>
               </div>
             </fieldset>
+              @if (provenanceFor('diabetes'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-diabetes-provenance">{{ blurb }}</div>
+              }
 
             <fieldset>
-              <legend class="form-label fs-6 mb-2">Current smoker</legend>
-              <div class="d-flex flex-wrap gap-3">
+              <legend class="form-label fs-6 mb-1">Current smoker</legend>
+              <div class="form-text mb-2" id="open-cvd-risk-smoking-help">
+                Any cigarette use within the last 30 days
+              </div>
+              <div class="d-flex flex-wrap gap-3" aria-describedby="open-cvd-risk-smoking-help">
                 <div class="form-check form-check-inline">
                   <input
                     class="form-check-input"
@@ -210,10 +403,19 @@
                 </div>
               </div>
             </fieldset>
+              @if (provenanceFor('currentSmoker'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-smoking-provenance">{{ blurb }}</div>
+              }
 
             <fieldset>
-              <legend class="form-label fs-6 mb-2">On antihypertensive medication</legend>
-              <div class="d-flex flex-wrap gap-3">
+              <legend class="form-label fs-6 mb-1">On antihypertensive medication</legend>
+              <div class="form-text mb-2" id="open-cvd-risk-antihypertensive-help">
+                Current use of any medication for hypertension
+              </div>
+              <div
+                class="d-flex flex-wrap gap-3"
+                aria-describedby="open-cvd-risk-antihypertensive-help"
+              >
                 <div class="form-check form-check-inline">
                   <input
                     class="form-check-input"
@@ -236,10 +438,18 @@
                 </div>
               </div>
             </fieldset>
+              @if (provenanceFor('onAntihypertensive'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-antihypertensive-provenance">
+                  {{ blurb }}
+                </div>
+              }
 
             <fieldset>
-              <legend class="form-label fs-6 mb-2">On lipid-lowering (statin) therapy</legend>
-              <div class="d-flex flex-wrap gap-3">
+              <legend class="form-label fs-6 mb-1">On lipid-lowering (statin) therapy</legend>
+              <div class="form-text mb-2" id="open-cvd-risk-statin-help">
+                Current use of statin medication to lower cholesterol
+              </div>
+              <div class="d-flex flex-wrap gap-3" aria-describedby="open-cvd-risk-statin-help">
                 <div class="form-check form-check-inline">
                   <input
                     class="form-check-input"
@@ -262,6 +472,42 @@
                 </div>
               </div>
             </fieldset>
+              @if (provenanceFor('onStatin'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-statin-provenance">{{ blurb }}</div>
+              }
+          </div>
+        </div>
+
+        <div class="card" id="open-cvd-risk-clinical-context-card">
+          <div class="card-header">Clinical context</div>
+          <div class="card-body">
+            <p class="form-text mb-3" id="open-cvd-risk-clinical-context-help">
+              Not usually in structured chart data; mark if known.
+            </p>
+            <div class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="open-cvd-risk-life-expectancy-limited"
+                [checked]="lifeExpectancyLimited()"
+                (change)="setLifeExpectancyLimited($any($event.target).checked)"
+              />
+              <label class="form-check-label" for="open-cvd-risk-life-expectancy-limited">
+                Limited life expectancy (&lt;1 year)
+              </label>
+            </div>
+            <div class="form-check mb-0">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="open-cvd-risk-pathogenic-genetic-variant"
+                [checked]="pathogenicGeneticVariant()"
+                (change)="setPathogenicGeneticVariant($any($event.target).checked)"
+              />
+              <label class="form-check-label" for="open-cvd-risk-pathogenic-genetic-variant">
+                Known pathogenic genetic CVD variant
+              </label>
+            </div>
           </div>
         </div>
 
@@ -269,11 +515,25 @@
           type="button"
           class="btn btn-primary align-self-start"
           id="open-cvd-risk-calculate"
-          disabled
-          title="Risk calculation will use FHIR $evaluate and CQL libraries in a future release."
+          [disabled]="!canCalculate()"
+          (click)="calculateRisk()"
         >
-          Calculate risk
+          @if (calculateLoading()) {
+            Calculating…
+          } @else {
+            Calculate risk
+          }
         </button>
+        @if (hasActiveExclusions() && !proceedDespiteExclusions()) {
+          <p class="form-text mb-0" id="open-cvd-risk-calculate-blocked-hint">
+            Acknowledge PREVENT applicability concerns above to enable Calculate.
+          </p>
+        }
+        @if (calculateError(); as err) {
+          <div class="alert alert-danger mb-0" id="open-cvd-risk-calculate-error" role="alert">
+            {{ err }}
+          </div>
+        }
       </form>
     </div>
 
@@ -281,54 +541,52 @@
       <div class="card sticky-lg-top" id="open-cvd-risk-results" style="top: 1rem">
         <div class="card-header">Results</div>
         <div class="card-body">
-          <h2 class="h6 text-muted text-uppercase">Derived measures</h2>
+          @if (calculatedWithExclusions()) {
+            <div
+              class="alert alert-secondary"
+              id="open-cvd-risk-results-despite-exclusions"
+              role="status"
+            >
+              Results computed despite PREVENT applicability concerns.
+            </div>
+          }
+          <h2 class="h6 text-body-secondary text-uppercase">Derived measures</h2>
           <dl class="row mb-4">
             <dt class="col-sm-7">BMI</dt>
-            <dd class="col-sm-5 text-end mb-2" id="open-cvd-risk-result-bmi">
+            <dd class="col-sm-5 text-end mb-0" id="open-cvd-risk-result-bmi">
               {{ bmiDisplay() }}
               @if (bmiKgM2() != null) {
-                <span class="text-muted">kg/m&sup2;</span>
-              }
-            </dd>
-            <dt class="col-sm-7">eGFR</dt>
-            <dd class="col-sm-5 text-end mb-0" id="open-cvd-risk-result-egfr">
-              {{ egfrDisplay() }}
-              @if (egfrMlMin() != null) {
-                <span class="text-muted">mL/min/1.73m&sup2;</span>
+                <span class="text-body-secondary">kg/m&sup2;</span>
               }
             </dd>
           </dl>
 
-          <h2 class="h6 text-muted text-uppercase">10-year risk</h2>
+          <h2 class="h6 text-body-secondary text-uppercase">10-year risk</h2>
           <dl class="row mb-4">
             <dt class="col-sm-8">Total CVD</dt>
             <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-10y-total-cvd">
-              {{ riskPlaceholder }}%
+              {{ risk10yTotal() }}%
             </dd>
             <dt class="col-sm-8">ASCVD</dt>
             <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-10y-ascvd">
-              {{ riskPlaceholder }}%
+              {{ risk10yAscvd() }}%
             </dd>
             <dt class="col-sm-8">Heart failure</dt>
             <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-10y-hf">
-              {{ riskPlaceholder }}%
+              {{ risk10yHf() }}%
             </dd>
           </dl>
 
-          <h2 class="h6 text-muted text-uppercase">30-year risk</h2>
+          <h2 class="h6 text-body-secondary text-uppercase">30-year risk</h2>
           <dl class="row mb-0">
             <dt class="col-sm-8">Total CVD</dt>
             <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-30y-total-cvd">
-              {{ riskPlaceholder }}%
+              {{ risk30yTotal() }}%
             </dd>
             <dt class="col-sm-8">ASCVD</dt>
-            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-30y-ascvd">
-              {{ riskPlaceholder }}%
-            </dd>
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-30y-ascvd">—%</dd>
             <dt class="col-sm-8">Heart failure</dt>
-            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-30y-hf">
-              {{ riskPlaceholder }}%
-            </dd>
+            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-30y-hf">—%</dd>
           </dl>
         </div>
         <div class="card-footer p-0">
@@ -340,14 +598,16 @@
             role="status"
           >
             @if (inputsComplete()) {
-              Required inputs are complete. Risk estimates will be available when calculation is
-              connected to FHIR $evaluate.
+              Form inputs look complete. Calculate uses chart-driven CQL $evaluate (local form
+              overrides do not change the score).
             } @else {
-              Inputs must be complete to perform calculation.
+              Some form inputs are incomplete; chart-driven $evaluate may still return null risks.
             }
           </div>
         </div>
       </div>
     </div>
   </div>
+  }
 </div>
+

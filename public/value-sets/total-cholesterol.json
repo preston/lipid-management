@@ -1,0 +1,42 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/total-cholesterol",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "total-cholesterol",
+        "url": "https://asu.edu/fhir/ValueSet/total-cholesterol",
+        "name": "TotalCholesterol",
+        "title": "Total Cholesterol Laboratory Test",
+        "status": "active",
+        "experimental": false,
+        "date": "2026-07-15",
+        "publisher": "ASU CDS",
+        "description": "Custom ASU compose for OpenCVDRisk: LOINC total cholesterol concepts (public VSAC Total Cholesterol sets are retired).",
+        "compose": {
+          "include": [
+            {
+              "system": "http://loinc.org",
+              "concept": [
+                {
+                  "code": "2093-3",
+                  "display": "Cholesterol [Mass/volume] in Serum or Plasma"
+                },
+                {
+                  "code": "48620-9",
+                  "display": "Cholesterol [Mass/volume] in Serum or Plasma ultracentrifugate"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/total-cholesterol"
+      }
+    }
+  ]
+}

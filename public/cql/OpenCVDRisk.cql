@@ -18,27 +18,37 @@
 
   This library is decision support only, not a substitute for clinical judgment.
 */
-library OpenCVDRisk version '0.0.2'
+library OpenCVDRisk version '0.3.0'
 
 using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.0.1'
+include BMI version '1.0.0' called BMI
 
 codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED": 'http://snomed.info/sct'
 codesystem "RxNorm": 'http://www.nlm.nih.gov/research/umls/rxnorm'
 
 valueset "DiabetesMellitusType2": 'https://asu.edu/fhir/ValueSet/diabetes-mellitus-type-2'
+valueset "TotalCholesterol": 'https://asu.edu/fhir/ValueSet/total-cholesterol'
+valueset "HdlCholesterol": 'https://asu.edu/fhir/ValueSet/hdl-cholesterol'
+valueset "LdlCholesterol": 'https://asu.edu/fhir/ValueSet/ldl-cholesterol'
+valueset "SystolicBloodPressure": 'https://asu.edu/fhir/ValueSet/systolic-blood-pressure'
+valueset "Creatinine": 'https://asu.edu/fhir/ValueSet/creatinine'
+valueset "TobaccoSmokingStatus": 'https://asu.edu/fhir/ValueSet/tobacco-smoking-status'
+valueset "CurrentSmokerAnswers": 'https://asu.edu/fhir/ValueSet/current-smoker-answers'
+valueset "StatinTherapy": 'https://asu.edu/fhir/ValueSet/statin-therapy'
+valueset "AntihypertensiveTherapy": 'https://asu.edu/fhir/ValueSet/antihypertensive-therapy'
+valueset "AtheroscleroticCardiovascularDisease": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1178.149'
+valueset "EndStageKidneyDisease": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.526.3.353'
+valueset "LeftVentricularEjectionFraction": 'https://asu.edu/fhir/ValueSet/left-ventricular-ejection-fraction'
+valueset "CoronaryArteryCalciumScore": 'https://asu.edu/fhir/ValueSet/coronary-artery-calcium-score'
+valueset "InheritedCardiovascularCondition": 'https://asu.edu/fhir/ValueSet/inherited-cardiovascular-condition'
+valueset "HeartFailureWithReducedEjectionFraction": 'https://asu.edu/fhir/ValueSet/heart-failure-with-reduced-ejection-fraction'
 
-code "Total cholesterol": '2093-3' from "LOINC"
-code "HDL cholesterol": '2085-9' from "LOINC"
-code "LDL calculated": '2089-1' from "LOINC"
-code "Systolic BP": '8480-6' from "LOINC"
-code "Creatinine": '2160-0' from "LOINC"
-code "Body weight": '29463-7' from "LOINC"
-code "Body height": '8302-2' from "LOINC"
-code "BMI LOINC": '39156-5' from "LOINC"
-code "Tobacco smoking status": '72166-2' from "LOINC"
+/* Clinician-attested PREVENT exclusions (sparse in FHIR). */
+parameter LifeExpectancyLimited Boolean default false
+parameter PathogenicGeneticCvdVariant Boolean default false
 
 context Patient
 
@@ -171,11 +181,11 @@ define function Egfr2021Creatinine(scrMgDl System.Decimal, ageYears System.Integ
 define function ObservationQuantityToMgDl(q FHIR.Quantity):
   ( convert FHIRHelpers.ToQuantity ( q ) to 'mg/dL' ).value
 
-/* Latest labs: sort by start of effective (same idea as WeightManagementMedication; FHIRHelpers ToInterval applies when you need Period bounds explicitly). */
+/* Latest labs: sort by start of effective (same idea as BMI; FHIRHelpers ToInterval applies when you need Period bounds explicitly). */
 
 
 define LatestTotalCholObservation:
-  First([Observation: "Total cholesterol"] O
+  First([Observation: "TotalCholesterol"] O
       where O.status in { 'final', 'amended', 'corrected' }
         and O.value is FHIR.Quantity
         and O.effective is not null
@@ -183,7 +193,7 @@ define LatestTotalCholObservation:
   )
 
 define LatestHdlObservation:
-  First([Observation: "HDL cholesterol"] O
+  First([Observation: "HdlCholesterol"] O
       where O.status in { 'final', 'amended', 'corrected' }
         and O.value is FHIR.Quantity
         and O.effective is not null
@@ -191,7 +201,7 @@ define LatestHdlObservation:
   )
 
 define LatestLdlObservation:
-  First([Observation: "LDL calculated"] O
+  First([Observation: "LdlCholesterol"] O
       where O.status in { 'final', 'amended', 'corrected' }
         and O.value is FHIR.Quantity
         and O.effective is not null
@@ -199,7 +209,7 @@ define LatestLdlObservation:
   )
 
 define LatestSbpObservation:
-  First([Observation: "Systolic BP"] O
+  First([Observation: "SystolicBloodPressure"] O
       where O.status in { 'final', 'amended', 'corrected' }
         and O.value is FHIR.Quantity
         and O.effective is not null
@@ -239,43 +249,10 @@ define LatestCreatinineMgDl:
     when LatestCreatinineObservation is not null then ObservationQuantityToMgDl(LatestCreatinineObservation.value as FHIR.Quantity) 
     else null end
 
-define function RecordedBodyWeight():
-  First([Observation: "Body weight"] W
-      where W.status in { 'final', 'amended', 'corrected' }
-        and W.effective is not null
-        and W.value is FHIR.Quantity
-      sort by start of effective desc
-  )
-
-define function RecordedBodyHeight():
-  First([Observation: "Body height"] H
-      where H.status in { 'final', 'amended', 'corrected' }
-        and H.effective is not null
-        and H.value is FHIR.Quantity
-      sort by start of effective desc
-  )
-
-define function RecordedBmi():
-  First([Observation: "BMI LOINC"] B
-      where B.status in { 'final', 'amended', 'corrected' }
-        and B.effective is not null
-        and B.value is FHIR.Quantity
-      sort by start of effective desc
-  )
-
-define ComputedBmiKgM2:
-  case
-    when RecordedBodyWeight() is not null
-      and RecordedBodyHeight() is not null then ( convert ( ( convert FHIRHelpers.ToQuantity ( RecordedBodyWeight().value as FHIR.Quantity ) to 'kg' ) / ( ( convert FHIRHelpers.ToQuantity ( RecordedBodyHeight().value as FHIR.Quantity ) to 'm' ) * ( convert FHIRHelpers.ToQuantity ( RecordedBodyHeight().value as FHIR.Quantity ) to 'm' ) ) ) to 'kg/m2' ).value 
-    else null end
+/* Anthropometrics delegated to BMI library (height/weight/BMI Observations + BestBMI). */
 
 define BestBmiKgM2:
-  Coalesce(ComputedBmiKgM2,
-    case
-      when RecordedBmi() is not null then FHIRHelpers.ToQuantity(RecordedBmi().value as FHIR.Quantity).value 
-      else null 
-    end
-  )
+  BMI.BestBmiKgM2
 
 define IsFemale:
   Patient.gender ~ 'female'
@@ -283,15 +260,18 @@ define IsFemale:
 define IsMale:
   Patient.gender ~ 'male'
 
-define HasDiabetesMellitusType2:
-  exists ( [Condition: "DiabetesMellitusType2"] C
+define ActiveDiabetesMellitusType2Condition:
+  First([Condition: "DiabetesMellitusType2"] C
       where exists ( C.clinicalStatus.coding CSCode
           where CSCode.code ~ 'active'
       )
   )
 
+define HasDiabetesMellitusType2:
+  ActiveDiabetesMellitusType2Condition is not null
+
 define LatestSmokingObservation:
-  First([Observation: "Tobacco smoking status"] O
+  First([Observation: "TobaccoSmokingStatus"] O
       where O.status in { 'final', 'amended', 'corrected' }
         and O.effective is not null
       sort by start of effective desc
@@ -303,31 +283,26 @@ define LatestSmokingObservation:
 define CurrentSmokingFromObservation:
   case
     when LatestSmokingObservation is null then false
-    when exists ( ( ( LatestSmokingObservation.value as FHIR.CodeableConcept ).coding ) C
-        where C.code.value in { '449868002', '65568007', '77176002', '8517006', '160604004', '266920004', '702318004', '81703003' }
-    ) then true 
+    when ( LatestSmokingObservation.value as FHIR.CodeableConcept ) in "CurrentSmokerAnswers" then true
     else false end
 
-/* RxNorm ingredient / common oral products (extend for local formularies). */
-
+define ActiveStatinMedicationRequest:
+  First([MedicationRequest: "StatinTherapy"] M
+      where M.status in { 'active', 'on-hold' }
+      sort by authoredOn desc
+  )
 
 define ActiveStatinTherapy:
-  exists ( [MedicationRequest] M
+  ActiveStatinMedicationRequest is not null
+
+define ActiveAntihypertensiveMedicationRequest:
+  First([MedicationRequest: "AntihypertensiveTherapy"] M
       where M.status in { 'active', 'on-hold' }
-        and exists ( ( ( M.medication as FHIR.CodeableConcept ).coding ) C
-            where C.system.value = "RxNorm".id
-              and C.code.value in { '312961', '314231', '617312', '617511', '859747', '833036', '860975', '197903', '198211', '200345', '259255' }
-        )
+      sort by authoredOn desc
   )
 
 define ActiveAntihypertensiveTherapy:
-  exists ( [MedicationRequest] M
-      where M.status in { 'active', 'on-hold' }
-        and exists ( ( ( M.medication as FHIR.CodeableConcept ).coding ) C
-            where C.system.value = "RxNorm".id
-              and C.code.value in { '314076', '314077', '199889', '197361', '746030', '746032', '897718', '999969', '1049620', '1364430', '1364445', '310798', '314048', '314049', '1656340' }
-        )
-  )
+  ActiveAntihypertensiveMedicationRequest is not null
 
 define EgfrFromCreatinine:
   case
@@ -395,3 +370,140 @@ define TenYearHeartFailureProbability:
     when not InputsComplete then null
     when IsMale then Risk10YrFromBetas(Beta10MaleHf, PrepTerms10) 
     else Risk10YrFromBetas(Beta10FemaleHf, PrepTerms10) end
+
+/* --- PREVENT applicability (advisory; does not change risk math) ---
+   AHA PREVENT: ages 30–79 without known CVD; do not use with known CVD,
+   severe subclinical CVD (LVEF <40%, CAC ≥300), pathogenic/inherited CVD
+   genetics, end-stage kidney disease, or life expectancy <1 year.
+*/
+
+
+define function QuantityAsPercent(q FHIR.Quantity):
+  case
+    when q is null then null
+    when q.unit ~ '%'
+      or q.code ~ '%' then q.value
+    when q.value is not null
+      and q.value <= 1.0 then q.value * 100.0
+    else q.value end
+
+define PreventExclusionAgeOutOfRange:
+  AgeInYears() < 30
+    or AgeInYears() > 79
+
+define ActiveKnownCvdCondition:
+  First([Condition: "AtheroscleroticCardiovascularDisease"] C
+      where exists ( C.clinicalStatus.coding CSCode
+          where CSCode.code ~ 'active'
+      )
+  )
+
+define PreventExclusionKnownCvd:
+  ActiveKnownCvdCondition is not null
+
+define LatestLvefObservation:
+  First([Observation: "LeftVentricularEjectionFraction"] O
+      where O.status in { 'final', 'amended', 'corrected' }
+        and O.effective is not null
+        and O.value is FHIR.Quantity
+      sort by start of effective desc
+  )
+
+define LatestLvefPercent:
+  case
+    when LatestLvefObservation is null then null
+    else QuantityAsPercent(LatestLvefObservation.value as FHIR.Quantity) end
+
+define PreventExclusionLvefBelow40:
+  LatestLvefPercent is not null
+    and LatestLvefPercent < 40.0
+
+define ActiveHfrEfCondition:
+  First([Condition: "HeartFailureWithReducedEjectionFraction"] C
+      where exists ( C.clinicalStatus.coding CSCode
+          where CSCode.code ~ 'active'
+      )
+  )
+
+define PreventExclusionHfref:
+  ActiveHfrEfCondition is not null
+
+define PreventExclusionSevereLvSystolicDysfunction:
+  PreventExclusionLvefBelow40
+    or PreventExclusionHfref
+
+define LatestCacObservation:
+  First([Observation: "CoronaryArteryCalciumScore"] O
+      where O.status in { 'final', 'amended', 'corrected' }
+        and O.effective is not null
+        and O.value is FHIR.Quantity
+      sort by start of effective desc
+  )
+
+define LatestCacScore:
+  case
+    when LatestCacObservation is null then null
+    else FHIRHelpers.ToQuantity ( LatestCacObservation.value as FHIR.Quantity ).value end
+
+define PreventExclusionCacAtLeast300:
+  LatestCacScore is not null
+    and LatestCacScore >= 300.0
+
+define ActiveEskdCondition:
+  First([Condition: "EndStageKidneyDisease"] C
+      where exists ( C.clinicalStatus.coding CSCode
+          where CSCode.code ~ 'active'
+      )
+  )
+
+define PreventExclusionEskd:
+  ActiveEskdCondition is not null
+
+define ActiveInheritedCvdCondition:
+  First([Condition: "InheritedCardiovascularCondition"] C
+      where exists ( C.clinicalStatus.coding CSCode
+          where CSCode.code ~ 'active'
+      )
+  )
+
+define PreventExclusionInheritedCvdCondition:
+  ActiveInheritedCvdCondition is not null
+
+define PreventExclusionLifeExpectancyLimited:
+  LifeExpectancyLimited
+
+define PreventExclusionPathogenicGeneticVariant:
+  PathogenicGeneticCvdVariant
+
+define PreventHasAnyExclusion:
+  PreventExclusionAgeOutOfRange
+    or PreventExclusionKnownCvd
+    or PreventExclusionSevereLvSystolicDysfunction
+    or PreventExclusionCacAtLeast300
+    or PreventExclusionEskd
+    or PreventExclusionInheritedCvdCondition
+    or PreventExclusionLifeExpectancyLimited
+    or PreventExclusionPathogenicGeneticVariant
+
+define PreventExclusionReasons:
+  flatten ( {
+      if PreventExclusionAgeOutOfRange then { 'Age outside 30–79 years' } 
+        else {  } ,
+      if PreventExclusionKnownCvd then { 'Chart suggests known atherosclerotic cardiovascular disease' } 
+        else {  } ,
+      if PreventExclusionLvefBelow40 then { 'Left ventricular ejection fraction <40%' } 
+        else {  } ,
+      if PreventExclusionHfref
+        and not PreventExclusionLvefBelow40 then { 'Chart suggests heart failure with reduced ejection fraction' } 
+        else {  } ,
+      if PreventExclusionCacAtLeast300 then { 'Coronary artery calcium score ≥300' } 
+        else {  } ,
+      if PreventExclusionEskd then { 'Chart suggests end-stage kidney disease' } 
+        else {  } ,
+      if PreventExclusionInheritedCvdCondition then { 'Chart suggests inherited cardiovascular condition' } 
+        else {  } ,
+      if PreventExclusionLifeExpectancyLimited then { 'Limited life expectancy (<1 year)' } 
+        else {  } ,
+      if PreventExclusionPathogenicGeneticVariant then { 'Known pathogenic genetic CVD variant' } 
+        else {  }
+  } )

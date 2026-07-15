@@ -16,4 +16,5 @@ test-results/
 # Container files
 docker-compose.yml
 
+# Files generated at startup or by the application should not be committed
 public/configuration.js

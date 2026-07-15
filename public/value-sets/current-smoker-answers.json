@@ -1,0 +1,62 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/current-smoker-answers",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "current-smoker-answers",
+        "url": "https://asu.edu/fhir/ValueSet/current-smoker-answers",
+        "name": "CurrentSmokerAnswers",
+        "title": "Current Smoker Answer Codes",
+        "status": "active",
+        "experimental": false,
+        "date": "2026-07-15",
+        "publisher": "ASU CDS",
+        "description": "SNOMED codes previously hardcoded in OpenCVDRisk CurrentSmokingFromObservation.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://snomed.info/sct",
+              "concept": [
+                {
+                  "code": "449868002",
+                  "display": "Smokes tobacco daily (finding)"
+                },
+                {
+                  "code": "65568007",
+                  "display": "Cigarette smoker (finding)"
+                },
+                {
+                  "code": "77176002",
+                  "display": "Smoker (finding)"
+                },
+                {
+                  "code": "8517006",
+                  "display": "Ex-smoker (finding)"
+                },
+                {
+                  "code": "160604004",
+                  "display": "Moderate cigarette smoker (10-19 cigs/day) (finding)"
+                },
+                {
+                  "code": "266920004",
+                  "display": "Trivial cigarette smoker (less than one cigarette/day) (finding)"
+                },
+                {
+                  "code": "81703003",
+                  "display": "Chews tobacco (finding)"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/current-smoker-answers"
+      }
+    }
+  ]
+}

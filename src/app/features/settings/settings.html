@@ -1,0 +1,211 @@
+<div id="settings" class="container mt-4 mb-5">
+  <h1 class="h3 mb-4">Settings</h1>
+
+  @if (savedMessage(); as message) {
+    <div class="alert alert-success" id="settings-saved-message" role="status">{{ message }}</div>
+  }
+
+  <div class="row mb-3">
+    <div class="col-12 d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-primary" id="save-settings-btn" (click)="save()">
+        Save to Browser
+      </button>
+      <button type="button" class="btn btn-outline-secondary" id="reset-settings-btn" (click)="restoreDefaults()">
+        Reset to Defaults
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 card-title mb-0">Preferences</h2>
+        </div>
+        <div class="card-body">
+          <div class="mb-0">
+            <label for="theme" class="form-label">Theme</label>
+            <select
+              class="form-select"
+              id="theme"
+              name="theme"
+              [(ngModel)]="settingsService.settings().theme_preferred"
+              (ngModelChange)="themePreferenceChanged($event)"
+            >
+              <option [ngValue]="themeTypes().AUTOMATIC">Automatic</option>
+              <option [ngValue]="themeTypes().LIGHT">Light</option>
+              <option [ngValue]="themeTypes().DARK">Dark</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 card-title mb-0">Advanced</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-check form-switch mb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="experimental_switch"
+              name="experimental"
+              [(ngModel)]="settingsService.settings().experimental"
+            />
+            <label class="form-check-label" for="experimental_switch">Experimental Features</label>
+            <small class="form-text text-body-secondary d-block"
+              >Used for testing upcoming features and may break existing functionality. You probably
+              don't want to use this!</small
+            >
+          </div>
+          <div class="form-check form-switch mb-0">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="developer_switch"
+              name="developer"
+              [(ngModel)]="settingsService.settings().developer"
+            />
+            <label class="form-check-label" for="developer_switch">Developer Mode</label>
+            <small class="form-text text-body-secondary d-block"
+              >Enable more advanced technical settings and tools (such as the Loader). This is mostly
+              for development.</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 card-title mb-0">FHIR Server</h2>
+        </div>
+        <div class="card-body">
+          <div class="mb-0">
+            <label for="fhirBaseUrl" class="form-label">FHIR Base URL</label>
+            <input
+              type="url"
+              class="form-control"
+              id="fhirBaseUrl"
+              name="fhirBaseUrl"
+              [(ngModel)]="settingsService.settings().fhirBaseUrl"
+              [placeholder]="settingsService.getDefaultFhirBaseUrl()"
+            />
+            <small class="form-text text-body-secondary d-block mt-1"
+              >Used in standalone mode for Patient search, chart reads, and CQL `$evaluate`.</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 card-title mb-0">VSAC / NLM CTS</h2>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="vsacFhirBaseUrl" class="form-label">VSAC FHIR Base URL</label>
+            <input
+              type="url"
+              class="form-control"
+              id="vsacFhirBaseUrl"
+              name="vsacFhirBaseUrl"
+              [(ngModel)]="settingsService.settings().vsacFhirBaseUrl"
+              [placeholder]="settingsService.getDefaultVsacFhirBaseUrl()"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="vsacApiUsername" class="form-label">VSAC API Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="vsacApiUsername"
+              name="vsacApiUsername"
+              [(ngModel)]="settingsService.settings().vsacApiUsername"
+              [placeholder]="settingsService.getDefaultVsacApiUsername()"
+              autocomplete="username"
+            />
+          </div>
+          <div class="mb-0">
+            <label for="vsacApiPassword" class="form-label">VSAC API Key</label>
+            <input
+              type="password"
+              class="form-control"
+              id="vsacApiPassword"
+              name="vsacApiPassword"
+              [(ngModel)]="settingsService.settings().vsacApiPassword"
+              [placeholder]="
+                settingsService.getDefaultVsacApiPassword() ? '••••••••' : 'Set via env or paste key'
+              "
+              autocomplete="current-password"
+            />
+            <small class="form-text text-body-secondary d-block mt-1"
+              >UMLS/VSAC API key. Stored only in browser local storage when saved here; never commit
+              secrets.</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="h6 card-title mb-0">SMART-on-FHIR</h2>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="smartClientId" class="form-label">Client ID</label>
+            <input
+              type="text"
+              class="form-control"
+              id="smartClientId"
+              name="smartClientId"
+              [(ngModel)]="settingsService.settings().smartClientId"
+              [placeholder]="settingsService.getDefaultSmartClientId() || 'SMART client_id'"
+            />
+          </div>
+          <div class="mb-0">
+            <label for="smartRedirectUri" class="form-label">Redirect URI</label>
+            <input
+              type="url"
+              class="form-control"
+              id="smartRedirectUri"
+              name="smartRedirectUri"
+              [(ngModel)]="settingsService.settings().smartRedirectUri"
+              [placeholder]="settingsService.getDefaultSmartRedirectUri() || 'https://…/launch'"
+            />
+            <small class="form-text text-body-secondary d-block mt-1"
+              >Used for EHR SMART launches. Standalone mode uses the FHIR Base URL above instead of
+              <code>iss</code>.</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-primary" id="save-settings-btn-bottom" (click)="save()">
+        Save to Browser
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        id="reset-settings-btn-bottom"
+        (click)="restoreDefaults()"
+      >
+        Reset to Defaults
+      </button>
+    </div>
+  </div>
+</div>

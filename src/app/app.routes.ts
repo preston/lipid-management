@@ -1,6 +1,7 @@
 // Author: Preston Lee
 
 import { Routes } from '@angular/router';
+import { loaderGuard } from './features/loader/loader.guard';
 
 export const routes: Routes = [
   {
@@ -9,6 +10,28 @@ export const routes: Routes = [
       import('./features/open-cvd-risk-calculator/open-cvd-risk-calculator').then(
         (m) => m.OpenCVDRiskCalculator,
       ),
+  },
+  {
+    path: 'resources',
+    loadComponent: () => import('./features/resources/resources').then((m) => m.Resources),
+  },
+  {
+    path: 'about',
+    loadComponent: () => import('./features/about/about').then((m) => m.About),
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
+  },
+  {
+    path: 'loader',
+    canActivate: [loaderGuard],
+    loadComponent: () => import('./features/loader/loader').then((m) => m.Loader),
+  },
+  {
+    path: 'launch',
+    loadComponent: () =>
+      import('./features/smart-launch/smart-launch').then((m) => m.SmartLaunch),
   },
   { path: '**', redirectTo: '' },
 ];

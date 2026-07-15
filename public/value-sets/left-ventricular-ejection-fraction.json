@@ -1,0 +1,66 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/left-ventricular-ejection-fraction",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "left-ventricular-ejection-fraction",
+        "url": "https://asu.edu/fhir/ValueSet/left-ventricular-ejection-fraction",
+        "name": "LeftVentricularEjectionFraction",
+        "title": "Left Ventricular Ejection Fraction",
+        "status": "active",
+        "experimental": false,
+        "date": "2026-07-15",
+        "publisher": "ASU CDS",
+        "description": "LOINC Observation codes for quantitative left ventricular ejection fraction (PREVENT LVEF <40% exclusion).",
+        "compose": {
+          "include": [
+            {
+              "system": "http://loinc.org",
+              "concept": [
+                {
+                  "code": "10230-1",
+                  "display": "Left ventricular Ejection fraction"
+                },
+                {
+                  "code": "8806-2",
+                  "display": "Left ventricular Ejection fraction by 2D echo"
+                },
+                {
+                  "code": "8808-8",
+                  "display": "Left ventricular Ejection fraction by Cardiac angiogram"
+                },
+                {
+                  "code": "8809-6",
+                  "display": "Left ventricular Ejection fraction by Cardiac angiogram.visual estimate"
+                },
+                {
+                  "code": "8810-4",
+                  "display": "Left ventricular Ejection fraction by Spiral CT"
+                },
+                {
+                  "code": "8811-2",
+                  "display": "Left ventricular Ejection fraction by MR"
+                },
+                {
+                  "code": "8812-0",
+                  "display": "Left ventricular Ejection fraction by Nuclear blood pool"
+                },
+                {
+                  "code": "18043-0",
+                  "display": "Left ventricular Ejection fraction by US"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/left-ventricular-ejection-fraction"
+      }
+    }
+  ]
+}

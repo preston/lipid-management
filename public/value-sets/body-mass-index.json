@@ -1,0 +1,38 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/body-mass-index",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "body-mass-index",
+        "url": "https://asu.edu/fhir/ValueSet/body-mass-index",
+        "name": "BodyMassIndex",
+        "title": "Body Mass Index",
+        "status": "active",
+        "experimental": false,
+        "date": "2026-07-15",
+        "publisher": "ASU CDS",
+        "description": "Includes LOINC 39156-5 for BMI.cql. Prefer VSAC expansion when available.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://loinc.org",
+              "concept": [
+                {
+                  "code": "39156-5",
+                  "display": "Body mass index (BMI) [Ratio]"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/body-mass-index"
+      }
+    }
+  ]
+}
