@@ -18,7 +18,7 @@
 
   This library is decision support only, not a substitute for clinical judgment.
 */
-library OpenCVDRisk version '0.4.0'
+library OpenCVDRisk version '0.4.1'
 
 using FHIR version '4.0.1'
 
@@ -303,9 +303,23 @@ define CurrentSmokingFromObservation:
     when ( LatestSmokingObservation.value as FHIR.CodeableConcept ) in "CurrentSmokerAnswers" then true
     else false end
 
+/*
+  MedicationRequest.medication is CodeableConcept | Reference. Terminology retrieves
+  like [MedicationRequest: "ValueSet"] throw when medication is a Reference
+  ("Unable to extract codes from fhirType Reference"). Resolve codes explicitly.
+*/
+define function MedicationRequestDrugConcept(request FHIR.MedicationRequest):
+  case
+    when request.medication is FHIR.CodeableConcept then request.medication as FHIR.CodeableConcept
+    when request.medication is FHIR.Reference then First([Medication] Med
+        where Med.id = Last(Split((request.medication as FHIR.Reference).reference, '/'))
+    ).code
+    else null end
+
 define ActiveStatinMedicationRequest:
-  First([MedicationRequest: "StatinTherapy"] M
+  First([MedicationRequest] M
       where M.status in { 'active', 'on-hold' }
+        and MedicationRequestDrugConcept(M) in "StatinTherapy"
       sort by authoredOn desc
   )
 
@@ -313,8 +327,9 @@ define ActiveStatinTherapy:
   ActiveStatinMedicationRequest is not null
 
 define ActiveAntihypertensiveMedicationRequest:
-  First([MedicationRequest: "AntihypertensiveTherapy"] M
+  First([MedicationRequest] M
       where M.status in { 'active', 'on-hold' }
+        and MedicationRequestDrugConcept(M) in "AntihypertensiveTherapy"
       sort by authoredOn desc
   )
 

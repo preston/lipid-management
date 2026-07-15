@@ -3,7 +3,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import type { Bundle, Parameters, Patient } from 'fhir/r4';
+import type { Bundle, OperationOutcome, Parameters, Patient } from 'fhir/r4';
 import { CqlEvaluateService } from './cql-evaluate.service';
 import { PatientContextService } from './patient-context.service';
 import { SettingsService } from './settings.service';
@@ -107,5 +107,42 @@ describe('CqlEvaluateService', () => {
     expect(byName['LifeExpectancyLimited']?.valueBoolean).toBe(false);
 
     req.flush({ resourceType: 'Parameters', parameter: [] });
+  });
+
+  it('errors when $evaluate returns an evaluation error OperationOutcome', () => {
+    patientContext.setStandalonePatient(patient);
+
+    let message: string | undefined;
+    service.evaluateLibrary('OpenCVDRisk', ['TenYearTotalCvdPercent']).subscribe({
+      next: () => {
+        throw new Error('expected evaluation to fail');
+      },
+      error: (err: unknown) => {
+        message = err instanceof Error ? err.message : String(err);
+      },
+    });
+
+    const req = httpMock.expectOne('http://example.test/fhir/Library/OpenCVDRisk/$evaluate');
+    const outcome: OperationOutcome = {
+      resourceType: 'OperationOutcome',
+      issue: [
+        {
+          severity: 'error',
+          code: 'exception',
+          diagnostics: 'Unable to extract codes from fhirType Reference',
+        },
+      ],
+    };
+    req.flush({
+      resourceType: 'Parameters',
+      parameter: [
+        {
+          name: 'evaluation error',
+          resource: outcome,
+        },
+      ],
+    } satisfies Parameters);
+
+    expect(message).toBe('Unable to extract codes from fhirType Reference');
   });
 });

@@ -258,7 +258,7 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['canCalculate']()).toBe(true);
     expect(
       fixture.nativeElement.querySelector('#open-cvd-risk-results-message')?.textContent,
-    ).toContain('Form inputs look complete');
+    ).toContain('Form looks complete');
   });
 
   it('should treat out-of-range age as complete inputs but PREVENT-gated', () => {
@@ -290,7 +290,7 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['canCalculate']()).toBe(false);
     expect(
       fixture.nativeElement.querySelector('#open-cvd-risk-results-message')?.textContent,
-    ).toContain('Form inputs look complete');
+    ).toContain('Form looks complete');
 
     component['setProceedDespiteExclusions'](true);
     fixture.detectChanges();

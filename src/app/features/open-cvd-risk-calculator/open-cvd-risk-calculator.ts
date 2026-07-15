@@ -23,6 +23,7 @@ import {
   validateClientFhirPatientBundle,
 } from '../../services/client-fhir-bundle';
 import { isHttpOfflineOrServerError, ToastService } from '../../services/toast.service';
+import { formatFhirDateTime } from '../../util/fhir-datetime';
 
 const PLACEHOLDER = '—';
 
@@ -180,7 +181,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     return {
       name: this.patientContext.patientDisplayName(patient),
       gender: patient.gender ?? '—',
-      birthDate: patient.birthDate ?? '—',
+      birthDate: formatFhirDateTime(patient.birthDate) ?? '—',
       ageYears: this.ageFromBirthDate(patient.birthDate),
     };
   });
@@ -291,9 +292,13 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected provenanceFor(field: string): string | null {
     if (this.isLocallyOverridden(field)) {
-      return 'Overridden locally; Calculate sends this value as a CQL library parameter.';
+      return 'Overridden locally.';
     }
     return this.provenances()[field]?.summary ?? null;
+  }
+
+  protected formatDate(value: string | undefined | null): string | null {
+    return formatFhirDateTime(value);
   }
 
   protected dismissExclusion(id: PreventExclusionId): void {
@@ -437,16 +442,14 @@ export class OpenCVDRiskCalculator implements OnInit {
     }));
     const provenances = { ...this.provenances() };
     if (age != null) {
+      const born = formatFhirDateTime(patient.birthDate);
       provenances['age'] = {
         field: 'age',
-        summary: `Derived from date of birth${patient.birthDate ? ` (${patient.birthDate})` : ''}. Override if age for scoring should differ.`,
+        summary: born ? `Born ${born}` : '',
       };
     }
     if (sex) {
-      provenances['sex'] = {
-        field: 'sex',
-        summary: `From recorded gender (${patient.gender}). Override if administrative sex is not appropriate for PREVENT.`,
-      };
+      delete provenances['sex'];
     }
     this.provenances.set(provenances);
   }

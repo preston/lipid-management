@@ -8,6 +8,7 @@ import type {
   OpenCVDRiskYesNo,
 } from '../features/open-cvd-risk-calculator/open-cvd-risk-calculator.model';
 import { CqlEvaluateService } from './cql-evaluate.service';
+import { formatFhirDateTime } from '../util/fhir-datetime';
 
 export interface FieldProvenance {
   field: keyof OpenCVDRiskCalculatorForm | 'bmi';
@@ -219,10 +220,14 @@ export class CalculatorPrefillService {
         'egfrMlMin173m2',
         openCvd['LatestCreatinineObservation'],
       );
+      const egfrBits = [
+        base.summary || null,
+        'eGFR via CKD-EPI 2021 from creatinine',
+      ].filter(Boolean);
       provenances.push({
         ...base,
         derived: true,
-        summary: `${base.summary} eGFR derived via CKD-EPI 2021 from creatinine.`,
+        summary: egfrBits.join(' · '),
       });
     }
 
@@ -248,7 +253,7 @@ export class CalculatorPrefillService {
         field: 'bmi',
         derived: true,
         summary: computed
-          ? 'BMI computed from latest height and weight (BMI library). Override height/weight if inappropriate.'
+          ? 'Computed from height and weight'
           : this.observationProvenance('bmi', bmi['MostRecentRecordedBMI']).summary,
         ...this.resourceMeta(
           (bmi['MostRecentRecordedBodyHeight'] as Observation | undefined) ??
@@ -333,28 +338,27 @@ export class CalculatorPrefillService {
   ): FieldProvenance {
     const obs = raw as Observation | null;
     if (!obs || obs.resourceType !== 'Observation') {
-      return { field, summary: 'Chart value from clinical data (source details unavailable).' };
+      return { field, summary: '' };
     }
     const coding = obs.code?.coding?.[0];
     const codeDisplay = coding?.display || obs.code?.text;
-    const effective =
+    const effectiveRaw =
       typeof obs.effectiveDateTime === 'string'
         ? obs.effectiveDateTime
         : obs.effectivePeriod?.start;
+    const effectiveDisplay = formatFhirDateTime(effectiveRaw);
     const status = obs.status;
     const bits = [
-      'From chart observation',
       codeDisplay ?? null,
-      effective ? `dated ${effective}` : null,
+      effectiveDisplay ? `dated ${effectiveDisplay}` : null,
       status && status !== 'final' ? `status ${status}` : null,
-      'Consider override if outdated, wrong specimen, or not reflective of usual values.',
     ].filter(Boolean);
     return {
       field,
       summary: bits.join(' · '),
       resourceType: 'Observation',
       resourceId: obs.id,
-      effective,
+      effective: effectiveRaw,
       status,
       codeDisplay: codeDisplay ?? undefined,
     };
@@ -363,16 +367,14 @@ export class CalculatorPrefillService {
   private conditionProvenance(field: FieldProvenance['field'], raw: unknown): FieldProvenance {
     const condition = raw as Condition | null;
     if (!condition || condition.resourceType !== 'Condition') {
-      return { field, summary: 'Active diabetes diagnosis found in chart.' };
+      return { field, summary: '' };
     }
     const coding = condition.code?.coding?.[0];
     const codeDisplay = coding?.display || condition.code?.text;
     const clinicalStatus = condition.clinicalStatus?.coding?.[0]?.code;
     const bits = [
-      'From chart condition',
       codeDisplay ?? null,
       clinicalStatus ? `status ${clinicalStatus}` : null,
-      'Override if the diagnosis is inactive, historical, or not applicable.',
     ].filter(Boolean);
     return {
       field,
@@ -387,19 +389,18 @@ export class CalculatorPrefillService {
   private medicationProvenance(field: FieldProvenance['field'], raw: unknown): FieldProvenance {
     const med = raw as MedicationRequest | null;
     if (!med || med.resourceType !== 'MedicationRequest') {
-      return { field, summary: 'Active therapy found in chart medications.' };
+      return { field, summary: '' };
     }
     const concept =
       med.medicationCodeableConcept ??
       (typeof med.medicationReference === 'object' ? undefined : undefined);
     const coding = concept?.coding?.[0];
     const codeDisplay = coding?.display || concept?.text;
+    const authoredDisplay = formatFhirDateTime(med.authoredOn);
     const bits = [
-      'From chart medication',
       codeDisplay ?? null,
       med.status && med.status !== 'active' ? `status ${med.status}` : null,
-      med.authoredOn ? `authored ${med.authoredOn}` : null,
-      'Override if the order is not currently taken or not a true statin/antihypertensive.',
+      authoredDisplay ? `authored ${authoredDisplay}` : null,
     ].filter(Boolean);
     return {
       field,
@@ -429,13 +430,14 @@ export class CalculatorPrefillService {
     }
     const coding = obs.code?.coding?.[0];
     const codeDisplay = coding?.display || obs.code?.text;
-    const effective =
+    const effectiveRaw =
       typeof obs.effectiveDateTime === 'string'
         ? obs.effectiveDateTime
         : obs.effectivePeriod?.start;
+    const effectiveDisplay = formatFhirDateTime(effectiveRaw);
     return [
       codeDisplay ? `Chart observation: ${codeDisplay}` : 'Matched chart observation',
-      effective ? `dated ${effective}` : null,
+      effectiveDisplay ? `dated ${effectiveDisplay}` : null,
     ]
       .filter(Boolean)
       .join(' · ');

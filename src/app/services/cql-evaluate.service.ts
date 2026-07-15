@@ -3,7 +3,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import type { Parameters, ParametersParameter } from 'fhir/r4';
+import type { OperationOutcome, Parameters, ParametersParameter } from 'fhir/r4';
 import { PatientContextService } from './patient-context.service';
 
 export interface CqlExpressionResult {
@@ -114,6 +114,13 @@ export class CqlEvaluateService {
   }
 
   private parametersToMap(parameters: Parameters): Record<string, unknown> {
+    const evaluationError = (parameters.parameter ?? []).find(
+      (p) => p.name === 'evaluation error' || p.name === 'evaluationError',
+    );
+    if (evaluationError) {
+      throw new Error(this.operationOutcomeMessage(evaluationError.resource as OperationOutcome));
+    }
+
     const out: Record<string, unknown> = {};
     for (const p of parameters.parameter ?? []) {
       if (!p.name) {
@@ -122,6 +129,16 @@ export class CqlEvaluateService {
       out[p.name] = this.readParameterValue(p);
     }
     return out;
+  }
+
+  private operationOutcomeMessage(outcome: OperationOutcome | undefined): string {
+    const diagnostics = (outcome?.issue ?? [])
+      .map((issue) => issue.diagnostics || issue.details?.text)
+      .filter((text): text is string => !!text && text.trim().length > 0);
+    if (diagnostics.length) {
+      return diagnostics.join('; ');
+    }
+    return 'CQL library evaluation failed.';
   }
 
   private readParameterValue(p: ParametersParameter): unknown {
