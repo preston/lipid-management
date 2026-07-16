@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-/** normalize ZIP / ZCTA strings and look up PREVENT SDI deciles (1–10). */
+/** ZIP / ZCTA helpers; CSV parse is for codegen (scripts/generate-sdi-2019.ts), not the UI. */
 
 export type SdiDecileMap = Readonly<Record<string, number>>;
 

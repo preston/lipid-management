@@ -2,8 +2,8 @@
 
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { of, Subject } from 'rxjs';
 import { OpenCVDRiskCalculator } from './open-cvd-risk-calculator';
 import { PatientContextService } from '../../services/patient-context.service';
 import { CalculatorPrefillService } from '../../services/calculator-prefill.service';
@@ -27,19 +27,45 @@ const SAMPLE_PATIENT_WITH_ZIP: Patient = {
   ],
 };
 
-/** Minimal CSV matching Graham Center columns used by parseSdiZctaCsv. */
-const SDI_CSV_FIXTURE = [
-  'ZCTA5_FIPS,SDI_score',
-  '90210,15',
-  '01001,36',
-  '37220,5',
-].join('\n');
+/** Fixture ZIP→decile values matching former CSV-based tests. */
+const SDI_FIXTURE: Record<string, number> = {
+  '90210': 2,
+  '01001': 4,
+  '37220': 1,
+};
+
+const EMPTY_RISK_RESULTS = {
+  SelectedPreventModel: 'base',
+  TenYearTotalCvdPercent: 8.1,
+  TenYearAscvdPercent: 5.0,
+  TenYearHeartFailurePercent: 4.0,
+  TenYearChdPercent: 3.0,
+  TenYearStrokePercent: 2.0,
+  ThirtyYearTotalCvdPercent: 22.3,
+  ThirtyYearAscvdPercent: 15.0,
+  ThirtyYearHeartFailurePercent: 12.0,
+  ThirtyYearChdPercent: 10.0,
+  ThirtyYearStrokePercent: 8.0,
+};
 
 describe('OpenCVDRiskCalculator', () => {
-  let http: HttpTestingController;
+  let evaluateLibrary: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     TestBed.resetTestingModule();
+    evaluateLibrary = vi.fn(
+      (libraryId: string, _exprs?: string[], params?: Record<string, unknown>) => {
+        if (libraryId === 'SDI2019') {
+          const zip =
+            typeof params?.['OverrideZipCode'] === 'string'
+              ? params['OverrideZipCode']
+              : null;
+          const decile = zip != null ? (SDI_FIXTURE[zip] ?? null) : null;
+          return of({ SdiDecile: decile });
+        }
+        return of({ ...EMPTY_RISK_RESULTS });
+      },
+    );
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
       providers: [
@@ -51,13 +77,15 @@ describe('OpenCVDRiskCalculator', () => {
             prefillFromChart: () => of({ form: {}, provenances: [], exclusions: [] }),
           },
         },
+        {
+          provide: CqlEvaluateService,
+          useValue: { evaluateLibrary },
+        },
       ],
     }).compileComponents();
-    http = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    http.verify();
     TestBed.resetTestingModule();
   });
 
@@ -65,18 +93,9 @@ describe('OpenCVDRiskCalculator', () => {
     TestBed.inject(PatientContextService).setStandalonePatient(patient);
   }
 
-  function flushSdiMap(csvText: string = SDI_CSV_FIXTURE): void {
-    const req = http.expectOne('/data/sdi/asset_rgc_sdi_2015_through_2019_zcta.csv');
-    expect(req.request.method).toBe('GET');
-    expect(req.request.responseType).toBe('text');
-    req.flush(csvText);
-  }
-
   function createFixture(patient: Patient = SAMPLE_PATIENT) {
     selectSamplePatient(patient);
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    fixture.detectChanges();
-    flushSdiMap();
     fixture.detectChanges();
     return fixture;
   }
@@ -125,7 +144,7 @@ describe('OpenCVDRiskCalculator', () => {
     expect(text).toMatch(/ZIP code/i);
   });
 
-  it('should prefill ZIP from home address and resolve SDI', () => {
+  it('should prefill ZIP from home address and resolve SDI via SDI2019', () => {
     const fixture = createFixture(SAMPLE_PATIENT_WITH_ZIP);
     const component = fixture.componentInstance;
 
@@ -133,6 +152,11 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['model']().sdiDecile).toBe(2);
     expect(component['sdiLookupStatus']()).toBe('found');
     expect(component['activeRiskModel']()).toBe('sdi');
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'SDI2019',
+      ['SdiDecile'],
+      { OverrideZipCode: '90210' },
+    );
   });
 
   it('should update SDI when ZIP override changes', () => {
@@ -145,6 +169,11 @@ describe('OpenCVDRiskCalculator', () => {
 
     expect(component['model']().sdiDecile).toBe(4);
     expect(component['sdiLookupStatus']()).toBe('found');
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'SDI2019',
+      ['SdiDecile'],
+      { OverrideZipCode: '01001' },
+    );
   });
 
   it('should resolve SDI from ZIP input DOM value before model sync', () => {
@@ -347,25 +376,6 @@ describe('OpenCVDRiskCalculator', () => {
   });
 
   it('should pass library parameters when calculating risk', () => {
-    const evaluateLibrary = vi.fn(() =>
-      of({
-        SelectedPreventModel: 'base',
-        TenYearTotalCvdPercent: 8.1,
-        TenYearAscvdPercent: 5.0,
-        TenYearHeartFailurePercent: 4.0,
-        TenYearChdPercent: 3.0,
-        TenYearStrokePercent: 2.0,
-        ThirtyYearTotalCvdPercent: 22.3,
-        ThirtyYearAscvdPercent: 15.0,
-        ThirtyYearHeartFailurePercent: 12.0,
-        ThirtyYearChdPercent: 10.0,
-        ThirtyYearStrokePercent: 8.0,
-      }),
-    );
-    vi.spyOn(TestBed.inject(CqlEvaluateService), 'evaluateLibrary').mockImplementation(
-      evaluateLibrary,
-    );
-
     const fixture = createFixture();
     const component = fixture.componentInstance;
     fillCompleteForm(component);
@@ -385,20 +395,17 @@ describe('OpenCVDRiskCalculator', () => {
 
   it('should auto-calculate after prefill when the form is complete', async () => {
     TestBed.resetTestingModule();
-    const evaluateLibrary = vi.fn(() =>
-      of({
-        SelectedPreventModel: 'base',
-        TenYearTotalCvdPercent: 8.1,
-        TenYearAscvdPercent: 5.0,
-        TenYearHeartFailurePercent: 4.0,
-        TenYearChdPercent: 3.0,
-        TenYearStrokePercent: 2.0,
-        ThirtyYearTotalCvdPercent: 22.3,
-        ThirtyYearAscvdPercent: 15.0,
-        ThirtyYearHeartFailurePercent: 12.0,
-        ThirtyYearChdPercent: 10.0,
-        ThirtyYearStrokePercent: 8.0,
-      }),
+    evaluateLibrary = vi.fn(
+      (libraryId: string, _exprs?: string[], params?: Record<string, unknown>) => {
+        if (libraryId === 'SDI2019') {
+          const zip =
+            typeof params?.['OverrideZipCode'] === 'string'
+              ? params['OverrideZipCode']
+              : null;
+          return of({ SdiDecile: zip != null ? (SDI_FIXTURE[zip] ?? null) : null });
+        }
+        return of({ ...EMPTY_RISK_RESULTS });
+      },
     );
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
@@ -433,31 +440,32 @@ describe('OpenCVDRiskCalculator', () => {
         },
       ],
     }).compileComponents();
-    http = TestBed.inject(HttpTestingController);
 
     const fixture = createFixture();
     fixture.detectChanges();
 
-    expect(evaluateLibrary).toHaveBeenCalledTimes(1);
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'OpenCVDRisk',
+      expect.any(Array),
+      expect.any(Object),
+    );
     expect(fixture.componentInstance['risk10yTotal']()).toBe('8.1');
   });
 
   it('should wait for ZIP→SDI then auto-calculate with SDI and sync baseline', async () => {
     TestBed.resetTestingModule();
-    const evaluateLibrary = vi.fn(() =>
-      of({
-        SelectedPreventModel: 'sdi',
-        TenYearTotalCvdPercent: 9.0,
-        TenYearAscvdPercent: 5.0,
-        TenYearHeartFailurePercent: 4.0,
-        TenYearChdPercent: 3.0,
-        TenYearStrokePercent: 2.0,
-        ThirtyYearTotalCvdPercent: 22.3,
-        ThirtyYearAscvdPercent: 15.0,
-        ThirtyYearHeartFailurePercent: 12.0,
-        ThirtyYearChdPercent: 10.0,
-        ThirtyYearStrokePercent: 8.0,
-      }),
+    const sdiSubject = new Subject<Record<string, unknown>>();
+    evaluateLibrary = vi.fn(
+      (libraryId: string, _exprs?: string[], _params?: Record<string, unknown>) => {
+        if (libraryId === 'SDI2019') {
+          return sdiSubject.asObservable();
+        }
+        return of({
+          ...EMPTY_RISK_RESULTS,
+          SelectedPreventModel: 'sdi',
+          TenYearTotalCvdPercent: 9.0,
+        });
+      },
     );
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
@@ -492,21 +500,27 @@ describe('OpenCVDRiskCalculator', () => {
         },
       ],
     }).compileComponents();
-    http = TestBed.inject(HttpTestingController);
 
     selectSamplePatient(SAMPLE_PATIENT_WITH_ZIP);
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
     fixture.detectChanges();
-    // Prefill finished but SDI map still in flight — must not calculate yet.
-    expect(evaluateLibrary).not.toHaveBeenCalled();
+    // Prefill finished but SDI2019 still in flight — must not calculate yet.
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'SDI2019',
+      ['SdiDecile'],
+      { OverrideZipCode: '90210' },
+    );
+    expect(evaluateLibrary.mock.calls.some((c) => c[0] === 'OpenCVDRisk')).toBe(false);
     expect(fixture.componentInstance['model']().sdiDecile).toBeNull();
+    expect(fixture.componentInstance['sdiLookupStatus']()).toBe('loading');
 
-    flushSdiMap();
+    sdiSubject.next({ SdiDecile: 2 });
+    sdiSubject.complete();
     fixture.detectChanges();
 
     expect(fixture.componentInstance['model']().sdiDecile).toBe(2);
     expect(fixture.componentInstance['prefillBaseline']()?.sdiDecile).toBe(2);
-    expect(evaluateLibrary).toHaveBeenCalledTimes(1);
+    expect(evaluateLibrary.mock.calls.filter((c) => c[0] === 'OpenCVDRisk')).toHaveLength(1);
     expect(evaluateLibrary).toHaveBeenCalledWith(
       'OpenCVDRisk',
       expect.any(Array),
@@ -518,12 +532,11 @@ describe('OpenCVDRiskCalculator', () => {
   });
 
   it('should not auto-calculate when prefill leaves required fields incomplete', () => {
-    const evaluateLibrary = vi.spyOn(TestBed.inject(CqlEvaluateService), 'evaluateLibrary');
     const fixture = createFixture();
     fixture.detectChanges();
 
     expect(fixture.componentInstance['inputsComplete']()).toBe(false);
-    expect(evaluateLibrary).not.toHaveBeenCalled();
+    expect(evaluateLibrary.mock.calls.some((c) => c[0] === 'OpenCVDRisk')).toBe(false);
   });
 
   it('should render five outcomes for both horizons', () => {

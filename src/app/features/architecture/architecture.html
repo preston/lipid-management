@@ -26,10 +26,11 @@
       presses Calculate. Prefill reads the selected patient&rsquo;s chart or custom Bundle. Calculate sends
       the current form values (and clinician exclusion flags) as nested CQL library
       <code>Parameters</code>; OpenCVDRisk coalesces those overrides over chart-derived inputs when
-      computing risk. Optional ZIP → SDI decile is resolved in the calculator (chart
-      <code>Patient.address.postalCode</code> by default, or a user ZIP override) from the raw
-      2019 Graham Center ZCTA CSV, then passed as <code>OverrideSdiDecile</code>. OpenCVDRisk does not include SDI-2019, so
-      chart-only LipidManagement stays on the base model unless that Parameter is supplied.
+      computing risk. Optional ZIP → SDI decile is resolved by evaluating the
+      <code>SDI2019</code> library (chart <code>Patient.address.postalCode</code> by default, or a user
+      ZIP override as <code>OverrideZipCode</code>), then passed to OpenCVDRisk as
+      <code>OverrideSdiDecile</code>. OpenCVDRisk does not include SDI-2019, so chart-only
+      LipidManagement stays on the base model unless that Parameter is supplied.
     </p>
 
     <section class="mb-4" id="architecture-overview">
@@ -130,9 +131,9 @@
       the AHA. Coefficients follow Khan Supplemental Table S12A&ndash;J (base and optional
       UACR / HbA1c / SDI models for 10- and 30-year Total CVD, ASCVD, HF, CHD, and Stroke). Optional
       predictors use preventr-style model selection. SDI deciles come from the Robert Graham Center
-      2019 ZCTA Social Deprivation Index (<code>SDI_score</code> centile → decile 1&ndash;10);
-      the calculator resolves ZIP→decile from the raw Graham Center ZCTA CSV and may load
-      <code>SDI-2019.cql</code> (<code>SDI2019</code>) for host <code>$evaluate</code>.
+      2019 ZCTA Social Deprivation Index (<code>SDI_score</code> centile → decile 1&ndash;10),
+      baked into <code>SDI-2019.cql</code> (<code>SDI2019</code>). The calculator resolves ZIP→decile
+      with <code>SDI2019/$evaluate</code> and passes the result as <code>OverrideSdiDecile</code>.
       LipidManagement chart-only evaluate stays on the base model unless a host passes optional
       Parameters (including <code>OverrideSdiDecile</code>).
     </p>

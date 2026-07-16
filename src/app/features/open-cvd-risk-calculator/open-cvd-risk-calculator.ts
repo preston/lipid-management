@@ -1,7 +1,6 @@
 // Author: Preston Lee
 
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormField, form, max, min, required } from '@angular/forms/signals';
 import type { Patient } from 'fhir/r4';
 import { computeBmiKgM2 } from './open-cvd-risk-egfr';
@@ -32,16 +31,9 @@ import {
   selectPreventModel,
   type PreventModel,
 } from './prevent/prevent-math';
-import {
-  lookupSdiDecile,
-  normalizeZip,
-  parseSdiZctaCsv,
-  postalCodeFromPatientAddress,
-  type SdiDecileMap,
-} from './sdi/sdi-lookup';
+import { normalizeZip, postalCodeFromPatientAddress } from './sdi/sdi-lookup';
 
 const PLACEHOLDER = '—';
-const SDI_CSV_URL = '/data/sdi/asset_rgc_sdi_2015_through_2019_zcta.csv';
 
 type PatientSource = 'server' | 'file';
 
@@ -95,7 +87,6 @@ export class OpenCVDRiskCalculator implements OnInit {
   private readonly cqlEvaluate = inject(CqlEvaluateService);
   private readonly smartLaunch = inject(SmartLaunchService);
   private readonly toasts = inject(ToastService);
-  private readonly http = inject(HttpClient);
 
   protected readonly model = signal<OpenCVDRiskCalculatorForm>({ ...EMPTY_FORM });
   protected readonly provenances = signal<Partial<Record<string, FieldProvenance>>>({});
@@ -117,14 +108,15 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly prefillLoading = signal(false);
   protected readonly calculateLoading = signal(false);
 
-  private readonly sdiMap = signal<SdiDecileMap | null>(null);
   /** User typed ZIP this session (do not overwrite from chart until patient reset). */
   private readonly zipUserEdited = signal(false);
   /** User edited SDI decile directly; ZIP changes clear this flag. */
   private readonly sdiManual = signal(false);
   /** Ensures prefill auto-calc runs at most once per patient load (after ZIP→SDI if needed). */
   private autoCalculateAttemptedForPrefill = false;
-  protected readonly sdiLookupStatus = signal<SdiLookupStatus>('loading');
+  /** Ignores stale SDI2019 $evaluate responses when ZIP changes quickly. */
+  private sdiLookupSeq = 0;
+  protected readonly sdiLookupStatus = signal<SdiLookupStatus>('blank');
 
   protected readonly risk10yTotal = signal<string>(PLACEHOLDER);
   protected readonly risk10yAscvd = signal<string>(PLACEHOLDER);
@@ -307,9 +299,9 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly sdiLookupStatusLabel = computed(() => {
     switch (this.sdiLookupStatus()) {
       case 'loading':
-        return 'Loading ZCTA map…';
+        return 'Looking up SDI via SDI2019…';
       case 'found':
-        return 'SDI from ZIP (2019 ZCTA table)';
+        return 'SDI from ZIP (SDI2019 library)';
       case 'missing':
         return 'ZIP not in 2019 ZCTA table';
       case 'manual':
@@ -320,7 +312,6 @@ export class OpenCVDRiskCalculator implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
-    this.loadSdiMap();
     const url = new URL(window.location.href);
     const mode = this.patientContext.detectLaunchFromUrl(url);
     if (mode === 'smart' && url.pathname.includes('launch') === false) {
@@ -349,9 +340,10 @@ export class OpenCVDRiskCalculator implements OnInit {
     const key = normalizeZip(raw);
     if (key == null) {
       // Cleared ZIP: drop auto-filled SDI; keep a manually entered decile.
+      this.sdiLookupSeq += 1;
       if (!this.sdiManual()) {
         this.model.update((m) => ({ ...m, sdiDecile: null }));
-        this.sdiLookupStatus.set(this.sdiMap() == null ? 'loading' : 'blank');
+        this.sdiLookupStatus.set('blank');
       } else {
         this.sdiLookupStatus.set('manual');
       }
@@ -623,7 +615,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     if (this.autoCalculateAttemptedForPrefill || this.prefillLoading() || this.calculateLoading()) {
       return;
     }
-    // ZIP→SDI uses an async map; wait so the first calc includes SDI when available.
+    // ZIP→SDI uses async SDI2019 $evaluate; wait so the first calc includes SDI when available.
     if (normalizeZip(this.model().zipCode) != null && this.sdiLookupStatus() === 'loading') {
       return;
     }
@@ -673,35 +665,6 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.provenances.set(provenances);
   }
 
-  private loadSdiMap(): void {
-    this.sdiLookupStatus.set('loading');
-    this.http.get(SDI_CSV_URL, { responseType: 'text' }).subscribe({
-      next: (csvText) => {
-        try {
-          this.sdiMap.set(parseSdiZctaCsv(csvText));
-          if (!this.sdiManual()) {
-            this.applyZipToSdi();
-          } else {
-            this.sdiLookupStatus.set('manual');
-          }
-          // Prefill may have finished while the map was still loading; fold ZIP→SDI into baseline.
-          this.syncPrefillBaselineFromModel();
-        } catch (err) {
-          this.sdiMap.set(null);
-          this.sdiLookupStatus.set('blank');
-          this.toastDomainError(err, 'SDI CSV parse failed: ', 'warning');
-        }
-        this.tryAutoCalculateAfterPrefill();
-      },
-      error: (err) => {
-        this.sdiMap.set(null);
-        this.sdiLookupStatus.set('blank');
-        this.toastDomainError(err, 'SDI map load failed: ', 'warning');
-        this.tryAutoCalculateAfterPrefill();
-      },
-    });
-  }
-
   /** Keep Reset/provenance aligned when async ZIP→SDI fills after prefillBaseline was captured. */
   private syncPrefillBaselineFromModel(): void {
     if (this.prefillBaseline() == null || this.zipUserEdited() || this.sdiManual()) {
@@ -710,30 +673,60 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.prefillBaseline.set({ ...this.model() });
   }
 
+  /** Resolve ZIP → SDI decile via server-side SDI2019 CQL ($evaluate). */
   private applyZipToSdi(): void {
     if (this.sdiManual()) {
       this.sdiLookupStatus.set('manual');
       return;
     }
-    const map = this.sdiMap();
     const key = normalizeZip(this.model().zipCode);
     if (key == null) {
+      this.sdiLookupSeq += 1;
       this.model.update((m) => ({ ...m, sdiDecile: null }));
-      this.sdiLookupStatus.set(map == null ? 'loading' : 'blank');
+      this.sdiLookupStatus.set('blank');
       return;
     }
-    if (map == null) {
-      this.sdiLookupStatus.set('loading');
-      return;
-    }
-    const decile = lookupSdiDecile(map, key);
-    if (decile == null) {
+    if (!this.selectedPatient()?.id) {
+      this.sdiLookupSeq += 1;
       this.model.update((m) => ({ ...m, sdiDecile: null }));
-      this.sdiLookupStatus.set('missing');
+      this.sdiLookupStatus.set('blank');
       return;
     }
-    this.model.update((m) => ({ ...m, sdiDecile: decile }));
-    this.sdiLookupStatus.set('found');
+
+    const seq = ++this.sdiLookupSeq;
+    this.sdiLookupStatus.set('loading');
+    this.cqlEvaluate
+      .evaluateLibrary('SDI2019', ['SdiDecile'], { OverrideZipCode: key })
+      .subscribe({
+        next: (results) => {
+          if (seq !== this.sdiLookupSeq || this.sdiManual()) {
+            return;
+          }
+          const raw = results['SdiDecile'];
+          const decile =
+            typeof raw === 'number' && Number.isInteger(raw) && raw >= 1 && raw <= 10
+              ? raw
+              : null;
+          if (decile == null) {
+            this.model.update((m) => ({ ...m, sdiDecile: null }));
+            this.sdiLookupStatus.set('missing');
+          } else {
+            this.model.update((m) => ({ ...m, sdiDecile: decile }));
+            this.sdiLookupStatus.set('found');
+          }
+          this.syncPrefillBaselineFromModel();
+          this.tryAutoCalculateAfterPrefill();
+        },
+        error: (err) => {
+          if (seq !== this.sdiLookupSeq) {
+            return;
+          }
+          this.model.update((m) => ({ ...m, sdiDecile: null }));
+          this.sdiLookupStatus.set('blank');
+          this.toastDomainError(err, 'SDI lookup failed: ', 'warning');
+          this.tryAutoCalculateAfterPrefill();
+        },
+      });
   }
 
   private resetFormAndResults(): void {
@@ -748,7 +741,8 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.zipUserEdited.set(false);
     this.sdiManual.set(false);
     this.autoCalculateAttemptedForPrefill = false;
-    this.sdiLookupStatus.set(this.sdiMap() == null ? 'loading' : 'blank');
+    this.sdiLookupSeq += 1;
+    this.sdiLookupStatus.set('blank');
     this.clearCalculatedResults();
   }
 
