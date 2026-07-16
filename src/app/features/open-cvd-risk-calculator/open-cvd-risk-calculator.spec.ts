@@ -383,6 +383,149 @@ describe('OpenCVDRiskCalculator', () => {
     );
   });
 
+  it('should auto-calculate after prefill when the form is complete', async () => {
+    TestBed.resetTestingModule();
+    const evaluateLibrary = vi.fn(() =>
+      of({
+        SelectedPreventModel: 'base',
+        TenYearTotalCvdPercent: 8.1,
+        TenYearAscvdPercent: 5.0,
+        TenYearHeartFailurePercent: 4.0,
+        TenYearChdPercent: 3.0,
+        TenYearStrokePercent: 2.0,
+        ThirtyYearTotalCvdPercent: 22.3,
+        ThirtyYearAscvdPercent: 15.0,
+        ThirtyYearHeartFailurePercent: 12.0,
+        ThirtyYearChdPercent: 10.0,
+        ThirtyYearStrokePercent: 8.0,
+      }),
+    );
+    await TestBed.configureTestingModule({
+      imports: [OpenCVDRiskCalculator],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: CalculatorPrefillService,
+          useValue: {
+            prefillFromChart: () =>
+              of({
+                form: {
+                  heightCm: 170,
+                  weightKg: 70,
+                  totalCholesterolMgDl: 200,
+                  hdlMgDl: 50,
+                  systolicBpMmHg: 120,
+                  egfrMlMin173m2: 90,
+                  diabetes: 'no',
+                  currentSmoker: 'no',
+                  onAntihypertensive: 'no',
+                  onStatin: 'no',
+                },
+                provenances: [],
+                exclusions: [],
+              }),
+          },
+        },
+        {
+          provide: CqlEvaluateService,
+          useValue: { evaluateLibrary },
+        },
+      ],
+    }).compileComponents();
+    http = TestBed.inject(HttpTestingController);
+
+    const fixture = createFixture();
+    fixture.detectChanges();
+
+    expect(evaluateLibrary).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance['risk10yTotal']()).toBe('8.1');
+  });
+
+  it('should wait for ZIP→SDI then auto-calculate with SDI and sync baseline', async () => {
+    TestBed.resetTestingModule();
+    const evaluateLibrary = vi.fn(() =>
+      of({
+        SelectedPreventModel: 'sdi',
+        TenYearTotalCvdPercent: 9.0,
+        TenYearAscvdPercent: 5.0,
+        TenYearHeartFailurePercent: 4.0,
+        TenYearChdPercent: 3.0,
+        TenYearStrokePercent: 2.0,
+        ThirtyYearTotalCvdPercent: 22.3,
+        ThirtyYearAscvdPercent: 15.0,
+        ThirtyYearHeartFailurePercent: 12.0,
+        ThirtyYearChdPercent: 10.0,
+        ThirtyYearStrokePercent: 8.0,
+      }),
+    );
+    await TestBed.configureTestingModule({
+      imports: [OpenCVDRiskCalculator],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: CalculatorPrefillService,
+          useValue: {
+            prefillFromChart: () =>
+              of({
+                form: {
+                  heightCm: 170,
+                  weightKg: 70,
+                  totalCholesterolMgDl: 200,
+                  hdlMgDl: 50,
+                  systolicBpMmHg: 120,
+                  egfrMlMin173m2: 90,
+                  diabetes: 'no',
+                  currentSmoker: 'no',
+                  onAntihypertensive: 'no',
+                  onStatin: 'no',
+                },
+                provenances: [],
+                exclusions: [],
+              }),
+          },
+        },
+        {
+          provide: CqlEvaluateService,
+          useValue: { evaluateLibrary },
+        },
+      ],
+    }).compileComponents();
+    http = TestBed.inject(HttpTestingController);
+
+    selectSamplePatient(SAMPLE_PATIENT_WITH_ZIP);
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    fixture.detectChanges();
+    // Prefill finished but SDI map still in flight — must not calculate yet.
+    expect(evaluateLibrary).not.toHaveBeenCalled();
+    expect(fixture.componentInstance['model']().sdiDecile).toBeNull();
+
+    flushSdiMap();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['model']().sdiDecile).toBe(2);
+    expect(fixture.componentInstance['prefillBaseline']()?.sdiDecile).toBe(2);
+    expect(evaluateLibrary).toHaveBeenCalledTimes(1);
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'OpenCVDRisk',
+      expect.any(Array),
+      expect.objectContaining({
+        OverrideSdiDecile: { integer: 2 },
+      }),
+    );
+    expect(fixture.componentInstance['provenanceFor']('sdiDecile')).toBeNull();
+  });
+
+  it('should not auto-calculate when prefill leaves required fields incomplete', () => {
+    const evaluateLibrary = vi.spyOn(TestBed.inject(CqlEvaluateService), 'evaluateLibrary');
+    const fixture = createFixture();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance['inputsComplete']()).toBe(false);
+    expect(evaluateLibrary).not.toHaveBeenCalled();
+  });
+
   it('should render five outcomes for both horizons', () => {
     const fixture = createFixture();
     const root = fixture.nativeElement as HTMLElement;

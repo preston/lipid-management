@@ -122,6 +122,8 @@ export class OpenCVDRiskCalculator implements OnInit {
   private readonly zipUserEdited = signal(false);
   /** User edited SDI decile directly; ZIP changes clear this flag. */
   private readonly sdiManual = signal(false);
+  /** Ensures prefill auto-calc runs at most once per patient load (after ZIP→SDI if needed). */
+  private autoCalculateAttemptedForPrefill = false;
   protected readonly sdiLookupStatus = signal<SdiLookupStatus>('loading');
 
   protected readonly risk10yTotal = signal<string>(PLACEHOLDER);
@@ -590,6 +592,7 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   private runPrefill(): void {
     this.prefillLoading.set(true);
+    this.autoCalculateAttemptedForPrefill = false;
     this.prefillService.prefillFromChart().subscribe({
       next: (result) => {
         this.model.update((m) => ({ ...m, ...result.form }));
@@ -617,16 +620,18 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   /** Run Calculate when prefill left the form submittable (optionally waiting on ZIP→SDI). */
   private tryAutoCalculateAfterPrefill(): void {
-    if (this.prefillLoading() || this.calculateLoading()) {
+    if (this.autoCalculateAttemptedForPrefill || this.prefillLoading() || this.calculateLoading()) {
       return;
     }
     // ZIP→SDI uses an async map; wait so the first calc includes SDI when available.
     if (normalizeZip(this.model().zipCode) != null && this.sdiLookupStatus() === 'loading') {
       return;
     }
-    if (this.canCalculate()) {
-      this.calculateRisk();
+    if (!this.canCalculate()) {
+      return;
     }
+    this.autoCalculateAttemptedForPrefill = true;
+    this.calculateRisk();
   }
 
   private applyPatientDemographics(patient: Patient): void {
@@ -679,6 +684,8 @@ export class OpenCVDRiskCalculator implements OnInit {
           } else {
             this.sdiLookupStatus.set('manual');
           }
+          // Prefill may have finished while the map was still loading; fold ZIP→SDI into baseline.
+          this.syncPrefillBaselineFromModel();
         } catch (err) {
           this.sdiMap.set(null);
           this.sdiLookupStatus.set('blank');
@@ -693,6 +700,14 @@ export class OpenCVDRiskCalculator implements OnInit {
         this.tryAutoCalculateAfterPrefill();
       },
     });
+  }
+
+  /** Keep Reset/provenance aligned when async ZIP→SDI fills after prefillBaseline was captured. */
+  private syncPrefillBaselineFromModel(): void {
+    if (this.prefillBaseline() == null || this.zipUserEdited() || this.sdiManual()) {
+      return;
+    }
+    this.prefillBaseline.set({ ...this.model() });
   }
 
   private applyZipToSdi(): void {
@@ -732,6 +747,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.proceedDespiteExclusions.set(false);
     this.zipUserEdited.set(false);
     this.sdiManual.set(false);
+    this.autoCalculateAttemptedForPrefill = false;
     this.sdiLookupStatus.set(this.sdiMap() == null ? 'loading' : 'blank');
     this.clearCalculatedResults();
   }
