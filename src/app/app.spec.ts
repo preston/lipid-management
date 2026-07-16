@@ -37,7 +37,9 @@ describe('App', () => {
     );
     expect(compiled.querySelector('#app-nav-documentation')?.textContent).toContain('Documentation');
     expect(compiled.querySelector('#app-nav-architecture')?.textContent).toContain('Architecture');
-    expect(compiled.querySelector('#app-nav-resources')?.textContent).toContain('Resources');
+    expect(compiled.querySelector('#app-nav-interpretation')?.textContent).toContain(
+      'Interpretation',
+    );
     expect(compiled.querySelector('#app-nav-settings')?.textContent).toContain('Settings');
   });
 });

@@ -50,4 +50,22 @@ describe('Loader', () => {
       EXAMPLE_DATA_CATALOG.length,
     );
   });
+
+  it('renders CQL descriptions and download links', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#loader-cql-intro')?.textContent).toContain(
+      'decision support signals',
+    );
+
+    for (const entry of CQL_LIBRARY_CATALOG) {
+      const description = el.querySelector(`#loader-cql-description-${entry.id}`);
+      expect(description?.textContent?.trim()).toBe(entry.description);
+
+      const download = el.querySelector(
+        `#loader-cql-download-${entry.id}`,
+      ) as HTMLAnchorElement | null;
+      expect(download?.getAttribute('href')).toBe(entry.assetPath);
+      expect(download?.getAttribute('download')).toBe(entry.assetPath.split('/').pop());
+    }
+  });
 });

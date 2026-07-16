@@ -1,0 +1,60 @@
+<div class="container py-4" id="interpretation-page">
+  <header class="mb-4">
+    <h1 class="h2 mb-2" id="interpretation-title">Interpretation</h1>
+    <p class="text-body-secondary mb-0" id="interpretation-intro">
+      How to read and apply results from the
+      <a id="interpretation-calculator-link" routerLink="/">OpenCVDRisk Calculator</a>.
+    </p>
+  </header>
+
+  <section class="mb-4" id="interpretation-intended-use">
+    <h2 class="h5" id="interpretation-intended-use-heading">Intended use</h2>
+    <p id="interpretation-intended-use-body">
+      The calculator estimates 10- and 30-year total cardiovascular disease (CVD) risk using an
+      open-source implementation of the American Heart Association (AHA) PREVENT&trade; simplified
+      equations. Results are clinical decision support for shared decision-making—not treatment
+      orders, diagnoses, or a substitute for clinician judgment.
+    </p>
+  </section>
+
+  <section class="mb-4" id="interpretation-population">
+    <h2 class="h5" id="interpretation-population-heading">Who it applies to</h2>
+    <p id="interpretation-population-body">
+      Scoring is intended for adults ages 30&ndash;79 without known CVD and without PREVENT
+      exclusions (for example limited life expectancy or a pathogenic genetic CVD variant). When
+      chart or clinician-attested exclusions are present, the calculator warns that equations may
+      not apply; you may still compute risk after acknowledging that limitation.
+    </p>
+  </section>
+
+  <section class="mb-4" id="interpretation-limitations">
+    <h2 class="h5" id="interpretation-limitations-heading">Limitations</h2>
+    <ul class="mb-0" id="interpretation-limitations-list">
+      <li>
+        Not an official AHA product and not affiliated with or endorsed by the AHA. Model
+        coefficients follow published PREVENT simplified regression (Khan et al.).
+      </li>
+      <li>
+        Estimates depend on accurate inputs (lipids, blood pressure, kidney function, smoking,
+        medications, and optional UACR, HbA1c, or social deprivation index). Missing or out-of-range
+        values can change model selection or block calculation.
+      </li>
+      <li>
+        Risk is a population-derived probability, not a guarantee of an individual outcome. Use
+        alongside clinical context, patient preferences, and applicable guidelines (including lipid management guidelines where relevant).
+      </li>
+      <li>
+        Chart prefill reflects available FHIR data and may be incomplete or stale; review and
+        correct values before relying on results.
+      </li>
+    </ul>
+  </section>
+
+  <section class="mb-4" id="interpretation-reading-results">
+    <h2 class="h5" id="interpretation-reading-results-heading">Reading results</h2>
+    <p class="mb-0" id="interpretation-reading-results-body">
+      Report absolute 10- and 30-year risk percentages (and related outputs such as PREVENT-Risk Age
+      when shown) as decision-support signals.
+    </p>
+  </section>
+</div>

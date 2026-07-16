@@ -25,6 +25,9 @@ import { isHttpOfflineOrServerError, ToastService } from '../../services/toast.s
 interface CqlRow {
   catalogId: string;
   label: string;
+  description: string;
+  assetPath: string;
+  downloadName: string;
   appVersion: string | null;
   serverVersion: string | null;
   status: LibraryContentStatus | 'idle';
@@ -76,6 +79,9 @@ export class Loader {
     CQL_LIBRARY_CATALOG.map((e) => ({
       catalogId: e.id,
       label: e.label,
+      description: e.description,
+      assetPath: e.assetPath,
+      downloadName: e.assetPath.split('/').pop() ?? `${e.id}.cql`,
       appVersion: null,
       serverVersion: null,
       status: 'idle',
@@ -366,7 +372,17 @@ export class Loader {
         if (!next) {
           return row;
         }
-        return { ...next, expanded: row.expanded };
+        return {
+          ...row,
+          label: next.label,
+          appVersion: next.appVersion,
+          serverVersion: next.serverVersion,
+          status: next.status,
+          message: next.message,
+          appCql: next.appCql,
+          serverCql: next.serverCql,
+          expanded: row.expanded,
+        };
       }),
     );
   }

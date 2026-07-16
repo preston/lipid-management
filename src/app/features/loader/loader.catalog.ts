@@ -4,6 +4,7 @@ export interface CqlLibraryCatalogEntry {
   id: string;
   assetPath: string;
   label: string;
+  description: string;
 }
 
 export type ValueSetOrigin = 'vsac' | 'asu';
@@ -29,10 +30,34 @@ export interface ExampleDataCatalogEntry {
 
 /** Dependency order: BMI → SDI2019 → OpenCVDRisk → LipidManagement. */
 export const CQL_LIBRARY_CATALOG: readonly CqlLibraryCatalogEntry[] = [
-  { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
-  { id: 'SDI2019', assetPath: '/cql/SDI-2019.cql', label: 'SDI-2019' },
-  { id: 'OpenCVDRisk', assetPath: '/cql/OpenCVDRisk.cql', label: 'OpenCVDRisk' },
-  { id: 'LipidManagement', assetPath: '/cql/LipidManagement.cql', label: 'LipidManagement' },
+  {
+    id: 'BMI',
+    assetPath: '/cql/BMI.cql',
+    label: 'BMI',
+    description:
+      'Height, weight, and body-mass-index lookup and calculation for FHIR R4 Patient context. Prefers BMI computed from the latest height and weight Observations, with fallback to a recorded BMI Observation.',
+  },
+  {
+    id: 'SDI2019',
+    assetPath: '/cql/SDI-2019.cql',
+    label: 'SDI-2019',
+    description:
+      'Robert Graham Center 2019 ZCTA Social Deprivation Index lookup (2015-2019 ACS). Maps ZIP / ZCTA to PREVENT SDI decile 1-10 via OverrideZipCode or Patient.address.postalCode.',
+  },
+  {
+    id: 'OpenCVDRisk',
+    assetPath: '/cql/OpenCVDRisk.cql',
+    label: 'OpenCVDRisk',
+    description:
+      'Open-source implementation of American Heart Association (AHA) PREVENT™ simplified regression estimates for 10- and 30-year total cardiovascular disease risk. Not affiliated with or endorsed by the AHA. Intended for adults ages 30-79 without known cardiovascular disease when required inputs are available. Enhanced SDI models use ZIP→decile from SDI2019/$evaluate (or a manual decile) passed as OverrideSdiDecile; standalone SDI-2019.cql is listed above for Library uploads.',
+  },
+  {
+    id: 'LipidManagement',
+    assetPath: '/cql/LipidManagement.cql',
+    label: 'LipidManagement',
+    description:
+      'Maps the VA/DoD Clinical Practice Guideline on Lipid Management for Cardiovascular Disease Risk Reduction (2025) management algorithm to CQL. Uses OpenCVDRisk for 10-year total CVD risk thresholds and related pathway logic.',
+  },
 ];
 
 /** Order roughly follows library dependency (BMI → SDI2019 → OpenCVDRisk / LipidManagement). */

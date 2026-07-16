@@ -54,7 +54,7 @@ describe('FhirLibraryService', () => {
 
   it('reports missing when Library GET returns 404', async () => {
     const promise = service.auditCatalogLibraries([
-      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI', description: 'BMI library' },
     ]);
     (await nextRequest(http, (r) => r.url === '/cql/BMI.cql')).flush(
       "library BMI version '1.0.0'",
@@ -79,7 +79,7 @@ describe('FhirLibraryService', () => {
       content: [{ contentType: 'text/cql', data: encodeUtf8Base64(cql) }],
     };
     const promise = service.auditCatalogLibraries([
-      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI', description: 'BMI library' },
     ]);
     (await nextRequest(http, (r) => r.url === '/cql/BMI.cql')).flush(cql);
     (await nextRequest(http, (r) => r.url === 'http://fhir.test/fhir/Library/BMI')).flush(library);
@@ -98,7 +98,7 @@ describe('FhirLibraryService', () => {
       content: [{ contentType: 'text/cql', data: encodeUtf8Base64(cql) }],
     };
     const promise = service.auditCatalogLibraries([
-      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI', description: 'BMI library' },
     ]);
     (await nextRequest(http, (r) => r.url === '/cql/BMI.cql')).flush(cql);
     (await nextRequest(http, (r) => r.url === 'http://fhir.test/fhir/Library/BMI')).flush(library);
@@ -117,7 +117,7 @@ describe('FhirLibraryService', () => {
       content: [{ contentType: 'text/cql', data: encodeUtf8Base64(cql) }],
     };
     const promise = service.auditCatalogLibraries([
-      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+      { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI', description: 'BMI library' },
     ]);
     (await nextRequest(http, (r) => r.url === '/cql/BMI.cql')).flush(cql);
     (await nextRequest(http, (r) => r.url === 'http://fhir.test/fhir/Library/BMI')).flush(library);

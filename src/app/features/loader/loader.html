@@ -65,6 +65,11 @@
       </div>
     </div>
     <div class="card-body p-0">
+      <p class="small text-body-secondary border-bottom px-3 py-3 mb-0" id="loader-cql-intro">
+        Clinical Quality Language (CQL) libraries for lipid management clinical decision support on
+        FHIR R4. Outputs are decision support signals, not treatment orders. Load order: BMI →
+        SDI-2019 → OpenCVDRisk → LipidManagement.
+      </p>
       <div class="table-responsive">
         <table class="table table-sm mb-0 align-middle" id="loader-cql-table">
           <thead>
@@ -79,7 +84,15 @@
           <tbody>
             @for (row of cqlRows(); track row.catalogId) {
               <tr [id]="'loader-cql-row-' + row.catalogId">
-                <td>{{ row.label }}</td>
+                <td>
+                  <div>{{ row.label }}</div>
+                  <div
+                    class="small text-body-secondary"
+                    [id]="'loader-cql-description-' + row.catalogId"
+                  >
+                    {{ row.description }}
+                  </div>
+                </td>
                 <td class="font-monospace">{{ row.appVersion || '—' }}</td>
                 <td class="font-monospace">{{ row.serverVersion || '—' }}</td>
                 <td>
@@ -90,7 +103,14 @@
                     <div class="small text-body-secondary">{{ row.message }}</div>
                   }
                 </td>
-                <td class="text-end">
+                <td class="text-end text-nowrap">
+                  <a
+                    class="btn btn-link btn-sm"
+                    [id]="'loader-cql-download-' + row.catalogId"
+                    [href]="row.assetPath"
+                    [attr.download]="row.downloadName"
+                    >Download</a
+                  >
                   @if (row.appCql || row.serverCql) {
                     <button
                       type="button"
@@ -127,9 +147,6 @@
           </tbody>
         </table>
       </div>
-      <p class="small text-body-secondary border-top px-3 py-3 mb-0">
-        Load order: BMI → SDI-2019 → OpenCVDRisk → LipidManagement.
-      </p>
     </div>
   </div>
 

@@ -12,8 +12,9 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'resources',
-    loadComponent: () => import('./features/resources/resources').then((m) => m.Resources),
+    path: 'interpretation',
+    loadComponent: () =>
+      import('./features/interpretation/interpretation').then((m) => m.Interpretation),
   },
   {
     path: 'architecture',

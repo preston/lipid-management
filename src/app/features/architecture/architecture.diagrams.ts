@@ -108,7 +108,7 @@ sequenceDiagram
   FHIR-->>UI: Chart expression results
   UI-->>Clinician: Prepopulated calculator form
 
-  Note over Clinician,UI: Review form; Calculate sends parameters
+  Note over Clinician,UI: Review form - Calculate sends parameters
   Clinician->>UI: Calculate risk
   UI->>FHIR: POST Library/OpenCVDRisk/$evaluate
   Note right of UI: Form values as nested library parameters

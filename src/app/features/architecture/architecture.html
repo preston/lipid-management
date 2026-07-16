@@ -2,43 +2,29 @@
   <header class="mb-4">
     <h1 class="h2 mb-2" id="architecture-title">Architecture</h1>
     <p class="text-muted mb-0" id="architecture-intro">
-      This application is clinical decision support for lipid management and cardiovascular risk scoring
-      against FHIR R4 patient records. The shipped UI centers on the OpenCVDRisk calculator
-      (AHA PREVENT&trade;-aligned risk). CQL libraries also include BMI helpers and a LipidManagement pathway
-      mapped to U.S. Department of Veterans Affairs / Department of Defense lipid guidelines.
+      This app helps clinicians estimate cardiovascular risk and support lipid management decisions
+      using patient health records.
     </p>
   </header>
 
   <section class="mb-4" id="architecture-cds">
     <h2 class="h5" id="architecture-cds-heading">Decision support only</h2>
     <p id="architecture-cds-body">
-      Outputs from this application and its CQL libraries are decision support signals. They are
-      not autonomous clinical orders and are not a substitute for clinical judgment.
+      Results are guidance for clinicians. They are not orders and do not replace clinical judgment.
     </p>
   </section>
 
   <section class="mb-4" id="architecture-how-it-works">
     <h2 class="h5" id="architecture-how-it-works-heading">How the application works</h2>
     <p class="text-muted" id="architecture-how-it-works-intro">
-      The browser talks to a FHIR server that holds patient data (or accepts a client-supplied Bundle),
-      terminology (ValueSets), and decision-support logic (CQL Libraries). The OpenCVDRisk calculator calls
-      <code>Library/$evaluate</code> to preload chart values into the form, then again when the clinician
-      presses Calculate. Prefill reads the selected patient&rsquo;s chart or custom Bundle. Calculate sends
-      the current form values (and clinician exclusion flags) as nested CQL library
-      <code>Parameters</code>; OpenCVDRisk coalesces those overrides over chart-derived inputs when
-      computing risk. Optional ZIP → SDI decile is resolved by evaluating the
-      <code>SDI2019</code> library (chart <code>Patient.address.postalCode</code> by default, or a user
-      ZIP override as <code>OverrideZipCode</code>), then passed to OpenCVDRisk as
-      <code>OverrideSdiDecile</code>. OpenCVDRisk does not include SDI-2019, so chart-only
-      LipidManagement stays on the base model unless that Parameter is supplied.
+      The calculator loads values from the patient chart, lets the clinician review or change them,
+      then asks the health data server to compute risk scores.
     </p>
 
     <section class="mb-4" id="architecture-overview">
-      <h3 class="h6" id="architecture-overview-heading">Risk scoring interaction</h3>
+      <h3 class="h6" id="architecture-overview-heading">Risk scoring</h3>
       <p class="small text-muted" id="architecture-overview-caption">
-        Prefill uses OpenCVDRisk and BMI <code>$evaluate</code>. Calculate re-runs OpenCVDRisk risk
-        expressions with the current form values as library parameters (plus chart or custom Bundle
-        data for anything not overridden).
+        Prefill fills the form from the chart. Calculate re-runs scoring with the current form values.
       </p>
       <div
         class="architecture-diagram border rounded p-2 bg-body-tertiary"
@@ -52,11 +38,8 @@
     <section class="mb-4" id="architecture-standalone">
       <h3 class="h6" id="architecture-standalone-heading">Standalone mode</h3>
       <p class="small text-muted" id="architecture-standalone-caption">
-        Point the app at a FHIR server in Settings. With developer mode enabled, the Loader can upload
-        Libraries, ValueSets, and optional example data. On the calculator, search for a patient on that
-        server, or open a custom FHIR Bundle JSON file (for example Synthea). Custom files are sent to
-        <code>$evaluate</code> as the <code>data</code> parameter with <code>useServerData</code> set to
-        <code>false</code>, so the server does not mix in its own patient data.
+        Connect to a health data server in Settings, then search for a patient or open a patient
+        data file. Developer mode can upload the scoring rules to that server.
       </p>
       <div
         class="architecture-diagram border rounded p-2 bg-body-tertiary"
@@ -70,10 +53,8 @@
     <section class="mb-4" id="architecture-smart">
       <h3 class="h6" id="architecture-smart-heading">SMART-on-FHIR mode</h3>
       <p class="small text-muted" id="architecture-smart-caption">
-        The EHR launches <code>/launch</code> with <code>iss</code> and <code>launch</code>. After SMART
-        authorization and patient context, the calculator uses the same CQL preload and Calculate
-        <code>$evaluate</code> path against the EHR FHIR server. Custom client Bundles are not used in
-        SMART mode.
+        The electronic health record opens the app with a patient already selected. Scoring uses that
+        chart on the EHR&rsquo;s server.
       </p>
       <div
         class="architecture-diagram border rounded p-2 bg-body-tertiary"
@@ -87,8 +68,8 @@
     <section class="mb-0" id="architecture-cql-packaging">
       <h3 class="h6" id="architecture-cql-packaging-heading">How clinical logic is packaged</h3>
       <p class="small text-muted" id="architecture-cql-packaging-caption">
-        CQL source and ValueSet terminology ship with the app under <code>public/</code>. The Loader
-        (Settings &rarr; developer mode) uploads them to the configured FHIR server before evaluation.
+        Scoring rules and related terminology ship with the app. The Loader uploads them to the
+        configured server before scoring runs.
       </p>
       <div
         class="architecture-diagram border rounded p-2 bg-body-tertiary"
@@ -98,25 +79,9 @@
         aria-label="Sequence of packaging CQL and ValueSets onto the FHIR server for evaluate"
       ></div>
       <ul class="small mt-3 mb-0" id="architecture-cql-packaging-notes">
-        <li>
-          CQL under <code>public/cql/</code> (BMI, SDI-2019 / Library id <code>SDI2019</code>,
-          OpenCVDRisk, LipidManagement) is uploaded as FHIR
-          <code>Library</code> resources via <code>PUT</code> to each Library id
-          (<code>contentType: text/cql</code>, base64-encoded body). Loader order:
-          BMI → SDI-2019 → OpenCVDRisk → LipidManagement.
-        </li>
-        <li>
-          Terminology under <code>public/value-sets/</code> is FHIR <code>ValueSet</code> content inside
-          transaction Bundles; the Loader <code>POST</code>s those Bundles to the server base URL.
-        </li>
-        <li>
-          CQL <code>valueset</code> URLs must match the <code>ValueSet.url</code> values stored on the server.
-        </li>
-        <li>
-          The browser does not interpret CQL for risk or pathway scoring; the FHIR server evaluates uploaded
-          Libraries against patient chart data or a client-supplied Bundle, including any nested library
-          <code>Parameters</code> sent by the calculator on Calculate.
-        </li>
+        <li>Rules and terminology are uploaded once, then reused for each calculation.</li>
+        <li>The browser does not score patients itself; the server runs the uploaded rules.</li>
+        <li>Uploaded terminology must match what the scoring rules expect.</li>
       </ul>
     </section>
   </section>
@@ -124,33 +89,25 @@
   <section class="mb-4" id="architecture-opencvd-risk">
     <h2 class="h5" id="architecture-opencvd-risk-heading">OpenCVDRisk and PREVENT&trade;</h2>
     <p id="architecture-opencvd-risk-body">
-      The OpenCVDRisk calculator and library are an open-source implementation of the American Heart
-      Association (AHA) PREVENT&trade; algorithms for adults ages 30&ndash;79 without known
-      cardiovascular disease. They do not use AHA source code or AHA assets requiring a license from
-      the AHA. This is not an official AHA product and is neither affiliated with nor endorsed by
-      the AHA. Coefficients follow Khan Supplemental Table S12A&ndash;J (base and optional
-      UACR / HbA1c / SDI models for 10- and 30-year Total CVD, ASCVD, HF, CHD, and Stroke). Optional
-      predictors use preventr-style model selection. SDI deciles come from the Robert Graham Center
-      2019 ZCTA Social Deprivation Index (<code>SDI_score</code> centile → decile 1&ndash;10),
-      baked into <code>SDI-2019.cql</code> (<code>SDI2019</code>). The calculator resolves ZIP→decile
-      with <code>SDI2019/$evaluate</code> and passes the result as <code>OverrideSdiDecile</code>.
-      LipidManagement chart-only evaluate stays on the base model unless a host passes optional
-      Parameters (including <code>OverrideSdiDecile</code>).
+      OpenCVDRisk is an open-source implementation of the AHA PREVENT&trade; risk equations for
+      adults ages 30&ndash;79 without known cardiovascular disease. It is not an official AHA product
+      and is not affiliated with or endorsed by the AHA.
     </p>
     <p class="mb-0" id="architecture-opencvd-risk-citation">
-      Statistical model: Khan SS et al., Circulation. 2024;149:430-449. DOI:
+      Model: Khan SS et al., Circulation. 2024;149:430-449. DOI:
       <a href="https://doi.org/10.1161/CIRCULATIONAHA.123.067626" id="architecture-opencvd-risk-doi" target="_blank"
-        rel="noopener noreferrer">10.1161/CIRCULATIONAHA.123.067626</a>.
+        rel="noopener noreferrer">10.1161/CIRCULATIONAHA.123.067626</a>. PREVENT Risk Age: Krishnan V et al.,
+      JAMA Cardiol. 2025. DOI:
+      <a href="https://doi.org/10.1001/jamacardio.2025.2427" id="architecture-prevent-age-doi" target="_blank"
+        rel="noopener noreferrer">10.1001/jamacardio.2025.2427</a>.
     </p>
   </section>
 
   <section class="mb-4" id="architecture-guideline">
     <h2 class="h5" id="architecture-guideline-heading">Guideline basis</h2>
     <p class="mb-0" id="architecture-guideline-body">
-      The LipidManagement CQL library maps the VA/DoD Clinical Practice Guideline on Lipid Management for
-      Cardiovascular Disease Risk Reduction (2025), including the adult management algorithm
-      (Appendix G / figure page 20). That library is loadable with the other CQL packages; the current UI
-      evaluates OpenCVDRisk (and BMI for prefill), not LipidManagement pathway expressions.
+      Lipid pathway logic follows the 2025 VA/DoD lipid management guideline. The current screens
+      focus on OpenCVDRisk scoring rather than that pathway.
     </p>
   </section>
 

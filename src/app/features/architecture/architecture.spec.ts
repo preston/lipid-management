@@ -53,10 +53,10 @@ describe('Architecture', () => {
     expect(root.querySelector('#architecture-smart')).toBeTruthy();
     expect(root.querySelector('#architecture-cql-packaging')).toBeTruthy();
     expect(root.querySelector('#architecture-cql-packaging-notes')?.textContent).toContain(
-      'SDI-2019',
+      'server runs the uploaded rules',
     );
     expect(root.querySelector('#architecture-opencvd-risk-body')?.textContent).toContain(
-      'ZCTA',
+      'PREVENT',
     );
 
     expect(root.querySelector('#architecture-overview-diagram')).toBeTruthy();
