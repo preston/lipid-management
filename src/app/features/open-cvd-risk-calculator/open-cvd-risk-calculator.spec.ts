@@ -46,6 +46,9 @@ const EMPTY_RISK_RESULTS = {
   ThirtyYearHeartFailurePercent: 12.0,
   ThirtyYearChdPercent: 10.0,
   ThirtyYearStrokePercent: 8.0,
+  OpenCvdRiskAge: 68,
+  BaseTenYearTotalCvdPercent: 8.1,
+  BaseThirtyYearTotalCvdPercent: 22.3,
 };
 
 describe('OpenCVDRiskCalculator', () => {

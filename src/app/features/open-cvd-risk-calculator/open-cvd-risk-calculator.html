@@ -602,8 +602,12 @@
               {{ risk10yChd() }}%
             </dd>
             <dt class="col-sm-8">Stroke</dt>
-            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-10y-stroke">
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-10y-stroke">
               {{ risk10yStroke() }}%
+            </dd>
+            <dt class="col-sm-8"><i>OpenCVDRisk Age</i></dt>
+            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-age">
+              {{ openCvdRiskAge() }}yo
             </dd>
           </dl>
 
@@ -626,8 +630,12 @@
               {{ risk30yChd() }}%
             </dd>
             <dt class="col-sm-8">Stroke</dt>
-            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-30y-stroke">
+            <dd class="col-sm-4 text-end mb-2" id="open-cvd-risk-result-30y-stroke">
               {{ risk30yStroke() }}%
+            </dd>
+            <dt class="col-sm-8"><i>30-year CVD percentile</i></dt>
+            <dd class="col-sm-4 text-end mb-0" id="open-cvd-risk-result-30y-cvd-percentile">
+             <span class="fw-semibold">{{ risk30yCvdPercentile() }}%</span>
             </dd>
           </dl>
         </div>
@@ -635,7 +643,7 @@
           <div class="alert mb-0 rounded-0 rounded-bottom border-0" [class.alert-warning]="!inputsComplete()"
             [class.alert-success]="inputsComplete()" id="open-cvd-risk-results-message" role="status">
             @if (inputsComplete()) {
-            Form complete! Calculation will use current values.
+            Calculations will use current form values.
             } @else {
             Some required form inputs are incomplete.
             }

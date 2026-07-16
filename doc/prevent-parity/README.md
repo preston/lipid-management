@@ -45,3 +45,6 @@ Env: `FHIR_BASE_URL` (default `http://localhost:8080/fhir`).
 
 Overlapping outcomes **10y/30y × total CVD, ASCVD, HF** must match within **0.1**
 percentage points. CHD/Stroke are app-only (S12); not compared to AHA web UI.
+
+When goldens include `aha_prevent_age` / `aha_30y_cvd_percentile`, those must match
+app/TS exactly (integer years / percentiles). Empty AHA cells are skipped.

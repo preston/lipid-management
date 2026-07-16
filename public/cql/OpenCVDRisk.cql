@@ -14,13 +14,16 @@
   follows the preventr / AHA calculator rules (0→base, 1→that add-on, ≥2→full with
   missing indicators).
 
+  OpenCVDRisk Age (PREVENT-Risk Age) uses Krishnan et al. JAMA Cardiology 2025
+  eMethods closed forms on base-model 10-year total CVD percent.
+
   risk = exp(linear_predictor) / (1 + exp(linear_predictor)).
 
   This library is decision support only, not a substitute for clinical judgment.
   Coefficients and transforms from Khan Supplemental Table S12A–J
   (source extract: scripts/extract-prevent-s12.ts → s12-goldens.json).
 */
-library OpenCVDRisk version '0.5.2'
+library OpenCVDRisk version '0.5.3'
 
 using FHIR version '4.0.1'
 
@@ -920,6 +923,48 @@ define ThirtyYearStrokeProbability:
 
 define ThirtyYearStrokePercent:
   case when ThirtyYearStrokeProbability is null then null else 100.0 * ThirtyYearStrokeProbability end
+
+/* Base-model total CVD only (ignores optional add-on model selection). */
+
+define PrepTerms10BaseOnly:
+  case
+    when not InputsComplete then null
+    else PrepTerms10YrBase(EffectiveAgeYears, EffectiveTotalCholMgDl, EffectiveHdlMgDl, EffectiveSbpMmHg, EffectiveDiabetes, EffectiveCurrentSmoker, EffectiveBmiKgM2, EffectiveEgfr, EffectiveAntihypertensive, EffectiveStatin) end
+
+define PrepTerms30BaseOnly:
+  case
+    when not InputsComplete then null
+    else PrepTerms30YrBase(EffectiveAgeYears, EffectiveTotalCholMgDl, EffectiveHdlMgDl, EffectiveSbpMmHg, EffectiveDiabetes, EffectiveCurrentSmoker, EffectiveBmiKgM2, EffectiveEgfr, EffectiveAntihypertensive, EffectiveStatin) end
+
+define BaseTenYearTotalCvdProbability:
+  case
+    when not InputsComplete then null
+    when EffectiveIsMale then RiskFromBetasN(23, Beta10MaleTotalCvdBase, PrepTerms10BaseOnly)
+    when EffectiveIsFemale then RiskFromBetasN(23, Beta10FemaleTotalCvdBase, PrepTerms10BaseOnly)
+    else null end
+
+define BaseTenYearTotalCvdPercent:
+  case when BaseTenYearTotalCvdProbability is null then null else 100.0 * BaseTenYearTotalCvdProbability end
+
+define BaseThirtyYearTotalCvdProbability:
+  case
+    when not InputsComplete then null
+    when EffectiveIsMale then RiskFromBetasN(24, Beta30MaleTotalCvdBase, PrepTerms30BaseOnly)
+    when EffectiveIsFemale then RiskFromBetasN(24, Beta30FemaleTotalCvdBase, PrepTerms30BaseOnly)
+    else null end
+
+define BaseThirtyYearTotalCvdPercent:
+  case when BaseThirtyYearTotalCvdProbability is null then null else 100.0 * BaseThirtyYearTotalCvdProbability end
+
+/* OpenCVDRisk Age: Krishnan JAMA Cardiology 2025; p-hat = base 10y total CVD percent. */
+
+define OpenCvdRiskAge:
+  case
+    when BaseTenYearTotalCvdPercent is null then null
+    when BaseTenYearTotalCvdPercent <= 0.0 then null
+    when EffectiveIsFemale then Round(Min({ 79.0, Max({ 30.0, 45.09746 + 11.27498 * Ln(BaseTenYearTotalCvdPercent) }) }))
+    when EffectiveIsMale then Round(Min({ 79.0, Max({ 30.0, 41.55092 + 11.72711 * Ln(BaseTenYearTotalCvdPercent) }) }))
+    else null end
 
 /* Aliases retained for PrepTerms* chart consumers */
 define PrepTerms10:

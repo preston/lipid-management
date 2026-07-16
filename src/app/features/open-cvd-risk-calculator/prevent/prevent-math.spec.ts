@@ -4,6 +4,8 @@ import { describe, expect, it } from 'vitest';
 import { PREVENT_S12_GOLDENS } from './s12-goldens';
 import {
   prepTerms,
+  preventRiskAge,
+  formatPreventRiskAgeDisplay,
   riskFromBetas,
   selectPreventModel,
   type PreventInputs,
@@ -107,5 +109,39 @@ describe('PREVENT S12 Excel goldens', () => {
     expect(selectPreventModel({ ...inputs, uacr: 0.01 })).toBe('base');
     expect(selectPreventModel({ ...inputs, hba1c: 16 })).toBe('base');
     expect(selectPreventModel({ ...inputs, uacr: 40, hba1c: 7.5, sdi: null })).toBe('full');
+  });
+});
+
+describe('preventRiskAge (PREVENT-Risk Age / OpenCVDRisk Age)', () => {
+  it('uses percent-scale p-hat (near-optimal 0.9% ≈ chronological mid-40s for females)', () => {
+    expect(preventRiskAge('female', 0.9)).toBe(44);
+    expect(preventRiskAge('male', 0.9)).toBe(40);
+  });
+
+  it('matches published ~5% → ~63 female example', () => {
+    expect(preventRiskAge('female', 5)).toBe(63);
+    expect(preventRiskAge('male', 5)).toBe(60);
+  });
+
+  it('clamps below 30 and above 79', () => {
+    expect(preventRiskAge('female', 0.01)).toBe(30);
+    expect(preventRiskAge('male', 0.01)).toBe(30);
+    expect(preventRiskAge('female', 50)).toBe(79);
+    expect(preventRiskAge('male', 50)).toBe(79);
+  });
+
+  it('displays extremes as <30 and >79', () => {
+    expect(formatPreventRiskAgeDisplay('female', 0.01)).toBe('<30');
+    expect(formatPreventRiskAgeDisplay('male', 0.01)).toBe('<30');
+    expect(formatPreventRiskAgeDisplay('female', 25)).toBe('>79');
+    expect(formatPreventRiskAgeDisplay('male', 25)).toBe('>79');
+    expect(formatPreventRiskAgeDisplay('female', 5)).toBe('63');
+  });
+
+  it('returns null for non-positive or non-finite risk', () => {
+    expect(preventRiskAge('female', 0)).toBeNull();
+    expect(preventRiskAge('female', -1)).toBeNull();
+    expect(preventRiskAge('female', Number.NaN)).toBeNull();
+    expect(formatPreventRiskAgeDisplay('female', 0)).toBeNull();
   });
 });

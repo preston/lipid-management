@@ -9,6 +9,7 @@
     "test": "ng test",
     "generate:sdi-2019": "tsx scripts/generate-sdi-2019.ts",
     "extract:prevent-s12": "tsx scripts/extract-prevent-s12.ts",
+    "extract:prevent-percentiles": "tsx scripts/extract-prevent-percentiles.ts",
     "validate:prevent-aha": "tsx scripts/validate-prevent-aha-goldens.ts",
     "compare:prevent-aha": "tsx scripts/compare-prevent-aha.ts"
   },

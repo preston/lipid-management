@@ -28,9 +28,12 @@ import {
   isValidHba1c,
   isValidSdi,
   isValidUacr,
+  formatPreventRiskAgeDisplay,
   selectPreventModel,
   type PreventModel,
+  type PreventSex,
 } from './prevent/prevent-math';
+import { formatPrevent30yCvdPercentileDisplay } from './prevent/prevent-percentiles';
 import { normalizeZip, postalCodeFromPatientAddress } from './sdi/sdi-lookup';
 
 const PLACEHOLDER = '—';
@@ -53,6 +56,8 @@ const RISK_EXPRESSIONS = [
   'ThirtyYearHeartFailurePercent',
   'ThirtyYearChdPercent',
   'ThirtyYearStrokePercent',
+  'BaseTenYearTotalCvdPercent',
+  'BaseThirtyYearTotalCvdPercent',
 ] as const;
 
 const EMPTY_FORM: OpenCVDRiskCalculatorForm = {
@@ -123,11 +128,13 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly risk10yHf = signal<string>(PLACEHOLDER);
   protected readonly risk10yChd = signal<string>(PLACEHOLDER);
   protected readonly risk10yStroke = signal<string>(PLACEHOLDER);
+  protected readonly openCvdRiskAge = signal<string>(PLACEHOLDER);
   protected readonly risk30yTotal = signal<string>(PLACEHOLDER);
   protected readonly risk30yAscvd = signal<string>(PLACEHOLDER);
   protected readonly risk30yHf = signal<string>(PLACEHOLDER);
   protected readonly risk30yChd = signal<string>(PLACEHOLDER);
   protected readonly risk30yStroke = signal<string>(PLACEHOLDER);
+  protected readonly risk30yCvdPercentile = signal<string>(PLACEHOLDER);
   protected readonly selectedRiskModel = signal<PreventModel | null>(null);
 
   protected readonly isSmart = this.patientContext.isSmart;
@@ -508,11 +515,21 @@ export class OpenCVDRiskCalculator implements OnInit {
           this.risk10yHf.set(this.formatPercent(results['TenYearHeartFailurePercent']));
           this.risk10yChd.set(this.formatPercent(results['TenYearChdPercent']));
           this.risk10yStroke.set(this.formatPercent(results['TenYearStrokePercent']));
+          this.openCvdRiskAge.set(
+            this.formatRiskAgeDisplay(this.model().sex, results['BaseTenYearTotalCvdPercent']),
+          );
           this.risk30yTotal.set(this.formatPercent(results['ThirtyYearTotalCvdPercent']));
           this.risk30yAscvd.set(this.formatPercent(results['ThirtyYearAscvdPercent']));
           this.risk30yHf.set(this.formatPercent(results['ThirtyYearHeartFailurePercent']));
           this.risk30yChd.set(this.formatPercent(results['ThirtyYearChdPercent']));
           this.risk30yStroke.set(this.formatPercent(results['ThirtyYearStrokePercent']));
+          this.risk30yCvdPercentile.set(
+            this.formatPercentileDisplay(
+              this.model().age,
+              this.model().sex,
+              results['BaseThirtyYearTotalCvdPercent'],
+            ),
+          );
           const model = results['SelectedPreventModel'];
           this.selectedRiskModel.set(
             typeof model === 'string' &&
@@ -753,11 +770,13 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.risk10yHf.set(PLACEHOLDER);
     this.risk10yChd.set(PLACEHOLDER);
     this.risk10yStroke.set(PLACEHOLDER);
+    this.openCvdRiskAge.set(PLACEHOLDER);
     this.risk30yTotal.set(PLACEHOLDER);
     this.risk30yAscvd.set(PLACEHOLDER);
     this.risk30yHf.set(PLACEHOLDER);
     this.risk30yChd.set(PLACEHOLDER);
     this.risk30yStroke.set(PLACEHOLDER);
+    this.risk30yCvdPercentile.set(PLACEHOLDER);
     this.selectedRiskModel.set(null);
   }
 
@@ -771,9 +790,9 @@ export class OpenCVDRiskCalculator implements OnInit {
       const currentBmi = this.bmiKgM2();
       const baselineBmi =
         baseline.heightCm != null &&
-        baseline.weightKg != null &&
-        baseline.heightCm > 0 &&
-        baseline.weightKg > 0
+          baseline.weightKg != null &&
+          baseline.heightCm > 0 &&
+          baseline.weightKg > 0
           ? computeBmiKgM2(baseline.heightCm, baseline.weightKg)
           : null;
       if (currentBmi == null || baselineBmi == null) {
@@ -840,5 +859,46 @@ export class OpenCVDRiskCalculator implements OnInit {
       return PLACEHOLDER;
     }
     return this.formatNumber(n, 1);
+  }
+
+  private formatRiskAgeDisplay(sex: OpenCVDRiskSex | '', baseTenYearTotalCvdPercent: unknown): string {
+    if (sex !== 'female' && sex !== 'male') {
+      return PLACEHOLDER;
+    }
+    if (
+      typeof baseTenYearTotalCvdPercent !== 'number' ||
+      !Number.isFinite(baseTenYearTotalCvdPercent)
+    ) {
+      return PLACEHOLDER;
+    }
+    return (
+      formatPreventRiskAgeDisplay(sex as PreventSex, baseTenYearTotalCvdPercent) ?? PLACEHOLDER
+    );
+  }
+
+  private formatPercentileDisplay(
+    ageYears: number | null,
+    sex: OpenCVDRiskSex | '',
+    baseThirtyYearTotalCvdPercent: unknown,
+  ): string {
+    if (sex !== 'female' && sex !== 'male') {
+      return PLACEHOLDER;
+    }
+    if (ageYears == null || !Number.isFinite(ageYears)) {
+      return PLACEHOLDER;
+    }
+    if (
+      typeof baseThirtyYearTotalCvdPercent !== 'number' ||
+      !Number.isFinite(baseThirtyYearTotalCvdPercent)
+    ) {
+      return PLACEHOLDER;
+    }
+    return (
+      formatPrevent30yCvdPercentileDisplay(
+        ageYears,
+        sex as PreventSex,
+        baseThirtyYearTotalCvdPercent,
+      ) ?? PLACEHOLDER
+    );
   }
 }

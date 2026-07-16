@@ -165,3 +165,56 @@ export function riskFromBetas(betas: readonly number[], terms: readonly number[]
   }
   return sigmoid(lp);
 }
+
+/**
+ * PREVENT-Risk Age (OpenCVDRisk Age) from Krishnan et al. JAMA Cardiology 2025 eMethods.
+ * `tenYearTotalCvdPercent` is absolute 10-year base-model total CVD risk on the percent scale
+ * (e.g. 0.9 for 0.9%, 5 for 5%), not a 0–1 proportion.
+ *
+ * Numeric result is clamped to [30, 79] per eMethods. UI display uses
+ * {@link formatPreventRiskAgeDisplay} so extremes render as "<30" / ">79".
+ */
+export function preventRiskAge(
+  sex: PreventSex,
+  tenYearTotalCvdPercent: number,
+): number | null {
+  const raw = preventRiskAgeRaw(sex, tenYearTotalCvdPercent);
+  if (raw == null) {
+    return null;
+  }
+  return Math.round(Math.min(79, Math.max(30, raw)));
+}
+
+/** Unclamped continuous risk age (same inputs as {@link preventRiskAge}). */
+export function preventRiskAgeRaw(
+  sex: PreventSex,
+  tenYearTotalCvdPercent: number,
+): number | null {
+  if (!Number.isFinite(tenYearTotalCvdPercent) || tenYearTotalCvdPercent <= 0) {
+    return null;
+  }
+  const intercept = sex === 'female' ? 45.09746 : 41.55092;
+  const slope = sex === 'female' ? 11.27498 : 11.72711;
+  return intercept + slope * Math.log(tenYearTotalCvdPercent);
+}
+
+/**
+ * Display string for OpenCVDRisk Age. Extremes are "<30" / ">79" (Khan-lab / AHA
+ * communication); in-range values are nearest whole years.
+ */
+export function formatPreventRiskAgeDisplay(
+  sex: PreventSex,
+  tenYearTotalCvdPercent: number,
+): string | null {
+  const raw = preventRiskAgeRaw(sex, tenYearTotalCvdPercent);
+  if (raw == null) {
+    return null;
+  }
+  if (raw < 30) {
+    return '<30';
+  }
+  if (raw > 79) {
+    return '>79';
+  }
+  return String(Math.round(raw));
+}

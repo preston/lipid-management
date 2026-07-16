@@ -15,6 +15,7 @@ import {
   isValidSdi,
   isValidUacr,
   prepTerms,
+  preventRiskAge,
   riskFromBetas,
   selectPreventModel,
   type PreventInputs,
@@ -22,6 +23,7 @@ import {
   type PreventOutcome,
   type PreventSex,
 } from '../src/app/features/open-cvd-risk-calculator/prevent/prevent-math';
+import { prevent30yCvdPercentile } from '../src/app/features/open-cvd-risk-calculator/prevent/prevent-percentiles';
 import { PREVENT_S12_GOLDENS } from '../src/app/features/open-cvd-risk-calculator/prevent/s12-goldens';
 import {
   evaluateLibrary,
@@ -53,6 +55,9 @@ const RISK_EXPRESSIONS = [
   'ThirtyYearHeartFailurePercent',
   'ThirtyYearChdPercent',
   'ThirtyYearStrokePercent',
+  'OpenCvdRiskAge',
+  'BaseTenYearTotalCvdPercent',
+  'BaseThirtyYearTotalCvdPercent',
 ] as const;
 
 const OUTCOMES: readonly PreventOutcome[] = ['totalCvd', 'ascvd', 'hf', 'chd', 'stroke'];
@@ -104,6 +109,16 @@ const COMPARE_HEADERS = [
   'ts_10y_stroke',
   'ts_30y_chd',
   'ts_30y_stroke',
+  'aha_prevent_age',
+  'app_prevent_age',
+  'ts_prevent_age',
+  'delta_prevent_age',
+  'pass_prevent_age',
+  'aha_30y_cvd_percentile',
+  'app_30y_cvd_percentile',
+  'ts_30y_cvd_percentile',
+  'delta_30y_cvd_percentile',
+  'pass_30y_cvd_percentile',
   'overall_pass',
   'notes',
 ] as const;
@@ -250,6 +265,20 @@ function compareField(
   return { delta, pass: Math.abs(aha - app) <= TOLERANCE_PP + 1e-9 };
 }
 
+function compareExactInt(
+  aha: number | null,
+  app: number | null,
+): { delta: number | null; pass: boolean | null } {
+  if (aha == null) {
+    return { delta: null, pass: null };
+  }
+  if (app == null) {
+    return { delta: null, pass: false };
+  }
+  const delta = Math.abs(Math.round(aha) - Math.round(app));
+  return { delta, pass: delta === 0 };
+}
+
 async function main(): Promise<void> {
   const fhirBase = process.env['FHIR_BASE_URL']?.trim() || FHIR_BASE_DEFAULT;
   const { rows } = parseCsv(readFileSync(GOLDENS_CSV, 'utf8'));
@@ -297,6 +326,22 @@ async function main(): Promise<void> {
       chd: asAppPercent(app['ThirtyYearChdPercent']),
       stroke: asAppPercent(app['ThirtyYearStrokePercent']),
     };
+    const appAge =
+      typeof app['OpenCvdRiskAge'] === 'number' && Number.isFinite(app['OpenCvdRiskAge'])
+        ? Math.round(app['OpenCvdRiskAge'])
+        : null;
+    const appBase30Raw =
+      typeof app['BaseThirtyYearTotalCvdPercent'] === 'number' &&
+      Number.isFinite(app['BaseThirtyYearTotalCvdPercent'])
+        ? app['BaseThirtyYearTotalCvdPercent']
+        : null;
+    const ageYears = parseNum(row['age_years'] ?? '');
+    const appPercentile =
+      ageYears != null &&
+      (sex === 'female' || sex === 'male') &&
+      appBase30Raw != null
+        ? prevent30yCvdPercentile(ageYears, sex, appBase30Raw)
+        : null;
 
     const ts10: Record<PreventOutcome, number | null> = {
       totalCvd: null,
@@ -312,12 +357,23 @@ async function main(): Promise<void> {
       chd: null,
       stroke: null,
     };
+    let tsBase10: number | null = null;
+    let tsBase30: number | null = null;
+    let tsAge: number | null = null;
+    let tsPercentile: number | null = null;
     if (input && model && (sex === 'female' || sex === 'male')) {
       for (const outcome of OUTCOMES) {
         ts10[outcome] = round1(localRiskPercent(input, sex, model, 10, outcome));
         if ((parseNum(row['age_years'] ?? '') ?? 99) <= 59) {
           ts30[outcome] = round1(localRiskPercent(input, sex, model, 30, outcome));
         }
+      }
+      tsBase10 = localRiskPercent(input, sex, 'base', 10, 'totalCvd');
+      tsAge = tsBase10 != null ? preventRiskAge(sex, tsBase10) : null;
+      if ((ageYears ?? 99) <= 59) {
+        tsBase30 = localRiskPercent(input, sex, 'base', 30, 'totalCvd');
+        tsPercentile =
+          tsBase30 != null ? prevent30yCvdPercentile(input.age, sex, tsBase30) : null;
       }
     }
 
@@ -331,6 +387,8 @@ async function main(): Promise<void> {
       ascvd: parseNum(row['aha_30y_ascvd'] ?? ''),
       hf: parseNum(row['aha_30y_hf'] ?? ''),
     };
+    const ahaAge = parseNum(row['aha_prevent_age'] ?? '');
+    const ahaPercentile = parseNum(row['aha_30y_cvd_percentile'] ?? '');
 
     const c10t = compareField(aha10.totalCvd, app10.totalCvd);
     const c10a = compareField(aha10.ascvd, app10.ascvd);
@@ -338,10 +396,19 @@ async function main(): Promise<void> {
     const c30t = compareField(aha30.totalCvd, app30.totalCvd);
     const c30a = compareField(aha30.ascvd, app30.ascvd);
     const c30h = compareField(aha30.hf, app30.hf);
+    const cAge = compareExactInt(ahaAge, appAge);
+    const cPct = compareExactInt(ahaPercentile, appPercentile);
 
     const passBits = [c10t.pass, c10a.pass, c10h.pass, c30t.pass, c30a.pass, c30h.pass].filter(
       (p): p is boolean => p != null,
     );
+    // Age/percentile only gate overall_pass when AHA goldens include those columns.
+    if (cAge.pass != null) {
+      passBits.push(cAge.pass);
+    }
+    if (cPct.pass != null) {
+      passBits.push(cPct.pass);
+    }
     const overallPass = scorable && passBits.length > 0 && passBits.every(Boolean);
     if (scorable && !overallPass) {
       failures += 1;
@@ -405,6 +472,16 @@ async function main(): Promise<void> {
       ts_10y_stroke: numCell(ts10.stroke),
       ts_30y_chd: numCell(ts30.chd),
       ts_30y_stroke: numCell(ts30.stroke),
+      aha_prevent_age: numCell(ahaAge),
+      app_prevent_age: numCell(appAge),
+      ts_prevent_age: numCell(tsAge),
+      delta_prevent_age: numCell(cAge.delta),
+      pass_prevent_age: cAge.pass == null ? '' : String(cAge.pass),
+      aha_30y_cvd_percentile: numCell(ahaPercentile),
+      app_30y_cvd_percentile: numCell(appPercentile),
+      ts_30y_cvd_percentile: numCell(tsPercentile),
+      delta_30y_cvd_percentile: numCell(cPct.delta),
+      pass_30y_cvd_percentile: cPct.pass == null ? '' : String(cPct.pass),
       overall_pass: scorable ? String(overallPass) : '',
       notes: notes.join('; '),
     };
