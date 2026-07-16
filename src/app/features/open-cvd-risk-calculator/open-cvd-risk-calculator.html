@@ -246,7 +246,7 @@
         </div>
 
         <div class="card">
-          <div class="card-header">Lipids &amp; blood pressure</div>
+          <div class="card-header">Lipids, blood pressure &amp; kidney</div>
           <div class="card-body">
             <div class="row g-3">
               <div class="col-sm-6">
@@ -292,7 +292,7 @@
                 }
               </div>
               <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic blood pressure</label>
+                <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic BP</label>
                 <div class="input-group">
                   <input type="number" class="form-control" id="open-cvd-risk-systolic-bp" step="1" placeholder="90-200"
                     [class.is-invalid]="openCvdRiskForm.systolicBpMmHg().invalid()"
@@ -310,29 +310,25 @@
                 <div class="form-text text-body-secondary" id="open-cvd-risk-sbp-provenance">{{ blurb }}</div>
                 }
               </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="open-cvd-risk-egfr">
+                  eGFR (mL/min/1.73m&sup2;)
+                </label>
+                <input type="number" class="form-control" id="open-cvd-risk-egfr" step="1" placeholder="15-150"
+                  [class.is-invalid]="openCvdRiskForm.egfrMlMin173m2().invalid()"
+                  [formField]="openCvdRiskForm.egfrMlMin173m2" />
+                @if (openCvdRiskForm.egfrMlMin173m2().invalid()) {
+                <div class="invalid-feedback d-block" id="open-cvd-risk-egfr-errors">
+                  @for (error of openCvdRiskForm.egfrMlMin173m2().errors(); track error.kind) {
+                  <div>{{ error.message }}</div>
+                  }
+                </div>
+                }
+                @if (provenanceFor('egfrMlMin173m2'); as blurb) {
+                <div class="form-text text-body-secondary" id="open-cvd-risk-egfr-provenance">{{ blurb }}</div>
+                }
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Kidney</div>
-          <div class="card-body">
-            <label class="form-label" for="open-cvd-risk-egfr">
-              eGFR (mL/min/1.73m&sup2;)
-            </label>
-            <input type="number" class="form-control" id="open-cvd-risk-egfr" step="1" placeholder="15-150"
-              [class.is-invalid]="openCvdRiskForm.egfrMlMin173m2().invalid()"
-              [formField]="openCvdRiskForm.egfrMlMin173m2" />
-            @if (openCvdRiskForm.egfrMlMin173m2().invalid()) {
-            <div class="invalid-feedback d-block" id="open-cvd-risk-egfr-errors">
-              @for (error of openCvdRiskForm.egfrMlMin173m2().errors(); track error.kind) {
-              <div>{{ error.message }}</div>
-              }
-            </div>
-            }
-            @if (provenanceFor('egfrMlMin173m2'); as blurb) {
-            <div class="form-text text-body-secondary" id="open-cvd-risk-egfr-provenance">{{ blurb }}</div>
-            }
           </div>
         </div>
 
@@ -435,10 +431,11 @@
           <div class="card-header">Optional predictors</div>
           <div class="card-body">
             <p class="form-text mb-3" id="open-cvd-risk-optional-predictors-help">
-              Leave blank to use the base model. One optional selects that add-on equation; two or
+              Leave blank to use the base equations
+              <!-- . One optional selects that add-on equation; two or
               more use the full model (missing indicators for blanks). ZIP defaults from the chart
               address and resolves SDI via the SDI2019 CQL library (you may override ZIP or enter SDI
-              decile directly).
+              decile directly). -->
             </p>
             <div class="d-flex flex-column gap-3">
               <div>
@@ -482,7 +479,7 @@
                   [formField]="openCvdRiskForm.zipCode"
                   (input)="onZipCodeInput($event)" />
                 <div class="form-text" id="open-cvd-risk-zip-help">
-                  Optional. Defaults from chart address; override allowed.
+                  Optional. Defaults from chart address.
                 </div>
                 @if (provenanceFor('zipCode'); as blurb) {
                 <div class="form-text text-body-secondary" id="open-cvd-risk-zip-provenance">{{ blurb }}</div>
@@ -516,9 +513,9 @@
         <div class="card" id="open-cvd-risk-clinical-context-card">
           <div class="card-header">Clinical context</div>
           <div class="card-body">
-            <p class="form-text mb-3" id="open-cvd-risk-clinical-context-help">
+            <!-- <p class="form-text mb-3" id="open-cvd-risk-clinical-context-help">
               Not usually in structured chart data; mark if known.
-            </p>
+            </p> -->
             <div class="form-check mb-2">
               <input class="form-check-input" type="checkbox" id="open-cvd-risk-life-expectancy-limited"
                 [checked]="lifeExpectancyLimited()" (change)="setLifeExpectancyLimited($any($event.target).checked)" />

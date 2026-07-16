@@ -22,6 +22,8 @@
   This library is decision support only, not a substitute for clinical judgment.
   Coefficients and transforms from Khan Supplemental Table S12A–J
   (source extract: scripts/extract-prevent-s12.ts → s12-goldens.json).
+
+  Author: Preston Lee
 */
 library OpenCVDRisk version '0.5.3'
 
