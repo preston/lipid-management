@@ -180,10 +180,32 @@ describe('OpenCVDRiskCalculator', () => {
     const fixture = createFixture();
     const root = fixture.nativeElement as HTMLElement;
 
-    expect(root.querySelector('#open-cvd-risk-egfr-help')?.textContent?.trim()).toBe(
-      'Valid range: 15–150',
-    );
+    expect(root.querySelector('#open-cvd-risk-egfr')?.getAttribute('placeholder')).toBe('15-150');
+    expect(root.querySelector('#open-cvd-risk-egfr-help')).toBeNull();
     expect(root.querySelector('#open-cvd-risk-zip-help')?.textContent).toContain('chart address');
+  });
+
+  it('should highlight missing required fields before touch', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+
+    component['model'].update((m) => ({ ...m, age: null }));
+    fixture.detectChanges();
+
+    const ageInput = root.querySelector('#open-cvd-risk-age') as HTMLInputElement;
+    const ageField = component['openCvdRiskForm'].age();
+
+    expect(ageField.invalid()).toBe(true);
+    expect(ageField.touched()).toBe(false);
+    expect(ageInput.classList.contains('is-invalid')).toBe(true);
+    expect(root.querySelector('#open-cvd-risk-age-errors')?.textContent).toContain('Age is required');
+
+    component['model'].update((m) => ({ ...m, age: 55 }));
+    fixture.detectChanges();
+
+    expect(ageInput.classList.contains('is-invalid')).toBe(false);
+    expect(root.querySelector('#open-cvd-risk-age-errors')).toBeNull();
   });
 
   it('should compute BMI from height and weight', () => {
@@ -210,6 +232,35 @@ describe('OpenCVDRiskCalculator', () => {
 
     expect(component['inputsComplete']()).toBe(true);
     expect(component['canCalculate']()).toBe(true);
+  });
+
+  it('should reset form values to the prefill baseline', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+    const baseline = { ...component['model']() };
+
+    expect(component['canResetToPrefill']()).toBe(true);
+    expect(root.querySelector('#open-cvd-risk-reset')).toBeTruthy();
+
+    component['model'].update((m) => ({
+      ...m,
+      age: 40,
+      totalCholesterolMgDl: 300,
+      uacrMgG: 40,
+    }));
+    component['lifeExpectancyLimited'].set(true);
+    component['dismissExclusion']('age-out-of-range');
+    fixture.detectChanges();
+
+    component['resetToPrefill']();
+    fixture.detectChanges();
+
+    expect(component['model']()).toEqual(baseline);
+    expect(component['lifeExpectancyLimited']()).toBe(false);
+    expect(component['dismissedExclusionIds']().has('age-out-of-range')).toBe(false);
+    expect(component['zipUserEdited']()).toBe(false);
+    expect(component['sdiManual']()).toBe(false);
   });
 
   it('should treat out-of-range age as complete inputs but guideline-gated', () => {

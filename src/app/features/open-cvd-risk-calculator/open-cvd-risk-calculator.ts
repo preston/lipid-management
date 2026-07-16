@@ -141,28 +141,28 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly hasClientData = this.patientContext.hasClientData;
 
   protected readonly openCvdRiskForm = form(this.model, (fields) => {
-    required(fields.age);
-    min(fields.age, 1);
-    max(fields.age, 120);
-    required(fields.sex);
-    required(fields.heightCm);
-    min(fields.heightCm, 1);
-    required(fields.weightKg);
-    min(fields.weightKg, 1);
-    required(fields.totalCholesterolMgDl);
-    min(fields.totalCholesterolMgDl, 0);
-    required(fields.hdlMgDl);
-    min(fields.hdlMgDl, 0);
-    required(fields.systolicBpMmHg);
-    min(fields.systolicBpMmHg, 0);
-    required(fields.egfrMlMin173m2);
-    min(fields.egfrMlMin173m2, 0);
-    min(fields.uacrMgG, 0.1);
-    max(fields.uacrMgG, 25000);
-    min(fields.hba1cPercent, 3);
-    max(fields.hba1cPercent, 15);
-    min(fields.sdiDecile, 1);
-    max(fields.sdiDecile, 10);
+    required(fields.age, { message: 'Age is required' });
+    min(fields.age, 1, { message: 'Age must be at least 1' });
+    max(fields.age, 120, { message: 'Age must be at most 120' });
+    required(fields.sex, { message: 'Sex is required' });
+    required(fields.heightCm, { message: 'Height is required' });
+    min(fields.heightCm, 1, { message: 'Height must be greater than 0' });
+    required(fields.weightKg, { message: 'Weight is required' });
+    min(fields.weightKg, 1, { message: 'Weight must be greater than 0' });
+    required(fields.totalCholesterolMgDl, { message: 'Total cholesterol is required' });
+    min(fields.totalCholesterolMgDl, 0, { message: 'Total cholesterol must be 0 or greater' });
+    required(fields.hdlMgDl, { message: 'HDL cholesterol is required' });
+    min(fields.hdlMgDl, 0, { message: 'HDL cholesterol must be 0 or greater' });
+    required(fields.systolicBpMmHg, { message: 'Systolic blood pressure is required' });
+    min(fields.systolicBpMmHg, 0, { message: 'Systolic blood pressure must be 0 or greater' });
+    required(fields.egfrMlMin173m2, { message: 'eGFR is required' });
+    min(fields.egfrMlMin173m2, 0, { message: 'eGFR must be 0 or greater' });
+    min(fields.uacrMgG, 0.1, { message: 'UACR must be at least 0.1' });
+    max(fields.uacrMgG, 25000, { message: 'UACR must be at most 25000' });
+    min(fields.hba1cPercent, 3, { message: 'HbA1c must be at least 3' });
+    max(fields.hba1cPercent, 15, { message: 'HbA1c must be at most 15' });
+    min(fields.sdiDecile, 1, { message: 'SDI decile must be at least 1' });
+    max(fields.sdiDecile, 10, { message: 'SDI decile must be at most 10' });
   });
 
   protected readonly bmiKgM2 = computed(() => {
@@ -452,6 +452,25 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.proceedDespiteExclusions.set(checked);
   }
 
+  protected readonly canResetToPrefill = computed(() => this.prefillBaseline() != null);
+
+  /** Restore chart/demographics prefill values and clear local overrides. */
+  protected resetToPrefill(): void {
+    const baseline = this.prefillBaseline();
+    if (baseline == null) {
+      return;
+    }
+    this.openCvdRiskForm().reset({ ...baseline });
+    this.zipUserEdited.set(false);
+    this.sdiManual.set(false);
+    this.lifeExpectancyLimited.set(false);
+    this.pathogenicGeneticVariant.set(false);
+    this.dismissedExclusionIds.set(new Set());
+    this.proceedDespiteExclusions.set(false);
+    this.clearCalculatedResults();
+    this.applyZipToSdi();
+  }
+
   private clearProceedIfNoExclusions(): void {
     if (!this.hasActiveExclusions()) {
       this.proceedDespiteExclusions.set(false);
@@ -566,6 +585,7 @@ export class OpenCVDRiskCalculator implements OnInit {
       error: (err) => {
         this.prefillLoading.set(false);
         this.chartExclusions.set([]);
+        this.prefillBaseline.set({ ...this.model() });
         this.toastDomainError(err, 'Prefill failed: ', 'warning');
       },
     });
@@ -670,10 +690,14 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.lifeExpectancyLimited.set(false);
     this.pathogenicGeneticVariant.set(false);
     this.proceedDespiteExclusions.set(false);
-    this.calculatedWithExclusions.set(false);
     this.zipUserEdited.set(false);
     this.sdiManual.set(false);
     this.sdiLookupStatus.set(this.sdiMap() == null ? 'loading' : 'blank');
+    this.clearCalculatedResults();
+  }
+
+  private clearCalculatedResults(): void {
+    this.calculatedWithExclusions.set(false);
     this.risk10yTotal.set(PLACEHOLDER);
     this.risk10yAscvd.set(PLACEHOLDER);
     this.risk10yHf.set(PLACEHOLDER);
