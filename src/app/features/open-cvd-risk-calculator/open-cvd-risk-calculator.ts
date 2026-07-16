@@ -504,7 +504,7 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected provenanceFor(field: string): string | null {
     if (this.isLocallyOverridden(field)) {
-      return 'Overridden locally.';
+      return 'Overridden.';
     }
     return this.provenances()[field]?.summary ?? null;
   }

@@ -22,8 +22,9 @@
     </div>
 
     @if (patientSource() === 'server') {
-    <div class="input-group input-group-sm">
-      <input type="search" class="form-control" id="open-cvd-risk-patient-search" placeholder="Search by patient name"
+    <div class="input-group">
+      <input type="search" class="form-control" id="open-cvd-risk-patient-search"
+        placeholder="Search by patient name" aria-label="Search by patient name"
         role="combobox" autocomplete="off" aria-autocomplete="list"
         aria-controls="open-cvd-risk-patient-search-results" [attr.aria-expanded]="searchHits().length > 0"
         [attr.aria-activedescendant]="activeSearchHitIndex() >= 0
@@ -156,12 +157,14 @@
         <section id="open-cvd-risk-demographics">
           <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 my-3">Demographics</h2>
           <div class="mb-3">
-            <label class="form-label" for="open-cvd-risk-age">Age (years)</label>
-            <input type="number" class="form-control" id="open-cvd-risk-age" step="1" placeholder="30-79"
-              [class.is-invalid]="openCvdRiskForm.age().invalid()"
-              [formField]="openCvdRiskForm.age"
-              [attr.aria-describedby]="visibleFieldErrors(openCvdRiskForm.age().errors())
-                ? 'open-cvd-risk-age-errors' : null" />
+            <div class="form-floating">
+              <input type="number" class="form-control" id="open-cvd-risk-age" step="1" placeholder="30-79"
+                [class.is-invalid]="openCvdRiskForm.age().invalid()"
+                [formField]="openCvdRiskForm.age"
+                [attr.aria-describedby]="visibleFieldErrors(openCvdRiskForm.age().errors())
+                  ? 'open-cvd-risk-age-errors' : null" />
+              <label for="open-cvd-risk-age">Age (years)</label>
+            </div>
             @if (visibleFieldErrors(openCvdRiskForm.age().errors()); as errors) {
             <div class="invalid-feedback d-block" id="open-cvd-risk-age-errors">
               @for (error of errors; track error.kind) {
@@ -208,11 +211,14 @@
           <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 my-3">Body</h2>
           <div class="row g-3">
             <div class="col-sm-6">
-              <label class="form-label" for="open-cvd-risk-height-cm">Height</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="open-cvd-risk-height-cm" step="0.1"
-                  [class.is-invalid]="openCvdRiskForm.heightCm().invalid()"
-                  aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.heightCm" />
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="open-cvd-risk-height-cm" step="0.1"
+                    placeholder="Height"
+                    [class.is-invalid]="openCvdRiskForm.heightCm().invalid()"
+                    aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.heightCm" />
+                  <label for="open-cvd-risk-height-cm">Height</label>
+                </div>
                 <span class="input-group-text">cm</span>
               </div>
               @if (visibleFieldErrors(openCvdRiskForm.heightCm().errors()); as errors) {
@@ -224,11 +230,14 @@
               }
             </div>
             <div class="col-sm-6">
-              <label class="form-label" for="open-cvd-risk-weight-kg">Weight</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="open-cvd-risk-weight-kg" step="0.1"
-                  [class.is-invalid]="openCvdRiskForm.weightKg().invalid()"
-                  aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.weightKg" />
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="open-cvd-risk-weight-kg" step="0.1"
+                    placeholder="Weight"
+                    [class.is-invalid]="openCvdRiskForm.weightKg().invalid()"
+                    aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.weightKg" />
+                  <label for="open-cvd-risk-weight-kg">Weight</label>
+                </div>
                 <span class="input-group-text">kg</span>
               </div>
               @if (visibleFieldErrors(openCvdRiskForm.weightKg().errors()); as errors) {
@@ -254,12 +263,14 @@
               }
             </div>
             <div class="col-sm-6">
-              <label class="form-label" for="open-cvd-risk-total-cholesterol">Total cholesterol</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="open-cvd-risk-total-cholesterol" step="1"
-                  placeholder="130-320"
-                  [class.is-invalid]="openCvdRiskForm.totalCholesterolMgDl().invalid()"
-                  [formField]="openCvdRiskForm.totalCholesterolMgDl" />
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="open-cvd-risk-total-cholesterol" step="1"
+                    placeholder="130-320"
+                    [class.is-invalid]="openCvdRiskForm.totalCholesterolMgDl().invalid()"
+                    [formField]="openCvdRiskForm.totalCholesterolMgDl" />
+                  <label for="open-cvd-risk-total-cholesterol">Total cholesterol</label>
+                </div>
                 <span class="input-group-text">mg/dL</span>
               </div>
               @if (visibleFieldErrors(openCvdRiskForm.totalCholesterolMgDl().errors()); as errors) {
@@ -276,12 +287,14 @@
               }
             </div>
             <div class="col-sm-6">
-              <label class="form-label" for="open-cvd-risk-hdl-cholesterol">HDL cholesterol</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="open-cvd-risk-hdl-cholesterol" step="1"
-                  placeholder="20-100"
-                  [class.is-invalid]="openCvdRiskForm.hdlMgDl().invalid()"
-                  [formField]="openCvdRiskForm.hdlMgDl" />
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="open-cvd-risk-hdl-cholesterol" step="1"
+                    placeholder="20-100"
+                    [class.is-invalid]="openCvdRiskForm.hdlMgDl().invalid()"
+                    [formField]="openCvdRiskForm.hdlMgDl" />
+                  <label for="open-cvd-risk-hdl-cholesterol">HDL cholesterol</label>
+                </div>
                 <span class="input-group-text">mg/dL</span>
               </div>
               @if (visibleFieldErrors(openCvdRiskForm.hdlMgDl().errors()); as errors) {
@@ -296,11 +309,14 @@
               }
             </div>
             <div class="col-sm-6">
-              <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic BP</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="open-cvd-risk-systolic-bp" step="1" placeholder="90-200"
-                  [class.is-invalid]="openCvdRiskForm.systolicBpMmHg().invalid()"
-                  [formField]="openCvdRiskForm.systolicBpMmHg" />
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="open-cvd-risk-systolic-bp" step="1"
+                    placeholder="90-200"
+                    [class.is-invalid]="openCvdRiskForm.systolicBpMmHg().invalid()"
+                    [formField]="openCvdRiskForm.systolicBpMmHg" />
+                  <label for="open-cvd-risk-systolic-bp">Systolic BP</label>
+                </div>
                 <span class="input-group-text">mmHg</span>
               </div>
               @if (visibleFieldErrors(openCvdRiskForm.systolicBpMmHg().errors()); as errors) {
@@ -315,12 +331,12 @@
               }
             </div>
             <div class="col-sm-6">
-              <label class="form-label" for="open-cvd-risk-egfr">
-                eGFR (mL/min/1.73m&sup2;)
-              </label>
-              <input type="number" class="form-control" id="open-cvd-risk-egfr" step="1" placeholder="15-150"
-                [class.is-invalid]="openCvdRiskForm.egfrMlMin173m2().invalid()"
-                [formField]="openCvdRiskForm.egfrMlMin173m2" />
+              <div class="form-floating">
+                <input type="number" class="form-control" id="open-cvd-risk-egfr" step="1" placeholder="15-150"
+                  [class.is-invalid]="openCvdRiskForm.egfrMlMin173m2().invalid()"
+                  [formField]="openCvdRiskForm.egfrMlMin173m2" />
+                <label for="open-cvd-risk-egfr">eGFR (mL/min/1.73m&sup2;)</label>
+              </div>
               @if (visibleFieldErrors(openCvdRiskForm.egfrMlMin173m2().errors()); as errors) {
               <div class="invalid-feedback d-block" id="open-cvd-risk-egfr-errors">
                 @for (error of errors; track error.kind) {
@@ -441,12 +457,14 @@
             </p>
             <div class="d-flex flex-column gap-3">
               <div>
-                <label class="form-label" for="open-cvd-risk-uacr">UACR</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-uacr" step="0.1"
-                    placeholder="0.1–25000"
-                    [class.is-invalid]="openCvdRiskForm.uacrMgG().invalid()"
-                    [formField]="openCvdRiskForm.uacrMgG" />
+                  <div class="form-floating">
+                    <input type="number" class="form-control" id="open-cvd-risk-uacr" step="0.1"
+                      placeholder="0.1–25000"
+                      [class.is-invalid]="openCvdRiskForm.uacrMgG().invalid()"
+                      [formField]="openCvdRiskForm.uacrMgG" />
+                    <label for="open-cvd-risk-uacr">UACR</label>
+                  </div>
                   <span class="input-group-text">mg/g</span>
                 </div>
                 @if (visibleFieldErrors(openCvdRiskForm.uacrMgG().errors()); as errors) {
@@ -458,12 +476,14 @@
                 }
               </div>
               <div>
-                <label class="form-label" for="open-cvd-risk-hba1c">HbA1c</label>
                 <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-hba1c" step="0.1"
-                    placeholder="3–15"
-                    [class.is-invalid]="openCvdRiskForm.hba1cPercent().invalid()"
-                    [formField]="openCvdRiskForm.hba1cPercent" />
+                  <div class="form-floating">
+                    <input type="number" class="form-control" id="open-cvd-risk-hba1c" step="0.1"
+                      placeholder="3–15"
+                      [class.is-invalid]="openCvdRiskForm.hba1cPercent().invalid()"
+                      [formField]="openCvdRiskForm.hba1cPercent" />
+                    <label for="open-cvd-risk-hba1c">HbA1c</label>
+                  </div>
                   <span class="input-group-text">%</span>
                 </div>
                 @if (visibleFieldErrors(openCvdRiskForm.hba1cPercent().errors()); as errors) {
@@ -475,11 +495,13 @@
                 }
               </div>
               <div>
-                <label class="form-label" for="open-cvd-risk-zip">ZIP code</label>
-                <input type="text" class="form-control" id="open-cvd-risk-zip"
-                  placeholder="e.g. 90210" aria-describedby="open-cvd-risk-zip-help"
-                  [formField]="openCvdRiskForm.zipCode"
-                  (input)="onZipCodeInput($event)" />
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="open-cvd-risk-zip"
+                    placeholder="e.g. 90210" aria-describedby="open-cvd-risk-zip-help"
+                    [formField]="openCvdRiskForm.zipCode"
+                    (input)="onZipCodeInput($event)" />
+                  <label for="open-cvd-risk-zip">ZIP code</label>
+                </div>
                 <div class="form-text" id="open-cvd-risk-zip-help">
                   Optional. Defaults from chart address.
                 </div>
@@ -488,12 +510,14 @@
                 }
               </div>
               <div>
-                <label class="form-label" for="open-cvd-risk-sdi">SDI decile</label>
-                <input type="number" class="form-control" id="open-cvd-risk-sdi" step="1"
-                  placeholder="1–10" aria-describedby="open-cvd-risk-sdi-resolved"
-                  [class.is-invalid]="openCvdRiskForm.sdiDecile().invalid()"
-                  [formField]="openCvdRiskForm.sdiDecile"
-                  (input)="onSdiDecileInput()" />
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="open-cvd-risk-sdi" step="1"
+                    placeholder="1–10" aria-describedby="open-cvd-risk-sdi-resolved"
+                    [class.is-invalid]="openCvdRiskForm.sdiDecile().invalid()"
+                    [formField]="openCvdRiskForm.sdiDecile"
+                    (input)="onSdiDecileInput()" />
+                  <label for="open-cvd-risk-sdi">SDI decile</label>
+                </div>
                 @if (visibleFieldErrors(openCvdRiskForm.sdiDecile().errors()); as errors) {
                 <div class="invalid-feedback d-block" id="open-cvd-risk-sdi-errors">
                   @for (error of errors; track error.kind) {
