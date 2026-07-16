@@ -26,7 +26,7 @@ PREVENT optional models use a **decile** of `SDI_score` (not the raw `sdi` facto
 
 - `SDI_score ≤ 10 → 1` … `≤ 100 → 10`
 
-The calculator loads this CSV (served from `doc/sdi` at `/data/sdi/`) and parses it in the browser. Do not add derived JSON or other generated maps under `public/`.
+This CSV is **build-time / codegen only** (`npm run generate:sdi-2019`). It is not copied into the web app and must not be fetched by the browser. Live ZIP→SDI uses `SDI2019/$evaluate` on the FHIR server.
 
 ## Generated artifact
 
@@ -36,7 +36,7 @@ Do not hand-edit. Regenerate with:
 npm run generate:sdi-2019
 ```
 
-- `public/cql/SDI-2019.cql` (`library SDI2019`) — only generated file from this source.
+- `public/cql/SDI-2019.cql` (`library SDI2019`) — only generated file from this source; deploy that Library, not the CSV.
 
 ## Citation
 
