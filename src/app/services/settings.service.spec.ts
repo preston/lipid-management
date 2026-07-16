@@ -33,7 +33,6 @@ describe('SettingsService', () => {
     installMemoryStorage();
     (window as unknown as Record<string, string>)['LIPID_MANAGEMENT_FHIR_BASE_URL'] =
       'http://env.example/fhir';
-    (window as unknown as Record<string, string>)['LIPID_MANAGEMENT_VSAC_API_PASSWORD'] = '';
     TestBed.configureTestingModule({});
   });
 

@@ -104,57 +104,6 @@
     <div class="col-md-6 mb-4">
       <div class="card h-100">
         <div class="card-header">
-          <h2 class="h6 card-title mb-0">VSAC / NLM CTS</h2>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <label for="vsacFhirBaseUrl" class="form-label">VSAC FHIR Base URL</label>
-            <input
-              type="url"
-              class="form-control"
-              id="vsacFhirBaseUrl"
-              name="vsacFhirBaseUrl"
-              [(ngModel)]="settingsService.settings().vsacFhirBaseUrl"
-              [placeholder]="settingsService.getDefaultVsacFhirBaseUrl()"
-            />
-          </div>
-          <div class="mb-3">
-            <label for="vsacApiUsername" class="form-label">VSAC API Username</label>
-            <input
-              type="text"
-              class="form-control"
-              id="vsacApiUsername"
-              name="vsacApiUsername"
-              [(ngModel)]="settingsService.settings().vsacApiUsername"
-              [placeholder]="settingsService.getDefaultVsacApiUsername()"
-              autocomplete="username"
-            />
-          </div>
-          <div class="mb-0">
-            <label for="vsacApiPassword" class="form-label">VSAC API Key</label>
-            <input
-              type="password"
-              class="form-control"
-              id="vsacApiPassword"
-              name="vsacApiPassword"
-              [(ngModel)]="settingsService.settings().vsacApiPassword"
-              [placeholder]="
-                settingsService.getDefaultVsacApiPassword() ? '••••••••' : 'Set via env or paste key'
-              "
-              autocomplete="current-password"
-            />
-            <small class="form-text text-body-secondary d-block mt-1"
-              >UMLS/VSAC API key. Stored only in browser local storage when saved here; never commit
-              secrets.</small
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6 mb-4">
-      <div class="card h-100">
-        <div class="card-header">
           <h2 class="h6 card-title mb-0">SMART-on-FHIR</h2>
         </div>
         <div class="card-body">

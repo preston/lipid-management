@@ -44,7 +44,6 @@ npm run start
 Runtime configuration is loaded from `public/configuration.js` (Docker substitutes env vars via `configuration.template.js`). Key window settings:
 
 - `LIPID_MANAGEMENT_FHIR_BASE_URL` — FHIR server for standalone Patient search / `$evaluate`
-- `LIPID_MANAGEMENT_VSAC_*` — optional VSAC/CTS credentials in Settings (not required to run the app)
 - `LIPID_MANAGEMENT_SMART_CLIENT_ID` / `LIPID_MANAGEMENT_SMART_REDIRECT_URI` — SMART-on-FHIR launch
 
 Users can override these in the in-app **Settings** page (browser local storage).

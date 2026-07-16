@@ -11,9 +11,6 @@ export class Settings {
   public developer: boolean = false;
   public theme_preferred: ThemeType = ThemeType.AUTOMATIC;
   public fhirBaseUrl: string = '';
-  public vsacFhirBaseUrl: string = '';
-  public vsacApiUsername: string = '';
-  public vsacApiPassword: string = '';
   public smartClientId: string = '';
   public smartRedirectUri: string = '';
 

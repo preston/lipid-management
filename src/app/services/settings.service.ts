@@ -10,7 +10,6 @@ export class SettingsService {
   public static readonly SETTINGS_KEY = 'lipid_management_settings';
   public static readonly FORCE_RESET_KEY = 'lipid_management_settings_force_reset';
 
-  private static readonly VSAC_FHIR_DEFAULT = 'https://cts.nlm.nih.gov/fhir';
   private static readonly FHIR_BASE_DEFAULT = 'http://localhost:8080/fhir';
 
   public settings = signal<Settings>(new Settings());
@@ -105,9 +104,6 @@ export class SettingsService {
         }
         for (const key of [
           'fhirBaseUrl',
-          'vsacFhirBaseUrl',
-          'vsacApiUsername',
-          'vsacApiPassword',
           'smartClientId',
           'smartRedirectUri',
         ] as const) {
@@ -153,18 +149,6 @@ export class SettingsService {
     return this.envString('LIPID_MANAGEMENT_FHIR_BASE_URL') || SettingsService.FHIR_BASE_DEFAULT;
   }
 
-  getDefaultVsacFhirBaseUrl(): string {
-    return this.envString('LIPID_MANAGEMENT_VSAC_FHIR_BASE_URL') || SettingsService.VSAC_FHIR_DEFAULT;
-  }
-
-  getDefaultVsacApiUsername(): string {
-    return this.envString('LIPID_MANAGEMENT_VSAC_API_USERNAME') || 'apikey';
-  }
-
-  getDefaultVsacApiPassword(): string {
-    return this.envString('LIPID_MANAGEMENT_VSAC_API_PASSWORD');
-  }
-
   getDefaultSmartClientId(): string {
     return this.envString('LIPID_MANAGEMENT_SMART_CLIENT_ID');
   }
@@ -176,27 +160,6 @@ export class SettingsService {
   getEffectiveFhirBaseUrl(): string {
     const settingValue = this.settings().fhirBaseUrl;
     return settingValue && settingValue.trim() !== '' ? settingValue.trim() : this.getDefaultFhirBaseUrl();
-  }
-
-  getEffectiveVsacFhirBaseUrl(): string {
-    const settingValue = this.settings().vsacFhirBaseUrl;
-    return settingValue && settingValue.trim() !== ''
-      ? settingValue.trim()
-      : this.getDefaultVsacFhirBaseUrl();
-  }
-
-  getEffectiveVsacApiUsername(): string {
-    const settingValue = this.settings().vsacApiUsername;
-    return settingValue && settingValue.trim() !== ''
-      ? settingValue.trim()
-      : this.getDefaultVsacApiUsername();
-  }
-
-  getEffectiveVsacApiPassword(): string {
-    const settingValue = this.settings().vsacApiPassword;
-    return settingValue && settingValue.trim() !== ''
-      ? settingValue.trim()
-      : this.getDefaultVsacApiPassword();
   }
 
   getEffectiveSmartClientId(): string {
@@ -211,9 +174,5 @@ export class SettingsService {
     return settingValue && settingValue.trim() !== ''
       ? settingValue.trim()
       : this.getDefaultSmartRedirectUri();
-  }
-
-  vsacHasApiCredentials(): boolean {
-    return this.getEffectiveVsacApiPassword().trim() !== '';
   }
 }
