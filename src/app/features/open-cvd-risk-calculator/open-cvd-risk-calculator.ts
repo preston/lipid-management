@@ -1,6 +1,7 @@
 // Author: Preston Lee
 
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormField, form, max, min, required } from '@angular/forms/signals';
 import type { Patient } from 'fhir/r4';
 import { computeBmiKgM2 } from './open-cvd-risk-egfr';
@@ -24,12 +25,43 @@ import {
 } from '../../services/client-fhir-bundle';
 import { isHttpOfflineOrServerError, ToastService } from '../../services/toast.service';
 import { formatFhirDateTime } from '../../util/fhir-datetime';
+import {
+  isValidHba1c,
+  isValidSdi,
+  isValidUacr,
+  selectPreventModel,
+  type PreventModel,
+} from './prevent/prevent-math';
+import {
+  lookupSdiDecile,
+  normalizeZip,
+  parseSdiZctaCsv,
+  postalCodeFromPatientAddress,
+  type SdiDecileMap,
+} from './sdi/sdi-lookup';
 
 const PLACEHOLDER = '—';
+const SDI_CSV_URL = '/data/sdi/asset_rgc_sdi_2015_through_2019_zcta.csv';
 
 type PatientSource = 'server' | 'file';
 
 type FileStatus = { message: string };
+
+type SdiLookupStatus = 'blank' | 'found' | 'missing' | 'manual' | 'loading';
+
+const RISK_EXPRESSIONS = [
+  'SelectedPreventModel',
+  'TenYearTotalCvdPercent',
+  'TenYearAscvdPercent',
+  'TenYearHeartFailurePercent',
+  'TenYearChdPercent',
+  'TenYearStrokePercent',
+  'ThirtyYearTotalCvdPercent',
+  'ThirtyYearAscvdPercent',
+  'ThirtyYearHeartFailurePercent',
+  'ThirtyYearChdPercent',
+  'ThirtyYearStrokePercent',
+] as const;
 
 const EMPTY_FORM: OpenCVDRiskCalculatorForm = {
   age: null,
@@ -44,6 +76,10 @@ const EMPTY_FORM: OpenCVDRiskCalculatorForm = {
   currentSmoker: 'no',
   onAntihypertensive: 'no',
   onStatin: 'no',
+  uacrMgG: null,
+  hba1cPercent: null,
+  zipCode: '',
+  sdiDecile: null,
 };
 
 @Component({
@@ -59,6 +95,7 @@ export class OpenCVDRiskCalculator implements OnInit {
   private readonly cqlEvaluate = inject(CqlEvaluateService);
   private readonly smartLaunch = inject(SmartLaunchService);
   private readonly toasts = inject(ToastService);
+  private readonly http = inject(HttpClient);
 
   protected readonly model = signal<OpenCVDRiskCalculatorForm>({ ...EMPTY_FORM });
   protected readonly provenances = signal<Partial<Record<string, FieldProvenance>>>({});
@@ -80,10 +117,24 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly prefillLoading = signal(false);
   protected readonly calculateLoading = signal(false);
 
+  private readonly sdiMap = signal<SdiDecileMap | null>(null);
+  /** User typed ZIP this session (do not overwrite from chart until patient reset). */
+  private readonly zipUserEdited = signal(false);
+  /** User edited SDI decile directly; ZIP changes clear this flag. */
+  private readonly sdiManual = signal(false);
+  protected readonly sdiLookupStatus = signal<SdiLookupStatus>('loading');
+
   protected readonly risk10yTotal = signal<string>(PLACEHOLDER);
   protected readonly risk10yAscvd = signal<string>(PLACEHOLDER);
   protected readonly risk10yHf = signal<string>(PLACEHOLDER);
+  protected readonly risk10yChd = signal<string>(PLACEHOLDER);
+  protected readonly risk10yStroke = signal<string>(PLACEHOLDER);
   protected readonly risk30yTotal = signal<string>(PLACEHOLDER);
+  protected readonly risk30yAscvd = signal<string>(PLACEHOLDER);
+  protected readonly risk30yHf = signal<string>(PLACEHOLDER);
+  protected readonly risk30yChd = signal<string>(PLACEHOLDER);
+  protected readonly risk30yStroke = signal<string>(PLACEHOLDER);
+  protected readonly selectedRiskModel = signal<PreventModel | null>(null);
 
   protected readonly isSmart = this.patientContext.isSmart;
   protected readonly selectedPatient = this.patientContext.selectedPatient;
@@ -106,6 +157,12 @@ export class OpenCVDRiskCalculator implements OnInit {
     min(fields.systolicBpMmHg, 0);
     required(fields.egfrMlMin173m2);
     min(fields.egfrMlMin173m2, 0);
+    min(fields.uacrMgG, 0.1);
+    max(fields.uacrMgG, 25000);
+    min(fields.hba1cPercent, 3);
+    max(fields.hba1cPercent, 15);
+    min(fields.sdiDecile, 1);
+    max(fields.sdiDecile, 10);
   });
 
   protected readonly bmiKgM2 = computed(() => {
@@ -118,7 +175,7 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected readonly bmiDisplay = computed(() => this.formatNumber(this.bmiKgM2(), 1));
 
-  /** Required PREVENT inputs have values (presence only; age band is a separate applicability check). */
+  /** Required risk-scoring inputs have values (presence only; age band is a separate applicability check). */
   protected readonly inputsComplete = computed(() => {
     const m = this.model();
     return (
@@ -132,7 +189,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     );
   });
 
-  protected readonly ageInPreventRange = computed(() => {
+  protected readonly ageInGuidelineRange = computed(() => {
     const age = this.model().age;
     return age != null && age >= 30 && age <= 79;
   });
@@ -143,7 +200,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     const clinician: PreventExclusion[] = [];
     if (
       this.model().age != null &&
-      !this.ageInPreventRange() &&
+      !this.ageInGuidelineRange() &&
       !dismissed.has('age-out-of-range') &&
       !fromChart.some((e) => e.id === 'age-out-of-range')
     ) {
@@ -151,7 +208,7 @@ export class OpenCVDRiskCalculator implements OnInit {
         id: 'age-out-of-range',
         message: 'Age outside 30–79 years',
         source: 'clinician',
-        provenance: 'PREVENT equations require age 30–79.',
+        provenance: 'Risk scoring equations require age 30–79.',
       });
     }
     if (this.lifeExpectancyLimited()) {
@@ -196,7 +253,58 @@ export class OpenCVDRiskCalculator implements OnInit {
     return true;
   });
 
+  /** Client-side preview of which S12 model will be used (matches CQL selection). */
+  protected readonly activeRiskModel = computed((): PreventModel => {
+    const m = this.model();
+    return selectPreventModel({
+      age: m.age ?? 55,
+      totalChol: m.totalCholesterolMgDl ?? 200,
+      hdl: m.hdlMgDl ?? 50,
+      sbp: m.systolicBpMmHg ?? 120,
+      diabetes: m.diabetes === 'yes' ? 1 : 0,
+      smoke: m.currentSmoker === 'yes' ? 1 : 0,
+      bmi: this.bmiKgM2() ?? 25,
+      egfr: m.egfrMlMin173m2 ?? 90,
+      antihtn: m.onAntihypertensive === 'yes' ? 1 : 0,
+      statin: m.onStatin === 'yes' ? 1 : 0,
+      uacr: m.uacrMgG,
+      hba1c: m.hba1cPercent,
+      sdi: m.sdiDecile,
+    });
+  });
+
+  protected readonly activeRiskModelLabel = computed(() => {
+    switch (this.selectedRiskModel() ?? this.activeRiskModel()) {
+      case 'uacr':
+        return 'Base + UACR';
+      case 'hba1c':
+        return 'Base + HbA1c';
+      case 'sdi':
+        return 'Base + SDI';
+      case 'full':
+        return 'Full (UACR + HbA1c + SDI)';
+      default:
+        return 'Base';
+    }
+  });
+
+  protected readonly sdiLookupStatusLabel = computed(() => {
+    switch (this.sdiLookupStatus()) {
+      case 'loading':
+        return 'Loading ZCTA map…';
+      case 'found':
+        return 'SDI from ZIP (2019 ZCTA table)';
+      case 'missing':
+        return 'ZIP not in 2019 ZCTA table';
+      case 'manual':
+        return 'Manual SDI (ZIP lookup not applied until ZIP changes)';
+      default:
+        return 'Enter ZIP or SDI decile (optional)';
+    }
+  });
+
   async ngOnInit(): Promise<void> {
+    this.loadSdiMap();
     const url = new URL(window.location.href);
     const mode = this.patientContext.detectLaunchFromUrl(url);
     if (mode === 'smart' && url.pathname.includes('launch') === false) {
@@ -210,6 +318,28 @@ export class OpenCVDRiskCalculator implements OnInit {
       this.applyPatientDemographics(this.selectedPatient()!);
       this.runPrefill();
     }
+  }
+
+  protected onZipCodeInput(): void {
+    this.zipUserEdited.set(true);
+    const key = normalizeZip(this.model().zipCode);
+    if (key == null) {
+      // Cleared ZIP: drop auto-filled SDI; keep a manually entered decile.
+      if (!this.sdiManual()) {
+        this.model.update((m) => ({ ...m, sdiDecile: null }));
+        this.sdiLookupStatus.set(this.sdiMap() == null ? 'loading' : 'blank');
+      } else {
+        this.sdiLookupStatus.set('manual');
+      }
+      return;
+    }
+    this.sdiManual.set(false);
+    this.applyZipToSdi();
+  }
+
+  protected onSdiDecileInput(): void {
+    this.sdiManual.set(true);
+    this.sdiLookupStatus.set('manual');
   }
 
   protected setPatientSource(source: PatientSource): void {
@@ -335,26 +465,30 @@ export class OpenCVDRiskCalculator implements OnInit {
     const hadExclusions = this.hasActiveExclusions();
     this.calculateLoading.set(true);
     this.cqlEvaluate
-      .evaluateLibrary(
-        'OpenCVDRisk',
-        [
-          'TenYearTotalCvdPercent',
-          'TenYearAscvdProbability',
-          'TenYearHeartFailureProbability',
-          'ThirtyYearTotalCvdPercent',
-        ],
-        this.buildLibraryParameters(),
-      )
+      .evaluateLibrary('OpenCVDRisk', [...RISK_EXPRESSIONS], this.buildLibraryParameters())
       .subscribe({
         next: (results) => {
           this.risk10yTotal.set(this.formatPercent(results['TenYearTotalCvdPercent']));
-          this.risk10yAscvd.set(
-            this.formatProbabilityAsPercent(results['TenYearAscvdProbability']),
-          );
-          this.risk10yHf.set(
-            this.formatProbabilityAsPercent(results['TenYearHeartFailureProbability']),
-          );
+          this.risk10yAscvd.set(this.formatPercent(results['TenYearAscvdPercent']));
+          this.risk10yHf.set(this.formatPercent(results['TenYearHeartFailurePercent']));
+          this.risk10yChd.set(this.formatPercent(results['TenYearChdPercent']));
+          this.risk10yStroke.set(this.formatPercent(results['TenYearStrokePercent']));
           this.risk30yTotal.set(this.formatPercent(results['ThirtyYearTotalCvdPercent']));
+          this.risk30yAscvd.set(this.formatPercent(results['ThirtyYearAscvdPercent']));
+          this.risk30yHf.set(this.formatPercent(results['ThirtyYearHeartFailurePercent']));
+          this.risk30yChd.set(this.formatPercent(results['ThirtyYearChdPercent']));
+          this.risk30yStroke.set(this.formatPercent(results['ThirtyYearStrokePercent']));
+          const model = results['SelectedPreventModel'];
+          this.selectedRiskModel.set(
+            typeof model === 'string' &&
+              (model === 'base' ||
+                model === 'uacr' ||
+                model === 'hba1c' ||
+                model === 'sdi' ||
+                model === 'full')
+              ? model
+              : this.activeRiskModel(),
+          );
           this.calculatedWithExclusions.set(hadExclusions);
           this.calculateLoading.set(false);
         },
@@ -399,6 +533,16 @@ export class OpenCVDRiskCalculator implements OnInit {
     if (bmi != null && Number.isFinite(bmi)) {
       params['OverrideBmiKgM2'] = { decimal: bmi };
     }
+    // Only pass optionals that pass the same in-range checks as CQL HasValid* / model selection.
+    if (isValidUacr(m.uacrMgG)) {
+      params['OverrideUacrMgG'] = { decimal: m.uacrMgG as number };
+    }
+    if (isValidHba1c(m.hba1cPercent)) {
+      params['OverrideHba1cPercent'] = { decimal: m.hba1cPercent as number };
+    }
+    if (isValidSdi(m.sdiDecile)) {
+      params['OverrideSdiDecile'] = { integer: m.sdiDecile as number };
+    }
 
     return params;
   }
@@ -435,11 +579,17 @@ export class OpenCVDRiskCalculator implements OnInit {
     } else if (patient.gender === 'male') {
       sex = 'male';
     }
+    const chartZip = postalCodeFromPatientAddress(patient.address);
     this.model.update((m) => ({
       ...m,
       age: age ?? m.age,
       sex: sex || m.sex,
+      zipCode: this.zipUserEdited() ? m.zipCode : chartZip || m.zipCode,
     }));
+    if (!this.zipUserEdited()) {
+      this.sdiManual.set(false);
+      this.applyZipToSdi();
+    }
     const provenances = { ...this.provenances() };
     if (age != null) {
       const born = formatFhirDateTime(patient.birthDate);
@@ -451,7 +601,64 @@ export class OpenCVDRiskCalculator implements OnInit {
     if (sex) {
       delete provenances['sex'];
     }
+    if (chartZip && !this.zipUserEdited()) {
+      provenances['zipCode'] = {
+        field: 'zipCode',
+        summary: `Chart address ZIP ${chartZip}`,
+      };
+    }
     this.provenances.set(provenances);
+  }
+
+  private loadSdiMap(): void {
+    this.sdiLookupStatus.set('loading');
+    this.http.get(SDI_CSV_URL, { responseType: 'text' }).subscribe({
+      next: (csvText) => {
+        try {
+          this.sdiMap.set(parseSdiZctaCsv(csvText));
+          if (!this.sdiManual()) {
+            this.applyZipToSdi();
+          } else {
+            this.sdiLookupStatus.set('manual');
+          }
+        } catch (err) {
+          this.sdiMap.set(null);
+          this.sdiLookupStatus.set('blank');
+          this.toastDomainError(err, 'SDI CSV parse failed: ', 'warning');
+        }
+      },
+      error: (err) => {
+        this.sdiMap.set(null);
+        this.sdiLookupStatus.set('blank');
+        this.toastDomainError(err, 'SDI map load failed: ', 'warning');
+      },
+    });
+  }
+
+  private applyZipToSdi(): void {
+    if (this.sdiManual()) {
+      this.sdiLookupStatus.set('manual');
+      return;
+    }
+    const map = this.sdiMap();
+    const key = normalizeZip(this.model().zipCode);
+    if (key == null) {
+      this.model.update((m) => ({ ...m, sdiDecile: null }));
+      this.sdiLookupStatus.set(map == null ? 'loading' : 'blank');
+      return;
+    }
+    if (map == null) {
+      this.sdiLookupStatus.set('loading');
+      return;
+    }
+    const decile = lookupSdiDecile(map, key);
+    if (decile == null) {
+      this.model.update((m) => ({ ...m, sdiDecile: null }));
+      this.sdiLookupStatus.set('missing');
+      return;
+    }
+    this.model.update((m) => ({ ...m, sdiDecile: decile }));
+    this.sdiLookupStatus.set('found');
   }
 
   private resetFormAndResults(): void {
@@ -464,10 +671,20 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.pathogenicGeneticVariant.set(false);
     this.proceedDespiteExclusions.set(false);
     this.calculatedWithExclusions.set(false);
+    this.zipUserEdited.set(false);
+    this.sdiManual.set(false);
+    this.sdiLookupStatus.set(this.sdiMap() == null ? 'loading' : 'blank');
     this.risk10yTotal.set(PLACEHOLDER);
     this.risk10yAscvd.set(PLACEHOLDER);
     this.risk10yHf.set(PLACEHOLDER);
+    this.risk10yChd.set(PLACEHOLDER);
+    this.risk10yStroke.set(PLACEHOLDER);
     this.risk30yTotal.set(PLACEHOLDER);
+    this.risk30yAscvd.set(PLACEHOLDER);
+    this.risk30yHf.set(PLACEHOLDER);
+    this.risk30yChd.set(PLACEHOLDER);
+    this.risk30yStroke.set(PLACEHOLDER);
+    this.selectedRiskModel.set(null);
   }
 
   private isLocallyOverridden(field: string): boolean {
@@ -549,13 +766,5 @@ export class OpenCVDRiskCalculator implements OnInit {
       return PLACEHOLDER;
     }
     return this.formatNumber(n, 1);
-  }
-
-  private formatProbabilityAsPercent(value: unknown): string {
-    const n = typeof value === 'number' ? value : null;
-    if (n == null || !Number.isFinite(n)) {
-      return PLACEHOLDER;
-    }
-    return this.formatNumber(n * 100, 1);
   }
 }

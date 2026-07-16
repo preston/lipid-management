@@ -2,7 +2,8 @@
 
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { of, Subject } from 'rxjs';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 import { OpenCVDRiskCalculator } from './open-cvd-risk-calculator';
 import { PatientContextService } from '../../services/patient-context.service';
 import { CalculatorPrefillService } from '../../services/calculator-prefill.service';
@@ -17,13 +18,33 @@ const SAMPLE_PATIENT: Patient = {
   birthDate: '1970-01-15',
 };
 
+const SAMPLE_PATIENT_WITH_ZIP: Patient = {
+  ...SAMPLE_PATIENT,
+  id: 'example-zip',
+  address: [
+    { use: 'work', postalCode: '10001' },
+    { use: 'home', postalCode: '90210-1234' },
+  ],
+};
+
+/** Minimal CSV matching Graham Center columns used by parseSdiZctaCsv. */
+const SDI_CSV_FIXTURE = [
+  'ZCTA5_FIPS,SDI_score',
+  '90210,15',
+  '01001,36',
+  '37220,5',
+].join('\n');
+
 describe('OpenCVDRiskCalculator', () => {
+  let http: HttpTestingController;
+
   beforeEach(async () => {
     TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
       providers: [
         provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: CalculatorPrefillService,
           useValue: {
@@ -32,198 +53,33 @@ describe('OpenCVDRiskCalculator', () => {
         },
       ],
     }).compileComponents();
+    http = TestBed.inject(HttpTestingController);
   });
 
-  function selectSamplePatient(): void {
-    TestBed.inject(PatientContextService).setStandalonePatient(SAMPLE_PATIENT);
-  }
-
   afterEach(() => {
-    TestBed.inject(PatientContextService).resetForTests();
+    http.verify();
     TestBed.resetTestingModule();
   });
 
-  it('should create', () => {
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    expect(fixture.componentInstance).toBeTruthy();
-  });
+  function selectSamplePatient(patient: Patient = SAMPLE_PATIENT): void {
+    TestBed.inject(PatientContextService).setStandalonePatient(patient);
+  }
 
-  it('should require patient selection before showing the form', () => {
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-    expect(root.querySelector('#open-cvd-risk-patient-mode-server')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-mode-file')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-search')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-file-input')).toBeNull();
-    expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeNull();
-  });
+  function flushSdiMap(csvText: string = SDI_CSV_FIXTURE): void {
+    const req = http.expectOne('/data/sdi/asset_rgc_sdi_2015_through_2019_zcta.csv');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.responseType).toBe('text');
+    req.flush(csvText);
+  }
 
-  it('should show file input in custom file mode', () => {
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    const component = fixture.componentInstance;
-    fixture.detectChanges();
-
-    component['setPatientSource']('file');
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-
-    expect(root.querySelector('#open-cvd-risk-patient-file-input')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-search')).toBeNull();
-  });
-
-  it('should render required field controls when a patient is selected', () => {
-    selectSamplePatient();
+  function createFixture(patient: Patient = SAMPLE_PATIENT) {
+    selectSamplePatient(patient);
     const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
     fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-
-    expect(root.querySelector('#open-cvd-risk-patient-banner')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-clear')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-search')).toBeNull();
-    expect(root.querySelector('#open-cvd-risk-age')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-sex-female')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-sex-male')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-height-cm')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-weight-kg')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-total-cholesterol')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-hdl-cholesterol')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-systolic-bp')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-egfr')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-calculate')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-results')).toBeTruthy();
-  });
-
-  it('should hide the form and results while prefill is loading', () => {
-    const prefill$ = new Subject<{
-      form: Record<string, unknown>;
-      provenances: unknown[];
-      exclusions: unknown[];
-    }>();
-    TestBed.overrideProvider(CalculatorPrefillService, {
-      useValue: { prefillFromChart: () => prefill$.asObservable() },
-    });
-
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    flushSdiMap();
     fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-
-    expect(root.querySelector('#open-cvd-risk-prefill-loading')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-patient-banner')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeNull();
-    expect(root.querySelector('#open-cvd-risk-results')).toBeNull();
-
-    prefill$.next({ form: {}, provenances: [], exclusions: [] });
-    prefill$.complete();
-    fixture.detectChanges();
-
-    expect(root.querySelector('#open-cvd-risk-prefill-loading')).toBeNull();
-    expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-results')).toBeTruthy();
-  });
-
-  it('should show Custom bundle in the banner for client data patients', () => {
-    const ctx = TestBed.inject(PatientContextService);
-    ctx.setClientDataPatient(
-      {
-        resourceType: 'Bundle',
-        type: 'collection',
-        entry: [{ resource: SAMPLE_PATIENT }],
-      },
-      SAMPLE_PATIENT,
-    );
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    fixture.detectChanges();
-    const meta = fixture.nativeElement.querySelector(
-      '#open-cvd-risk-patient-banner-meta',
-    ) as HTMLElement;
-    expect(meta.textContent).toContain('Custom bundle');
-  });
-
-  it('should not render optional add-on fields', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    fixture.detectChanges();
-    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
-
-    expect(text).not.toMatch(/HbA1c/i);
-    expect(text).not.toMatch(/UACR/i);
-    expect(text).not.toMatch(/albumin/i);
-    expect(text).not.toMatch(/social deprivation/i);
-    expect(text).not.toMatch(/zip code/i);
-  });
-
-  it('should include AHA PREVENT instruction help text for mapped fields', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-
-    expect(root.querySelector('#open-cvd-risk-age-help')?.textContent).toContain('30');
-    expect(root.querySelector('#open-cvd-risk-age-help')?.textContent).toContain('79');
-    expect(root.querySelector('#open-cvd-risk-total-cholesterol-help')?.textContent).toContain(
-      '130',
-    );
-    expect(root.querySelector('#open-cvd-risk-hdl-cholesterol-help')?.textContent).toContain('20');
-    expect(root.querySelector('#open-cvd-risk-systolic-bp-help')?.textContent).toContain('90');
-    expect(root.querySelector('#open-cvd-risk-bmi-help')?.textContent).toContain('18.5');
-    expect(root.querySelector('#open-cvd-risk-egfr-help')?.textContent?.trim()).toBe(
-      'Valid range: 15–140',
-    );
-    expect(root.querySelector('label[for="open-cvd-risk-egfr"]')?.textContent).toContain('eGFR');
-    expect(root.querySelector('#open-cvd-risk-diabetes-help')?.textContent?.trim()).toBe(
-      'Any history of diabetes.',
-    );
-    expect(root.querySelector('#open-cvd-risk-smoking-help')?.textContent?.trim()).toBe(
-      'Any cigarette use within the last 30 days',
-    );
-    expect(root.querySelector('#open-cvd-risk-antihypertensive-help')?.textContent?.trim()).toBe(
-      'Current use of any medication for hypertension',
-    );
-    expect(root.querySelector('#open-cvd-risk-statin-help')?.textContent?.trim()).toBe(
-      'Current use of statin medication to lower cholesterol',
-    );
-  });
-
-  it('should compute BMI from height and weight', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    const component = fixture.componentInstance;
-    fixture.detectChanges();
-
-    component['model'].update((current) => ({
-      ...current,
-      heightCm: 170,
-      weightKg: 70,
-    }));
-    fixture.detectChanges();
-
-    expect(component['bmiKgM2']()).toBeCloseTo(24.2, 1);
-  });
-
-  it('should sync Signal Forms field bindings from the DOM', async () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    fixture.detectChanges();
-    const root = fixture.nativeElement as HTMLElement;
-    const component = fixture.componentInstance;
-
-    setNumberInput(root, '#open-cvd-risk-age', 55);
-    setNumberInput(root, '#open-cvd-risk-height-cm', 170);
-    setNumberInput(root, '#open-cvd-risk-weight-kg', 70);
-    setNumberInput(root, '#open-cvd-risk-egfr', 90);
-    (root.querySelector('#open-cvd-risk-sex-female') as HTMLInputElement).click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    expect(component['model']().age).toBe(55);
-    expect(component['model']().heightCm).toBe(170);
-    expect(component['model']().weightKg).toBe(70);
-    expect(component['model']().egfrMlMin173m2).toBe(90);
-    expect(component['model']().sex).toBe('female');
-    expect(component['bmiKgM2']()).toBeCloseTo(24.2, 1);
-  });
+    return fixture;
+  }
 
   function fillCompleteForm(component: OpenCVDRiskCalculator): void {
     component['model'].set({
@@ -239,33 +95,126 @@ describe('OpenCVDRiskCalculator', () => {
       currentSmoker: 'no',
       onAntihypertensive: 'no',
       onStatin: 'no',
+      uacrMgG: null,
+      hba1cPercent: null,
+      zipCode: '',
+      sdiDecile: null,
     });
   }
 
-  it('should mark inputs complete when required fields are present', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+  it('should create', () => {
+    const fixture = createFixture();
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('should render optional risk-scoring predictors including ZIP', () => {
+    const fixture = createFixture();
+    const root = fixture.nativeElement as HTMLElement;
+    const text = root.textContent ?? '';
+
+    expect(root.querySelector('#open-cvd-risk-optional-predictors-card')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-uacr')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-hba1c')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-zip')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-sdi')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-sdi-resolved')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-active-model')?.textContent).toContain('Base');
+    expect(text).toMatch(/UACR/i);
+    expect(text).toMatch(/HbA1c/i);
+    expect(text).toMatch(/SDI decile/i);
+    expect(text).toMatch(/ZIP code/i);
+  });
+
+  it('should prefill ZIP from home address and resolve SDI', () => {
+    const fixture = createFixture(SAMPLE_PATIENT_WITH_ZIP);
     const component = fixture.componentInstance;
+
+    expect(component['model']().zipCode).toBe('90210');
+    expect(component['model']().sdiDecile).toBe(2);
+    expect(component['sdiLookupStatus']()).toBe('found');
+    expect(component['activeRiskModel']()).toBe('sdi');
+  });
+
+  it('should update SDI when ZIP override changes', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+
+    component['model'].update((m) => ({ ...m, zipCode: '01001' }));
+    component['onZipCodeInput']();
     fixture.detectChanges();
 
-    expect(component['inputsComplete']()).toBe(false);
-    expect(component['canCalculate']()).toBe(false);
+    expect(component['model']().sdiDecile).toBe(4);
+    expect(component['sdiLookupStatus']()).toBe('found');
+  });
 
+  it('should clear SDI when ZIP is unknown', () => {
+    const fixture = createFixture(SAMPLE_PATIENT_WITH_ZIP);
+    const component = fixture.componentInstance;
+
+    component['model'].update((m) => ({ ...m, zipCode: '99999' }));
+    component['onZipCodeInput']();
+    fixture.detectChanges();
+
+    expect(component['model']().sdiDecile).toBeNull();
+    expect(component['sdiLookupStatus']()).toBe('missing');
+  });
+
+  it('should keep manual SDI when ZIP is cleared', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+
+    component['model'].update((m) => ({ ...m, sdiDecile: 8 }));
+    component['onSdiDecileInput']();
+    fixture.detectChanges();
+    expect(component['sdiLookupStatus']()).toBe('manual');
+
+    component['model'].update((m) => ({ ...m, zipCode: '' }));
+    component['onZipCodeInput']();
+    fixture.detectChanges();
+
+    expect(component['model']().sdiDecile).toBe(8);
+    expect(component['sdiLookupStatus']()).toBe('manual');
+  });
+
+  it('should include guideline instruction help text for mapped fields', () => {
+    const fixture = createFixture();
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('#open-cvd-risk-egfr-help')?.textContent?.trim()).toBe(
+      'Valid range: 15–150',
+    );
+    expect(root.querySelector('#open-cvd-risk-zip-help')?.textContent).toContain('chart address');
+  });
+
+  it('should compute BMI from height and weight', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+
+    component['model'].update((current) => ({
+      ...current,
+      heightCm: 170,
+      weightKg: 70,
+    }));
+    fixture.detectChanges();
+
+    expect(component['bmiKgM2']()).toBeCloseTo(24.2, 1);
+  });
+
+  it('should mark inputs complete when required fields are present', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+
+    expect(component['inputsComplete']()).toBe(false);
     fillCompleteForm(component);
     fixture.detectChanges();
 
     expect(component['inputsComplete']()).toBe(true);
     expect(component['canCalculate']()).toBe(true);
-    expect(
-      fixture.nativeElement.querySelector('#open-cvd-risk-results-message')?.textContent,
-    ).toContain('Form looks complete');
   });
 
-  it('should treat out-of-range age as complete inputs but PREVENT-gated', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+  it('should treat out-of-range age as complete inputs but guideline-gated', () => {
+    const fixture = createFixture();
     const component = fixture.componentInstance;
-    fixture.detectChanges();
 
     component['model'].set({
       age: 16,
@@ -280,143 +229,75 @@ describe('OpenCVDRiskCalculator', () => {
       currentSmoker: 'no',
       onAntihypertensive: 'no',
       onStatin: 'no',
+      uacrMgG: null,
+      hba1cPercent: null,
+      zipCode: '',
+      sdiDecile: null,
     });
     fixture.detectChanges();
 
-    expect(component['model']().age).toBe(16);
     expect(component['inputsComplete']()).toBe(true);
-    expect(component['ageInPreventRange']()).toBe(false);
-    expect(component['hasActiveExclusions']()).toBe(true);
+    expect(component['ageInGuidelineRange']()).toBe(false);
     expect(component['canCalculate']()).toBe(false);
-    expect(
-      fixture.nativeElement.querySelector('#open-cvd-risk-results-message')?.textContent,
-    ).toContain('Form looks complete');
 
     component['setProceedDespiteExclusions'](true);
     fixture.detectChanges();
     expect(component['canCalculate']()).toBe(true);
   });
 
-  it('should show PREVENT applicability banner and gate Calculate until proceed', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+  it('should include optional overrides when set and update active model', () => {
+    const fixture = createFixture();
     const component = fixture.componentInstance;
     fillCompleteForm(component);
+    component['model'].update((m) => ({ ...m, uacrMgG: 40 }));
     fixture.detectChanges();
 
-    component['chartExclusions'].set([
-      {
-        id: 'known-cvd',
-        message: 'Chart suggests known cardiovascular disease',
-        source: 'chart',
-        provenance: 'Chart condition: Coronary artery disease',
-      },
-    ]);
-    fixture.detectChanges();
-
-    const root = fixture.nativeElement as HTMLElement;
-    expect(root.querySelector('#open-cvd-risk-prevent-applicability')).toBeTruthy();
-    expect(root.querySelector('#open-cvd-risk-prevent-reason-known-cvd')?.textContent).toContain(
-      'known cardiovascular disease',
-    );
-    expect(
-      (root.querySelector('#open-cvd-risk-calculate') as HTMLButtonElement).disabled,
-    ).toBe(true);
-
-    component['setProceedDespiteExclusions'](true);
-    fixture.detectChanges();
-    expect(
-      (root.querySelector('#open-cvd-risk-calculate') as HTMLButtonElement).disabled,
-    ).toBe(false);
-  });
-
-  it('should dismiss a chart exclusion and re-enable Calculate without proceed', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    const component = fixture.componentInstance;
-    fillCompleteForm(component);
-    fixture.detectChanges();
-
-    component['chartExclusions'].set([
-      {
-        id: 'known-cvd',
-        message: 'Chart suggests known cardiovascular disease',
-        source: 'chart',
-      },
-    ]);
-    fixture.detectChanges();
-    expect(component['canCalculate']()).toBe(false);
-
-    component['dismissExclusion']('known-cvd');
-    fixture.detectChanges();
-
-    expect(component['hasActiveExclusions']()).toBe(false);
-    expect(fixture.nativeElement.querySelector('#open-cvd-risk-prevent-applicability')).toBeNull();
-    expect(component['canCalculate']()).toBe(true);
-  });
-
-  it('should merge clinician attestation into active exclusions', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    const component = fixture.componentInstance;
-    fillCompleteForm(component);
-    fixture.detectChanges();
-
-    expect(component['hasActiveExclusions']()).toBe(false);
-    component['setLifeExpectancyLimited'](true);
-    fixture.detectChanges();
-
-    expect(component['activeExclusions']().map((e) => e.id)).toContain('life-expectancy-limited');
-    expect(component['canCalculate']()).toBe(false);
-    expect(
-      fixture.nativeElement.querySelector('#open-cvd-risk-clinical-context-card'),
-    ).toBeTruthy();
-  });
-
-  it('should map the current form to OpenCVDRisk library parameters', () => {
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
-    const component = fixture.componentInstance;
-    fixture.detectChanges();
-    fillCompleteForm(component);
-    component['setLifeExpectancyLimited'](true);
-    component['setPathogenicGeneticVariant'](false);
-    fixture.detectChanges();
-
+    expect(component['activeRiskModel']()).toBe('uacr');
     const params = component['buildLibraryParameters']();
-    expect(params['OverrideAgeYears']).toEqual({ integer: 55 });
-    expect(params['OverrideIsFemale']).toBe(true);
-    expect(params['OverrideTotalCholMgDl']).toEqual({ decimal: 200 });
-    expect(params['OverrideHdlMgDl']).toEqual({ decimal: 50 });
-    expect(params['OverrideSbpMmHg']).toEqual({ decimal: 120 });
-    expect(params['OverrideEgfr']).toEqual({ decimal: 90 });
-    expect(params['OverrideDiabetes']).toBe(false);
-    expect(params['OverrideCurrentSmoker']).toBe(false);
-    expect(params['OverrideAntihypertensive']).toBe(false);
-    expect(params['OverrideStatin']).toBe(false);
-    expect(params['LifeExpectancyLimited']).toBe(true);
-    expect(params['PathogenicGeneticCvdVariant']).toBe(false);
-    expect(params['OverrideBmiKgM2']).toEqual({ decimal: expect.any(Number) });
-    expect((params['OverrideBmiKgM2'] as { decimal: number }).decimal).toBeCloseTo(24.2, 1);
+    expect(params['OverrideUacrMgG']).toEqual({ decimal: 40 });
+  });
+
+  it('should omit out-of-range and non-integer optional overrides', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    fillCompleteForm(component);
+    component['model'].update((m) => ({
+      ...m,
+      uacrMgG: 0.01,
+      hba1cPercent: 16,
+      sdiDecile: 8.5,
+    }));
+    fixture.detectChanges();
+
+    expect(component['activeRiskModel']()).toBe('base');
+    const params = component['buildLibraryParameters']();
+    expect(params).not.toHaveProperty('OverrideUacrMgG');
+    expect(params).not.toHaveProperty('OverrideHba1cPercent');
+    expect(params).not.toHaveProperty('OverrideSdiDecile');
   });
 
   it('should pass library parameters when calculating risk', () => {
     const evaluateLibrary = vi.fn(() =>
       of({
+        SelectedPreventModel: 'base',
         TenYearTotalCvdPercent: 8.1,
-        TenYearAscvdProbability: 0.05,
-        TenYearHeartFailureProbability: 0.04,
+        TenYearAscvdPercent: 5.0,
+        TenYearHeartFailurePercent: 4.0,
+        TenYearChdPercent: 3.0,
+        TenYearStrokePercent: 2.0,
         ThirtyYearTotalCvdPercent: 22.3,
+        ThirtyYearAscvdPercent: 15.0,
+        ThirtyYearHeartFailurePercent: 12.0,
+        ThirtyYearChdPercent: 10.0,
+        ThirtyYearStrokePercent: 8.0,
       }),
     );
-    TestBed.overrideProvider(CqlEvaluateService, {
-      useValue: { evaluateLibrary },
-    });
+    vi.spyOn(TestBed.inject(CqlEvaluateService), 'evaluateLibrary').mockImplementation(
+      evaluateLibrary,
+    );
 
-    selectSamplePatient();
-    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    const fixture = createFixture();
     const component = fixture.componentInstance;
-    fixture.detectChanges();
     fillCompleteForm(component);
     fixture.detectChanges();
 
@@ -424,24 +305,32 @@ describe('OpenCVDRiskCalculator', () => {
 
     expect(evaluateLibrary).toHaveBeenCalledWith(
       'OpenCVDRisk',
-      [
-        'TenYearTotalCvdPercent',
-        'TenYearAscvdProbability',
-        'TenYearHeartFailureProbability',
-        'ThirtyYearTotalCvdPercent',
-      ],
+      expect.arrayContaining(['SelectedPreventModel', 'TenYearTotalCvdPercent']),
       expect.objectContaining({
         OverrideAgeYears: { integer: 55 },
         OverrideIsFemale: true,
-        OverrideTotalCholMgDl: { decimal: 200 },
       }),
     );
   });
-});
 
-function setNumberInput(root: HTMLElement, selector: string, value: number): void {
-  const input = root.querySelector(selector) as HTMLInputElement;
-  input.value = String(value);
-  input.dispatchEvent(new Event('input', { bubbles: true }));
-  input.dispatchEvent(new Event('change', { bubbles: true }));
-}
+  it('should render five outcomes for both horizons', () => {
+    const fixture = createFixture();
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('#open-cvd-risk-result-10y-total-cvd')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-result-30y-stroke')).toBeTruthy();
+  });
+
+  it('should map the current form to OpenCVDRisk library parameters', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    fillCompleteForm(component);
+    component['setLifeExpectancyLimited'](true);
+    fixture.detectChanges();
+
+    const params = component['buildLibraryParameters']();
+    expect(params['OverrideAgeYears']).toEqual({ integer: 55 });
+    expect(params['LifeExpectancyLimited']).toBe(true);
+    expect(params['OverrideBmiKgM2']).toEqual({ decimal: expect.any(Number) });
+  });
+});

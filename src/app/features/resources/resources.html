@@ -7,23 +7,6 @@
     </p>
   </header>
 
-  <section class="mb-4" id="resources-opencvd-risk">
-    <h2 class="h5" id="resources-opencvd-risk-heading">OpenCVDRisk</h2>
-    <p id="resources-opencvd-risk-description">
-      Open-source implementation of American Heart Association (AHA) PREVENT&trade; simplified
-      regression estimates for 10- and 30-year total cardiovascular disease risk. Not affiliated
-      with or endorsed by the AHA. Intended for adults ages 30&ndash;79 without known cardiovascular
-      disease when required inputs are available.
-    </p>
-    <a
-      class="btn btn-outline-primary"
-      id="resources-download-opencvd-risk"
-      href="/cql/OpenCVDRisk.cql"
-      download="OpenCVDRisk.cql"
-      >Download OpenCVDRisk.cql</a
-    >
-  </section>
-
   <section class="mb-4" id="resources-bmi">
     <h2 class="h5" id="resources-bmi-heading">BMI</h2>
     <p id="resources-bmi-description">
@@ -37,6 +20,42 @@
       href="/cql/BMI.cql"
       download="BMI.cql"
       >Download BMI.cql</a
+    >
+  </section>
+
+  <section class="mb-4" id="resources-sdi-2019">
+    <h2 class="h5" id="resources-sdi-2019-heading">SDI-2019</h2>
+    <p id="resources-sdi-2019-description">
+      Robert Graham Center 2019 ZCTA Social Deprivation Index lookup (2015&ndash;2019 ACS). Maps ZIP /
+      ZCTA to PREVENT SDI decile 1&ndash;10 via <code>OverrideZipCode</code> or
+      <code>Patient.address.postalCode</code>. FHIR Library id is <code>SDI2019</code>. Not an AHA
+      product.
+    </p>
+    <a
+      class="btn btn-outline-primary"
+      id="resources-download-sdi-2019"
+      href="/cql/SDI-2019.cql"
+      download="SDI-2019.cql"
+      >Download SDI-2019.cql</a
+    >
+  </section>
+
+  <section class="mb-4" id="resources-opencvd-risk">
+    <h2 class="h5" id="resources-opencvd-risk-heading">OpenCVDRisk</h2>
+    <p id="resources-opencvd-risk-description">
+      Open-source implementation of American Heart Association (AHA) PREVENT&trade; simplified
+      regression estimates for 10- and 30-year total cardiovascular disease risk. Not affiliated
+      with or endorsed by the AHA. Intended for adults ages 30&ndash;79 without known cardiovascular
+      disease when required inputs are available. Enhanced SDI models use calculator ZIP→decile (or a
+      manual decile) passed as <code>OverrideSdiDecile</code>; standalone SDI-2019.cql is available
+      above for Library uploads and host <code>$evaluate</code>.
+    </p>
+    <a
+      class="btn btn-outline-primary"
+      id="resources-download-opencvd-risk"
+      href="/cql/OpenCVDRisk.cql"
+      download="OpenCVDRisk.cql"
+      >Download OpenCVDRisk.cql</a
     >
   </section>
 

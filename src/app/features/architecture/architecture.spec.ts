@@ -52,6 +52,12 @@ describe('Architecture', () => {
     expect(root.querySelector('#architecture-standalone')).toBeTruthy();
     expect(root.querySelector('#architecture-smart')).toBeTruthy();
     expect(root.querySelector('#architecture-cql-packaging')).toBeTruthy();
+    expect(root.querySelector('#architecture-cql-packaging-notes')?.textContent).toContain(
+      'SDI-2019',
+    );
+    expect(root.querySelector('#architecture-opencvd-risk-body')?.textContent).toContain(
+      'ZCTA',
+    );
 
     expect(root.querySelector('#architecture-overview-diagram')).toBeTruthy();
     expect(root.querySelector('#architecture-standalone-diagram')).toBeTruthy();

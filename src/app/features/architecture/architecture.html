@@ -26,7 +26,10 @@
       presses Calculate. Prefill reads the selected patient&rsquo;s chart or custom Bundle. Calculate sends
       the current form values (and clinician exclusion flags) as nested CQL library
       <code>Parameters</code>; OpenCVDRisk coalesces those overrides over chart-derived inputs when
-      computing risk.
+      computing risk. Optional ZIP → SDI decile is resolved in the calculator (chart
+      <code>Patient.address.postalCode</code> by default, or a user ZIP override) from the raw
+      2019 Graham Center ZCTA CSV, then passed as <code>OverrideSdiDecile</code>. OpenCVDRisk does not include SDI-2019, so
+      chart-only LipidManagement stays on the base model unless that Parameter is supplied.
     </p>
 
     <section class="mb-4" id="architecture-overview">
@@ -95,9 +98,11 @@
       ></div>
       <ul class="small mt-3 mb-0" id="architecture-cql-packaging-notes">
         <li>
-          CQL under <code>public/cql/</code> (BMI, OpenCVDRisk, LipidManagement) is uploaded as FHIR
+          CQL under <code>public/cql/</code> (BMI, SDI-2019 / Library id <code>SDI2019</code>,
+          OpenCVDRisk, LipidManagement) is uploaded as FHIR
           <code>Library</code> resources via <code>PUT</code> to each Library id
-          (<code>contentType: text/cql</code>, base64-encoded body).
+          (<code>contentType: text/cql</code>, base64-encoded body). Loader order:
+          BMI → SDI-2019 → OpenCVDRisk → LipidManagement.
         </li>
         <li>
           Terminology under <code>public/value-sets/</code> is FHIR <code>ValueSet</code> content inside
@@ -122,7 +127,14 @@
       Association (AHA) PREVENT&trade; algorithms for adults ages 30&ndash;79 without known
       cardiovascular disease. They do not use AHA source code or AHA assets requiring a license from
       the AHA. This is not an official AHA product and is neither affiliated with nor endorsed by
-      the AHA.
+      the AHA. Coefficients follow Khan Supplemental Table S12A&ndash;J (base and optional
+      UACR / HbA1c / SDI models for 10- and 30-year Total CVD, ASCVD, HF, CHD, and Stroke). Optional
+      predictors use preventr-style model selection. SDI deciles come from the Robert Graham Center
+      2019 ZCTA Social Deprivation Index (<code>SDI_score</code> centile → decile 1&ndash;10);
+      the calculator resolves ZIP→decile from the raw Graham Center ZCTA CSV and may load
+      <code>SDI-2019.cql</code> (<code>SDI2019</code>) for host <code>$evaluate</code>.
+      LipidManagement chart-only evaluate stays on the base model unless a host passes optional
+      Parameters (including <code>OverrideSdiDecile</code>).
     </p>
     <p class="mb-0" id="architecture-opencvd-risk-citation">
       Statistical model: Khan SS et al., Circulation. 2024;149:430-449. DOI:

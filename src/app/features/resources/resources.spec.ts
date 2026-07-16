@@ -30,5 +30,9 @@ describe('Resources', () => {
 
     const bmi = root.querySelector('#resources-download-bmi') as HTMLAnchorElement;
     expect(bmi?.getAttribute('href')).toBe('/cql/BMI.cql');
+
+    const sdi = root.querySelector('#resources-download-sdi-2019') as HTMLAnchorElement;
+    expect(sdi?.getAttribute('href')).toBe('/cql/SDI-2019.cql');
+    expect(root.querySelector('#resources-sdi-2019')).toBeTruthy();
   });
 });

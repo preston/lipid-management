@@ -10,7 +10,8 @@
   affiliated with or endorsed by the AHA.
 
   OpenCVDRisk returns null outside ages 30-79 or when required labs/BMI/creatinine are missing; Box 8 then relies on
-  DM and LDL-C only.
+  DM and LDL-C only. Chart-only LipidManagement $evaluate does not pass UACR/HbA1c/SDI Parameters, so OpenCVDRisk
+  stays on the S12A base 10-year Total CVD model for CPG thresholds unless a future host supplies those overrides.
 
   CDS outputs are not treatment orders. Host systems must supply life expectancy and borderline treatment
   preference where appropriate (parameters below).
@@ -22,7 +23,7 @@ library LipidManagement version '0.0.7'
 using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.0.1'
-include OpenCVDRisk version '0.4.1' called OpenCVDRisk
+include OpenCVDRisk version '0.5.0' called OpenCVDRisk
 
 codesystem "SNOMED": 'http://snomed.info/sct'
 codesystem "ICD10CM": 'http://hl7.org/fhir/sid/icd-10-cm'

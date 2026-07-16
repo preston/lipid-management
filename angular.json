@@ -27,6 +27,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "doc/sdi",
+                "output": "/data/sdi"
               }
             ],
             "styles": [

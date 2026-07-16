@@ -42,3 +42,5 @@ Thumbs.db
 
 # Files generated at startup or by the application should not be committed
 public/configuration.js
+
+doc/private

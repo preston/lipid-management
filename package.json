@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:sdi-2019": "tsx scripts/generate-sdi-2019.ts",
+    "extract:prevent-s12": "tsx scripts/extract-prevent-s12.ts"
   },
   "private": true,
   "packageManager": "npm@12.0.1",
@@ -26,13 +28,15 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "^22.0.6",
-    "@angular/cli": "^22.0.6",
+    "@angular/build": "^22.0.7",
+    "@angular/cli": "^22.0.7",
     "@angular/compiler-cli": "^22.0.6",
     "@types/fhir": "^0.0.44",
     "jsdom": "^29.1.1",
     "prettier": "^3.9.5",
+    "tsx": "^4.23.1",
     "typescript": "<6.1",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "xlsx": "^0.18.5"
   }
 }

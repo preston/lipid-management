@@ -27,14 +27,15 @@ export interface ExampleDataCatalogEntry {
   sizeHint: string;
 }
 
-/** Dependency order: BMI → OpenCVDRisk → LipidManagement. */
+/** Dependency order: BMI → SDI2019 → OpenCVDRisk → LipidManagement. */
 export const CQL_LIBRARY_CATALOG: readonly CqlLibraryCatalogEntry[] = [
   { id: 'BMI', assetPath: '/cql/BMI.cql', label: 'BMI' },
+  { id: 'SDI2019', assetPath: '/cql/SDI-2019.cql', label: 'SDI-2019' },
   { id: 'OpenCVDRisk', assetPath: '/cql/OpenCVDRisk.cql', label: 'OpenCVDRisk' },
   { id: 'LipidManagement', assetPath: '/cql/LipidManagement.cql', label: 'LipidManagement' },
 ];
 
-/** Order roughly follows library dependency (BMI → OpenCVDRisk / LipidManagement). */
+/** Order roughly follows library dependency (BMI → SDI2019 → OpenCVDRisk / LipidManagement). */
 export const VALUE_SET_CATALOG: readonly ValueSetCatalogEntry[] = [
   { id: 'body-height', assetPath: '/value-sets/body-height.json', label: 'Body Height', origin: 'asu' },
   { id: 'body-weight', assetPath: '/value-sets/body-weight.json', label: 'Body Weight', origin: 'asu' },
