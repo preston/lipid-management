@@ -350,7 +350,7 @@ export class CalculatorPrefillService {
     const status = obs.status;
     const bits = [
       codeDisplay ?? null,
-      effectiveDisplay ? `dated ${effectiveDisplay}` : null,
+      effectiveDisplay,
       status && status !== 'final' ? `status ${status}` : null,
     ].filter(Boolean);
     return {
@@ -437,7 +437,7 @@ export class CalculatorPrefillService {
     const effectiveDisplay = formatFhirDateTime(effectiveRaw);
     return [
       codeDisplay ? `Chart observation: ${codeDisplay}` : 'Matched chart observation',
-      effectiveDisplay ? `dated ${effectiveDisplay}` : null,
+      effectiveDisplay,
     ]
       .filter(Boolean)
       .join(' · ');

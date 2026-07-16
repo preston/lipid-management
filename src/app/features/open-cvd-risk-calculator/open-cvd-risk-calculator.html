@@ -139,202 +139,192 @@
   @if (selectedPatient() && !prefillLoading()) {
   <div class="row g-4">
     <div class="col-lg-6">
-      <form class="d-flex flex-column gap-3" id="open-cvd-risk-calculator-form" novalidate>
-        <div class="card">
-          <div class="card-header">Demographics</div>
-          <div class="card-body">
-            <div class="mb-3">
-              <label class="form-label" for="open-cvd-risk-age">Age (years)</label>
-              <input type="number" class="form-control" id="open-cvd-risk-age" step="1" placeholder="30-79"
-                [class.is-invalid]="openCvdRiskForm.age().invalid()"
-                [formField]="openCvdRiskForm.age"
-                [attr.aria-describedby]="openCvdRiskForm.age().invalid()
-                  ? 'open-cvd-risk-age-errors' : null" />
-              @if (openCvdRiskForm.age().invalid()) {
-              <div class="invalid-feedback d-block" id="open-cvd-risk-age-errors">
-                @for (error of openCvdRiskForm.age().errors(); track error.kind) {
+      <form class="d-flex flex-column gap-5" id="open-cvd-risk-calculator-form" novalidate>
+        <section id="open-cvd-risk-demographics">
+          <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 mb-3">Demographics</h2>
+          <div class="mb-3">
+            <label class="form-label" for="open-cvd-risk-age">Age (years)</label>
+            <input type="number" class="form-control" id="open-cvd-risk-age" step="1" placeholder="30-79"
+              [class.is-invalid]="openCvdRiskForm.age().invalid()"
+              [formField]="openCvdRiskForm.age"
+              [attr.aria-describedby]="openCvdRiskForm.age().invalid()
+                ? 'open-cvd-risk-age-errors' : null" />
+            @if (openCvdRiskForm.age().invalid()) {
+            <div class="invalid-feedback d-block" id="open-cvd-risk-age-errors">
+              @for (error of openCvdRiskForm.age().errors(); track error.kind) {
+              <div>{{ error.message }}</div>
+              }
+            </div>
+            }
+            @if (provenanceFor('age'); as blurb) {
+            <div class="form-text text-body-secondary" id="open-cvd-risk-age-provenance">{{ blurb }}</div>
+            }
+          </div>
+          <fieldset>
+            <legend class="form-label fs-6 mb-2">Sex</legend>
+            <div class="d-flex flex-wrap gap-3"
+              [attr.aria-describedby]="openCvdRiskForm.sex().invalid()
+                ? 'open-cvd-risk-sex-errors' : null">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="open-cvd-risk-sex-female" value="female"
+                  [class.is-invalid]="openCvdRiskForm.sex().invalid()"
+                  [formField]="openCvdRiskForm.sex" />
+                <label class="form-check-label" for="open-cvd-risk-sex-female">Female</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="open-cvd-risk-sex-male" value="male"
+                  [class.is-invalid]="openCvdRiskForm.sex().invalid()"
+                  [formField]="openCvdRiskForm.sex" />
+                <label class="form-check-label" for="open-cvd-risk-sex-male">Male</label>
+              </div>
+            </div>
+            @if (openCvdRiskForm.sex().invalid()) {
+            <div class="invalid-feedback d-block" id="open-cvd-risk-sex-errors">
+              @for (error of openCvdRiskForm.sex().errors(); track error.kind) {
+              <div>{{ error.message }}</div>
+              }
+            </div>
+            }
+          </fieldset>
+          @if (provenanceFor('sex'); as blurb) {
+          <div class="form-text text-body-secondary mt-2" id="open-cvd-risk-sex-provenance">{{ blurb }}</div>
+          }
+        </section>
+
+        <section id="open-cvd-risk-body">
+          <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 mb-3">Body</h2>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label" for="open-cvd-risk-height-cm">Height</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="open-cvd-risk-height-cm" step="0.1"
+                  [class.is-invalid]="openCvdRiskForm.heightCm().invalid()"
+                  aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.heightCm" />
+                <span class="input-group-text">cm</span>
+              </div>
+              @if (openCvdRiskForm.heightCm().invalid()) {
+              <div class="invalid-feedback d-block" id="open-cvd-risk-height-errors">
+                @for (error of openCvdRiskForm.heightCm().errors(); track error.kind) {
                 <div>{{ error.message }}</div>
                 }
               </div>
               }
-              @if (provenanceFor('age'); as blurb) {
-              <div class="form-text text-body-secondary" id="open-cvd-risk-age-provenance">{{ blurb }}</div>
-              }
             </div>
-            <fieldset>
-              <legend class="form-label fs-6 mb-2">Sex</legend>
-              <div class="d-flex flex-wrap gap-3"
-                [attr.aria-describedby]="openCvdRiskForm.sex().invalid()
-                  ? 'open-cvd-risk-sex-errors' : null">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" id="open-cvd-risk-sex-female" value="female"
-                    [class.is-invalid]="openCvdRiskForm.sex().invalid()"
-                    [formField]="openCvdRiskForm.sex" />
-                  <label class="form-check-label" for="open-cvd-risk-sex-female">Female</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" id="open-cvd-risk-sex-male" value="male"
-                    [class.is-invalid]="openCvdRiskForm.sex().invalid()"
-                    [formField]="openCvdRiskForm.sex" />
-                  <label class="form-check-label" for="open-cvd-risk-sex-male">Male</label>
-                </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="open-cvd-risk-weight-kg">Weight</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="open-cvd-risk-weight-kg" step="0.1"
+                  [class.is-invalid]="openCvdRiskForm.weightKg().invalid()"
+                  aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.weightKg" />
+                <span class="input-group-text">kg</span>
               </div>
-              @if (openCvdRiskForm.sex().invalid()) {
-              <div class="invalid-feedback d-block" id="open-cvd-risk-sex-errors">
-                @for (error of openCvdRiskForm.sex().errors(); track error.kind) {
+              @if (openCvdRiskForm.weightKg().invalid()) {
+              <div class="invalid-feedback d-block" id="open-cvd-risk-weight-errors">
+                @for (error of openCvdRiskForm.weightKg().errors(); track error.kind) {
                 <div>{{ error.message }}</div>
                 }
               </div>
               }
-            </fieldset>
-            @if (provenanceFor('sex'); as blurb) {
-            <div class="form-text text-body-secondary mt-2" id="open-cvd-risk-sex-provenance">{{ blurb }}</div>
-            }
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Body measurements</div>
-          <div class="card-body">
-            <div class="row g-3">
-              <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-height-cm">Height</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-height-cm" step="0.1"
-                    [class.is-invalid]="openCvdRiskForm.heightCm().invalid()"
-                    aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.heightCm" />
-                  <span class="input-group-text">cm</span>
-                </div>
-                @if (openCvdRiskForm.heightCm().invalid()) {
-                <div class="invalid-feedback d-block" id="open-cvd-risk-height-errors">
-                  @for (error of openCvdRiskForm.heightCm().errors(); track error.kind) {
-                  <div>{{ error.message }}</div>
-                  }
-                </div>
-                }
-              </div>
-              <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-weight-kg">Weight</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-weight-kg" step="0.1"
-                    [class.is-invalid]="openCvdRiskForm.weightKg().invalid()"
-                    aria-describedby="open-cvd-risk-bmi-help" [formField]="openCvdRiskForm.weightKg" />
-                  <span class="input-group-text">kg</span>
-                </div>
-                @if (openCvdRiskForm.weightKg().invalid()) {
-                <div class="invalid-feedback d-block" id="open-cvd-risk-weight-errors">
-                  @for (error of openCvdRiskForm.weightKg().errors(); track error.kind) {
-                  <div>{{ error.message }}</div>
-                  }
-                </div>
-                }
-              </div>
             </div>
-            <div class="form-text mt-2" id="open-cvd-risk-bmi-help">
-              BMI is calculated from height and weight. Valid BMI range: 18.5&ndash;39.9&nbsp;kg/m&sup2;
+            <div class="col-12">
+              <div class="form-text" id="open-cvd-risk-bmi-help">
+                BMI is calculated from height and weight. Valid BMI range: 18.5&ndash;39.9&nbsp;kg/m&sup2;
+              </div>
+              @if (provenanceFor('heightCm'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-height-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('weightKg'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-weight-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('bmi'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-bmi-provenance">{{ blurb }}</div>
+              }
             </div>
-            @if (provenanceFor('heightCm'); as blurb) {
-            <div class="form-text text-body-secondary" id="open-cvd-risk-height-provenance">{{ blurb }}</div>
-            }
-            @if (provenanceFor('weightKg'); as blurb) {
-            <div class="form-text text-body-secondary" id="open-cvd-risk-weight-provenance">{{ blurb }}</div>
-            }
-            @if (provenanceFor('bmi'); as blurb) {
-            <div class="form-text text-body-secondary" id="open-cvd-risk-bmi-provenance">{{ blurb }}</div>
-            }
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Lipids, blood pressure &amp; kidney</div>
-          <div class="card-body">
-            <div class="row g-3">
-              <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-total-cholesterol">Total cholesterol</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-total-cholesterol" step="1"
-                    placeholder="130-320"
-                    [class.is-invalid]="openCvdRiskForm.totalCholesterolMgDl().invalid()"
-                    [formField]="openCvdRiskForm.totalCholesterolMgDl" />
-                  <span class="input-group-text">mg/dL</span>
-                </div>
-                @if (openCvdRiskForm.totalCholesterolMgDl().invalid()) {
-                <div class="invalid-feedback d-block" id="open-cvd-risk-total-cholesterol-errors">
-                  @for (error of openCvdRiskForm.totalCholesterolMgDl().errors(); track error.kind) {
-                  <div>{{ error.message }}</div>
-                  }
-                </div>
-                }
-                @if (provenanceFor('totalCholesterolMgDl'); as blurb) {
-                <div class="form-text text-body-secondary" id="open-cvd-risk-total-cholesterol-provenance">
-                  {{ blurb }}
-                </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="open-cvd-risk-total-cholesterol">Total cholesterol</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="open-cvd-risk-total-cholesterol" step="1"
+                  placeholder="130-320"
+                  [class.is-invalid]="openCvdRiskForm.totalCholesterolMgDl().invalid()"
+                  [formField]="openCvdRiskForm.totalCholesterolMgDl" />
+                <span class="input-group-text">mg/dL</span>
+              </div>
+              @if (openCvdRiskForm.totalCholesterolMgDl().invalid()) {
+              <div class="invalid-feedback d-block" id="open-cvd-risk-total-cholesterol-errors">
+                @for (error of openCvdRiskForm.totalCholesterolMgDl().errors(); track error.kind) {
+                <div>{{ error.message }}</div>
                 }
               </div>
-              <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-hdl-cholesterol">HDL cholesterol</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-hdl-cholesterol" step="1"
-                    placeholder="20-100"
-                    [class.is-invalid]="openCvdRiskForm.hdlMgDl().invalid()"
-                    [formField]="openCvdRiskForm.hdlMgDl" />
-                  <span class="input-group-text">mg/dL</span>
-                </div>
-                @if (openCvdRiskForm.hdlMgDl().invalid()) {
-                <div class="invalid-feedback d-block" id="open-cvd-risk-hdl-errors">
-                  @for (error of openCvdRiskForm.hdlMgDl().errors(); track error.kind) {
-                  <div>{{ error.message }}</div>
-                  }
-                </div>
-                }
-                @if (provenanceFor('hdlMgDl'); as blurb) {
-                <div class="form-text text-body-secondary" id="open-cvd-risk-hdl-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('totalCholesterolMgDl'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-total-cholesterol-provenance">
+                {{ blurb }}
+              </div>
+              }
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="open-cvd-risk-hdl-cholesterol">HDL cholesterol</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="open-cvd-risk-hdl-cholesterol" step="1"
+                  placeholder="20-100"
+                  [class.is-invalid]="openCvdRiskForm.hdlMgDl().invalid()"
+                  [formField]="openCvdRiskForm.hdlMgDl" />
+                <span class="input-group-text">mg/dL</span>
+              </div>
+              @if (openCvdRiskForm.hdlMgDl().invalid()) {
+              <div class="invalid-feedback d-block" id="open-cvd-risk-hdl-errors">
+                @for (error of openCvdRiskForm.hdlMgDl().errors(); track error.kind) {
+                <div>{{ error.message }}</div>
                 }
               </div>
-              <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic BP</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="open-cvd-risk-systolic-bp" step="1" placeholder="90-200"
-                    [class.is-invalid]="openCvdRiskForm.systolicBpMmHg().invalid()"
-                    [formField]="openCvdRiskForm.systolicBpMmHg" />
-                  <span class="input-group-text">mmHg</span>
-                </div>
-                @if (openCvdRiskForm.systolicBpMmHg().invalid()) {
-                <div class="invalid-feedback d-block" id="open-cvd-risk-systolic-bp-errors">
-                  @for (error of openCvdRiskForm.systolicBpMmHg().errors(); track error.kind) {
-                  <div>{{ error.message }}</div>
-                  }
-                </div>
-                }
-                @if (provenanceFor('systolicBpMmHg'); as blurb) {
-                <div class="form-text text-body-secondary" id="open-cvd-risk-sbp-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('hdlMgDl'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-hdl-provenance">{{ blurb }}</div>
+              }
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="open-cvd-risk-systolic-bp">Systolic BP</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="open-cvd-risk-systolic-bp" step="1" placeholder="90-200"
+                  [class.is-invalid]="openCvdRiskForm.systolicBpMmHg().invalid()"
+                  [formField]="openCvdRiskForm.systolicBpMmHg" />
+                <span class="input-group-text">mmHg</span>
+              </div>
+              @if (openCvdRiskForm.systolicBpMmHg().invalid()) {
+              <div class="invalid-feedback d-block" id="open-cvd-risk-systolic-bp-errors">
+                @for (error of openCvdRiskForm.systolicBpMmHg().errors(); track error.kind) {
+                <div>{{ error.message }}</div>
                 }
               </div>
-              <div class="col-sm-6">
-                <label class="form-label" for="open-cvd-risk-egfr">
-                  eGFR (mL/min/1.73m&sup2;)
-                </label>
-                <input type="number" class="form-control" id="open-cvd-risk-egfr" step="1" placeholder="15-150"
-                  [class.is-invalid]="openCvdRiskForm.egfrMlMin173m2().invalid()"
-                  [formField]="openCvdRiskForm.egfrMlMin173m2" />
-                @if (openCvdRiskForm.egfrMlMin173m2().invalid()) {
-                <div class="invalid-feedback d-block" id="open-cvd-risk-egfr-errors">
-                  @for (error of openCvdRiskForm.egfrMlMin173m2().errors(); track error.kind) {
-                  <div>{{ error.message }}</div>
-                  }
-                </div>
-                }
-                @if (provenanceFor('egfrMlMin173m2'); as blurb) {
-                <div class="form-text text-body-secondary" id="open-cvd-risk-egfr-provenance">{{ blurb }}</div>
+              }
+              @if (provenanceFor('systolicBpMmHg'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-sbp-provenance">{{ blurb }}</div>
+              }
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="open-cvd-risk-egfr">
+                eGFR (mL/min/1.73m&sup2;)
+              </label>
+              <input type="number" class="form-control" id="open-cvd-risk-egfr" step="1" placeholder="15-150"
+                [class.is-invalid]="openCvdRiskForm.egfrMlMin173m2().invalid()"
+                [formField]="openCvdRiskForm.egfrMlMin173m2" />
+              @if (openCvdRiskForm.egfrMlMin173m2().invalid()) {
+              <div class="invalid-feedback d-block" id="open-cvd-risk-egfr-errors">
+                @for (error of openCvdRiskForm.egfrMlMin173m2().errors(); track error.kind) {
+                <div>{{ error.message }}</div>
                 }
               </div>
+              }
+              @if (provenanceFor('egfrMlMin173m2'); as blurb) {
+              <div class="form-text text-body-secondary" id="open-cvd-risk-egfr-provenance">{{ blurb }}</div>
+              }
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="card">
-          <div class="card-header">Clinical history &amp; medications</div>
-          <div class="card-body d-flex flex-column gap-3">
+        <section id="open-cvd-risk-clinical-history">
+          <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 mb-3">Clinical history &amp; medications</h2>
+          <div class="d-flex flex-column gap-3">
             <fieldset>
               <legend class="form-label fs-6 mb-1">Diabetes</legend>
               <div class="form-text mb-2" id="open-cvd-risk-diabetes-help">
@@ -425,11 +415,10 @@
             <div class="form-text text-body-secondary" id="open-cvd-risk-statin-provenance">{{ blurb }}</div>
             }
           </div>
-        </div>
+        </section>
 
-        <div class="card" id="open-cvd-risk-optional-predictors-card">
-          <div class="card-header">Optional predictors</div>
-          <div class="card-body">
+        <section id="open-cvd-risk-optional-predictors-card">
+          <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 mb-3">Optional predictors</h2>
             <p class="form-text mb-3" id="open-cvd-risk-optional-predictors-help">
               Leave blank to use the base equations
               <!-- . One optional selects that add-on equation; two or
@@ -507,12 +496,10 @@
             <p class="form-text mb-0 mt-3" id="open-cvd-risk-active-model">
               Active model: <span class="fw-semibold">{{ activeRiskModelLabel() }}</span>
             </p>
-          </div>
-        </div>
+        </section>
 
-        <div class="card" id="open-cvd-risk-clinical-context-card">
-          <div class="card-header">Clinical context</div>
-          <div class="card-body">
+        <section id="open-cvd-risk-clinical-context-card">
+          <h2 class="h6 text-body-secondary text-uppercase border-bottom pb-2 mb-3">Clinical context</h2>
             <!-- <p class="form-text mb-3" id="open-cvd-risk-clinical-context-help">
               Not usually in structured chart data; mark if known.
             </p> -->
@@ -531,8 +518,7 @@
                 Known pathogenic genetic CVD variant
               </label>
             </div>
-          </div>
-        </div>
+        </section>
 
         <div class="d-flex flex-wrap gap-2 align-self-start" id="open-cvd-risk-actions">
           <button type="button" class="btn btn-primary" id="open-cvd-risk-calculate"
