@@ -147,6 +147,25 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['sdiLookupStatus']()).toBe('found');
   });
 
+  it('should resolve SDI from ZIP input DOM value before model sync', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    const zipInput = (fixture.nativeElement as HTMLElement).querySelector(
+      '#open-cvd-risk-zip',
+    ) as HTMLInputElement;
+
+    // Stale model, fresh DOM value — mirrors (input) racing ahead of [formField].
+    expect(component['model']().zipCode).not.toBe('01001');
+    zipInput.value = '01001';
+    const event = { target: zipInput } as unknown as Event;
+    component['onZipCodeInput'](event);
+    fixture.detectChanges();
+
+    expect(component['model']().zipCode).toBe('01001');
+    expect(component['model']().sdiDecile).toBe(4);
+    expect(component['sdiLookupStatus']()).toBe('found');
+  });
+
   it('should clear SDI when ZIP is unknown', () => {
     const fixture = createFixture(SAMPLE_PATIENT_WITH_ZIP);
     const component = fixture.componentInstance;

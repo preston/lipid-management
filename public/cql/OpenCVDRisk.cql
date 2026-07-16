@@ -20,7 +20,7 @@
   Coefficients and transforms from Khan Supplemental Table S12A–J
   (source extract: scripts/extract-prevent-s12.ts → s12-goldens.json).
 */
-library OpenCVDRisk version '0.5.0'
+library OpenCVDRisk version '0.5.2'
 
 using FHIR version '4.0.1'
 
@@ -516,7 +516,7 @@ define function Egfr2021Base(scrMgDl System.Decimal, ageYears System.Integer, k 
   142.0 * Power((if scrMgDl / k <= 1.0 then scrMgDl / k else 1.0), alpha) * Power((if scrMgDl / k >= 1.0 then scrMgDl / k else 1.0), - 1.2) * Power(0.9938, ageYears)
 
 define function Egfr2021Creatinine(scrMgDl System.Decimal, ageYears System.Integer, female System.Boolean):
-  if female then Egfr2021Base(scrMgDl, ageYears, 0.7, - 0.241) * 1.012 else Egfr2021Base(scrMgDl, ageYears, 0.9, - 0.303)
+  if female then Egfr2021Base(scrMgDl, ageYears, 0.7, - 0.241) * 1.012 else Egfr2021Base(scrMgDl, ageYears, 0.9, - 0.302)
 
 define function ObservationQuantityToMgDl(q FHIR.Quantity):
   ( convert FHIRHelpers.ToQuantity ( q ) to 'mg/dL' ).value
@@ -537,10 +537,35 @@ define LatestLdlObservation:
       where O.status in { 'final', 'amended', 'corrected' } and O.value is FHIR.Quantity and O.effective is not null
       sort by start of effective desc)
 
+/** Extract SBP from a standalone systolic Observation or a BP-panel component (LOINC 8480-6). */
 define LatestSbpObservation:
-  First([Observation: "SystolicBloodPressure"] O
-      where O.status in { 'final', 'amended', 'corrected' } and O.value is FHIR.Quantity and O.effective is not null
-      sort by start of effective desc)
+  First(
+    [Observation] O
+      where O.status in { 'final', 'amended', 'corrected' }
+        and O.effective is not null
+        and (
+          ( O.code in "SystolicBloodPressure" and O.value is FHIR.Quantity )
+            or exists (
+              O.component C
+                where C.code in "SystolicBloodPressure"
+                  and C.value is FHIR.Quantity
+            )
+        )
+      sort by start of effective desc
+  )
+
+define function SbpMmHgFromObservation(O Observation):
+  if O is null then null
+  else Coalesce(
+    if O.code in "SystolicBloodPressure" and O.value is FHIR.Quantity
+      then FHIRHelpers.ToQuantity(O.value as FHIR.Quantity).value
+      else null,
+    First(
+      O.component C
+        where C.code in "SystolicBloodPressure" and C.value is FHIR.Quantity
+        return FHIRHelpers.ToQuantity(C.value as FHIR.Quantity).value
+    )
+  )
 
 define LatestCreatinineObservation:
   First([Observation: "Creatinine"] O
@@ -557,7 +582,7 @@ define LatestLdlMgDl:
   case when LatestLdlObservation is not null then ObservationQuantityToMgDl(LatestLdlObservation.value as FHIR.Quantity) else null end
 
 define LatestSbpMmHg:
-  case when LatestSbpObservation is not null then FHIRHelpers.ToQuantity ( LatestSbpObservation.value as FHIR.Quantity ).value else null end
+  SbpMmHgFromObservation(LatestSbpObservation)
 
 define LatestCreatinineMgDl:
   case when LatestCreatinineObservation is not null then ObservationQuantityToMgDl(LatestCreatinineObservation.value as FHIR.Quantity) else null end

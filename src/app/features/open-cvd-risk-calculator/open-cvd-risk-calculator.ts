@@ -154,9 +154,11 @@ export class OpenCVDRiskCalculator implements OnInit {
     required(fields.hdlMgDl, { message: 'HDL cholesterol is required' });
     min(fields.hdlMgDl, 0, { message: 'HDL cholesterol must be 0 or greater' });
     required(fields.systolicBpMmHg, { message: 'Systolic blood pressure is required' });
-    min(fields.systolicBpMmHg, 0, { message: 'Systolic blood pressure must be 0 or greater' });
+    min(fields.systolicBpMmHg, 90, { message: 'Systolic blood pressure must be at least 90 mmHg (PREVENT validated range)' });
+    max(fields.systolicBpMmHg, 200, { message: 'Systolic blood pressure must be at most 200 mmHg (PREVENT validated range)' });
     required(fields.egfrMlMin173m2, { message: 'eGFR is required' });
-    min(fields.egfrMlMin173m2, 0, { message: 'eGFR must be 0 or greater' });
+    min(fields.egfrMlMin173m2, 15, { message: 'eGFR must be at least 15 (PREVENT validated range)' });
+    max(fields.egfrMlMin173m2, 150, { message: 'eGFR must be at most 150 (PREVENT validated range)' });
     min(fields.uacrMgG, 0.1, { message: 'UACR must be at least 0.1' });
     max(fields.uacrMgG, 25000, { message: 'UACR must be at most 25000' });
     min(fields.hba1cPercent, 3, { message: 'HbA1c must be at least 3' });
@@ -247,6 +249,18 @@ export class OpenCVDRiskCalculator implements OnInit {
     if (this.selectedPatient() == null || this.calculateLoading() || !this.inputsComplete()) {
       return false;
     }
+    // Block when PREVENT-validated ranges fail (e.g. SBP < 90), matching AHA calculator gating.
+    if (
+      this.openCvdRiskForm.systolicBpMmHg().invalid() ||
+      this.openCvdRiskForm.egfrMlMin173m2().invalid() ||
+      this.openCvdRiskForm.age().invalid() ||
+      this.openCvdRiskForm.totalCholesterolMgDl().invalid() ||
+      this.openCvdRiskForm.hdlMgDl().invalid() ||
+      this.openCvdRiskForm.heightCm().invalid() ||
+      this.openCvdRiskForm.weightKg().invalid()
+    ) {
+      return false;
+    }
     if (this.hasActiveExclusions() && !this.proceedDespiteExclusions()) {
       return false;
     }
@@ -320,9 +334,17 @@ export class OpenCVDRiskCalculator implements OnInit {
     }
   }
 
-  protected onZipCodeInput(): void {
+  protected onZipCodeInput(event?: Event): void {
     this.zipUserEdited.set(true);
-    const key = normalizeZip(this.model().zipCode);
+    // Prefer the DOM value: (input) can run before [formField] flushes into the model.
+    const raw =
+      event?.target instanceof HTMLInputElement
+        ? event.target.value
+        : this.model().zipCode;
+    if (this.model().zipCode !== raw) {
+      this.model.update((m) => ({ ...m, zipCode: raw }));
+    }
+    const key = normalizeZip(raw);
     if (key == null) {
       // Cleared ZIP: drop auto-filled SDI; keep a manually entered decile.
       if (!this.sdiManual()) {
@@ -581,14 +603,30 @@ export class OpenCVDRiskCalculator implements OnInit {
         this.dismissedExclusionIds.set(new Set());
         this.proceedDespiteExclusions.set(false);
         this.prefillLoading.set(false);
+        this.tryAutoCalculateAfterPrefill();
       },
       error: (err) => {
         this.prefillLoading.set(false);
         this.chartExclusions.set([]);
         this.prefillBaseline.set({ ...this.model() });
         this.toastDomainError(err, 'Prefill failed: ', 'warning');
+        this.tryAutoCalculateAfterPrefill();
       },
     });
+  }
+
+  /** Run Calculate when prefill left the form submittable (optionally waiting on ZIP→SDI). */
+  private tryAutoCalculateAfterPrefill(): void {
+    if (this.prefillLoading() || this.calculateLoading()) {
+      return;
+    }
+    // ZIP→SDI uses an async map; wait so the first calc includes SDI when available.
+    if (normalizeZip(this.model().zipCode) != null && this.sdiLookupStatus() === 'loading') {
+      return;
+    }
+    if (this.canCalculate()) {
+      this.calculateRisk();
+    }
   }
 
   private applyPatientDemographics(patient: Patient): void {
@@ -646,11 +684,13 @@ export class OpenCVDRiskCalculator implements OnInit {
           this.sdiLookupStatus.set('blank');
           this.toastDomainError(err, 'SDI CSV parse failed: ', 'warning');
         }
+        this.tryAutoCalculateAfterPrefill();
       },
       error: (err) => {
         this.sdiMap.set(null);
         this.sdiLookupStatus.set('blank');
         this.toastDomainError(err, 'SDI map load failed: ', 'warning');
+        this.tryAutoCalculateAfterPrefill();
       },
     });
   }

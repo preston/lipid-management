@@ -18,7 +18,7 @@ export function computeEgfr2021Creatinine(
   if (sex === 'female') {
     return egfr2021Base(scrMgDl, ageYears, 0.7, -0.241) * 1.012;
   }
-  return egfr2021Base(scrMgDl, ageYears, 0.9, -0.303);
+  return egfr2021Base(scrMgDl, ageYears, 0.9, -0.302);
 }
 
 export function computeBmiKgM2(heightCm: number, weightKg: number): number {

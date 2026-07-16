@@ -480,7 +480,7 @@
                 <input type="text" class="form-control" id="open-cvd-risk-zip"
                   placeholder="e.g. 90210" aria-describedby="open-cvd-risk-zip-help"
                   [formField]="openCvdRiskForm.zipCode"
-                  (input)="onZipCodeInput()" />
+                  (input)="onZipCodeInput($event)" />
                 <div class="form-text" id="open-cvd-risk-zip-help">
                   Optional. Defaults from chart address; override allowed.
                 </div>
