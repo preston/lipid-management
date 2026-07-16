@@ -42,6 +42,8 @@ sequenceDiagram
 
   Note over UI,Clinician: 6. Results return to UI
   UI-->>Clinician: Display scores in calculator
+  Note over UI: Accepted session kept in memory
+  UI-->>Clinician: Continue to Guideline when ready
 `.trim(),
 };
 

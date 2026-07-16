@@ -1,0 +1,38 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/triglycerides",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "triglycerides",
+        "url": "https://asu.edu/fhir/ValueSet/triglycerides",
+        "name": "Triglycerides",
+        "title": "Triglycerides Laboratory Test",
+        "status": "active",
+        "version": "2026-07-16",
+        "experimental": false,
+        "date": "2026-07-16",
+        "publisher": "ASU CDS",
+        "description": "LOINC triglycerides observations for VA/DoD Lipids CPG Recommendations 9 and 16 / Sidebar 8. Prefer VSAC expansion when available.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://loinc.org",
+              "concept": [
+                { "code": "2571-8", "display": "Triglyceride [Mass/volume] in Serum or Plasma" },
+                { "code": "12951-0", "display": "Triglyceride [Mass/volume] in Serum or Plasma --fasting" },
+                { "code": "3043-7", "display": "Triglyceride [Mass/volume] in Blood" }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/triglycerides"
+      }
+    }
+  ]
+}

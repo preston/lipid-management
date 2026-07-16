@@ -56,7 +56,7 @@ export const CQL_LIBRARY_CATALOG: readonly CqlLibraryCatalogEntry[] = [
     assetPath: '/cql/LipidManagement.cql',
     label: 'LipidManagement',
     description:
-      'Maps the VA/DoD Clinical Practice Guideline on Lipid Management for Cardiovascular Disease Risk Reduction (2025) management algorithm to CQL. Uses OpenCVDRisk for 10-year total CVD risk thresholds and related pathway logic.',
+      'VA/DoD Lipids CPG December 2025 (PDF final 2026-01-06): Appendix G management algorithm (Boxes 1–21) plus Recommendation 1–24 applicability signals. Includes OpenCVDRisk 0.5.3 for PREVENT 10-year total CVD. Clinician parameters are nullable (unknown ≠ false). Local OverrideAgeYears / OverrideTenYearTotalCvdPercent / OverrideLdlMgDl / OverrideHasDiabetes support calculator session replay. CDS only — not orders.',
   },
 ];
 
@@ -80,7 +80,14 @@ export const VALUE_SET_CATALOG: readonly ValueSetCatalogEntry[] = [
     label: 'AHA Atherosclerotic Cardiovascular Disease',
     origin: 'vsac',
   },
+  {
+    id: 'hiv-infection',
+    assetPath: '/value-sets/hiv-infection.json',
+    label: 'HIV Infection (VSAC-aligned)',
+    origin: 'vsac',
+  },
   { id: 'diabetes-mellitus-type-2', assetPath: '/value-sets/diabetes-mellitus-type-2.json', label: 'Diabetes Mellitus Type 2', origin: 'asu' },
+  { id: 'diabetes-mellitus', assetPath: '/value-sets/diabetes-mellitus.json', label: 'Diabetes Mellitus (CPG Box 8)', origin: 'asu' },
   {
     id: 'end-stage-kidney-disease',
     assetPath: '/value-sets/end-stage-kidney-disease.json',
@@ -111,6 +118,41 @@ export const VALUE_SET_CATALOG: readonly ValueSetCatalogEntry[] = [
     label: 'Inherited Cardiovascular Condition',
     origin: 'asu',
   },
+  { id: 'triglycerides', assetPath: '/value-sets/triglycerides.json', label: 'Triglycerides', origin: 'asu' },
+  { id: 'lipoprotein-a', assetPath: '/value-sets/lipoprotein-a.json', label: 'Lipoprotein(a)', origin: 'asu' },
+  {
+    id: 'aspartate-aminotransferase',
+    assetPath: '/value-sets/aspartate-aminotransferase.json',
+    label: 'AST',
+    origin: 'asu',
+  },
+  {
+    id: 'alanine-aminotransferase',
+    assetPath: '/value-sets/alanine-aminotransferase.json',
+    label: 'ALT',
+    origin: 'asu',
+  },
+  { id: 'ezetimibe-therapy', assetPath: '/value-sets/ezetimibe-therapy.json', label: 'Ezetimibe Therapy', origin: 'asu' },
+  {
+    id: 'pcsk9-monoclonal-antibody-therapy',
+    assetPath: '/value-sets/pcsk9-monoclonal-antibody-therapy.json',
+    label: 'PCSK9 mAb Therapy',
+    origin: 'asu',
+  },
+  {
+    id: 'bempedoic-acid-therapy',
+    assetPath: '/value-sets/bempedoic-acid-therapy.json',
+    label: 'Bempedoic Acid Therapy',
+    origin: 'asu',
+  },
+  { id: 'fibrate-therapy', assetPath: '/value-sets/fibrate-therapy.json', label: 'Fibrate Therapy', origin: 'asu' },
+  {
+    id: 'icosapent-ethyl-therapy',
+    assetPath: '/value-sets/icosapent-ethyl-therapy.json',
+    label: 'Icosapent Ethyl Therapy',
+    origin: 'asu',
+  },
+  { id: 'mi-acs-cabg-pci', assetPath: '/value-sets/mi-acs-cabg-pci.json', label: 'MI / ACS / CABG / PCI', origin: 'asu' },
 ];
 
 /** Recommended order: hospital → practitioner → patients. */

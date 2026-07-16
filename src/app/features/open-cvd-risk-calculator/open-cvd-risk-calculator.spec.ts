@@ -3,6 +3,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { of, Subject } from 'rxjs';
 import { OpenCVDRiskCalculator } from './open-cvd-risk-calculator';
 import { PatientContextService } from '../../services/patient-context.service';
@@ -49,6 +50,7 @@ const EMPTY_RISK_RESULTS = {
   OpenCvdRiskAge: 68,
   BaseTenYearTotalCvdPercent: 8.1,
   BaseThirtyYearTotalCvdPercent: 22.3,
+  LatestLdlMgDl: 110,
 };
 
 describe('OpenCVDRiskCalculator', () => {
@@ -72,6 +74,7 @@ describe('OpenCVDRiskCalculator', () => {
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
       providers: [
+        provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -308,6 +311,22 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['canCalculate']()).toBe(true);
   });
 
+  it('should show Continue to Guideline after a successful calculation', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+
+    expect(root.querySelector('#open-cvd-risk-continue-guideline')).toBeNull();
+    fillCompleteForm(component);
+    component['calculateRisk']();
+    fixture.detectChanges();
+
+    expect(component['hasCalculatedResults']()).toBe(true);
+    const cta = root.querySelector('#open-cvd-risk-continue-guideline') as HTMLAnchorElement;
+    expect(cta).toBeTruthy();
+    expect(cta.getAttribute('href')).toBe('/guideline');
+  });
+
   it('should reset form values to the prefill baseline', () => {
     const fixture = createFixture();
     const component = fixture.componentInstance;
@@ -354,6 +373,7 @@ describe('OpenCVDRiskCalculator', () => {
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
       providers: [
+        provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -505,6 +525,7 @@ describe('OpenCVDRiskCalculator', () => {
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
       providers: [
+        provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -565,6 +586,7 @@ describe('OpenCVDRiskCalculator', () => {
     await TestBed.configureTestingModule({
       imports: [OpenCVDRiskCalculator],
       providers: [
+        provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
         {

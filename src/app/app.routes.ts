@@ -12,6 +12,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'guideline',
+    loadComponent: () =>
+      import('./features/guideline/guideline').then((m) => m.Guideline),
+  },
+  {
     path: 'interpretation',
     loadComponent: () =>
       import('./features/interpretation/interpretation').then((m) => m.Interpretation),

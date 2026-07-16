@@ -26,7 +26,7 @@ describe('App', () => {
     expect(compiled.querySelector('#app-navbar-title')?.textContent).toContain('Lipid Management');
   });
 
-  it('should render nav links for calculator, documentation, and settings', async () => {
+  it('should render nav links for calculator, guideline, documentation, and settings', async () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -35,6 +35,7 @@ describe('App', () => {
     expect(compiled.querySelector('#app-nav-calculator')?.textContent).toContain(
       'OpenCVDRisk Calculator',
     );
+    expect(compiled.querySelector('#app-nav-guideline')?.textContent).toContain('Guideline');
     expect(compiled.querySelector('#app-nav-documentation')?.textContent).toContain('Documentation');
     expect(compiled.querySelector('#app-nav-architecture')?.textContent).toContain('Architecture');
     expect(compiled.querySelector('#app-nav-interpretation')?.textContent).toContain(

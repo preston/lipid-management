@@ -1,0 +1,37 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/pcsk9-monoclonal-antibody-therapy",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "pcsk9-monoclonal-antibody-therapy",
+        "url": "https://asu.edu/fhir/ValueSet/pcsk9-monoclonal-antibody-therapy",
+        "name": "Pcsk9MonoclonalAntibodyTherapy",
+        "title": "PCSK9 Monoclonal Antibody Therapy",
+        "status": "active",
+        "version": "2026-07-16",
+        "experimental": false,
+        "date": "2026-07-16",
+        "publisher": "ASU CDS",
+        "description": "RxNorm alirocumab and evolocumab concepts for Recs 13–14 and 19. Prefer VSAC expansion when available.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "concept": [
+                { "code": "1651861", "display": "alirocumab" },
+                { "code": "1665684", "display": "evolocumab" }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/pcsk9-monoclonal-antibody-therapy"
+      }
+    }
+  ]
+}

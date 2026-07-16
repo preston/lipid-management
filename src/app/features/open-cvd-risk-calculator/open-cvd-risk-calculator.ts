@@ -1,6 +1,7 @@
 // Author: Preston Lee
 
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { FormField, form, max, min, required } from '@angular/forms/signals';
 import type { Patient } from 'fhir/r4';
 import { computeBmiKgM2 } from './open-cvd-risk-egfr';
@@ -17,6 +18,7 @@ import {
   CqlEvaluateService,
   type CqlLibraryParameterValue,
 } from '../../services/cql-evaluate.service';
+import { RiskCalculatorSessionService } from '../../services/risk-calculator-session.service';
 import { SmartLaunchService } from '../../services/smart-launch.service';
 import {
   parseClientFhirJson,
@@ -58,6 +60,7 @@ const RISK_EXPRESSIONS = [
   'ThirtyYearStrokePercent',
   'BaseTenYearTotalCvdPercent',
   'BaseThirtyYearTotalCvdPercent',
+  'LatestLdlMgDl',
 ] as const;
 
 const EMPTY_FORM: OpenCVDRiskCalculatorForm = {
@@ -81,7 +84,7 @@ const EMPTY_FORM: OpenCVDRiskCalculatorForm = {
 
 @Component({
   selector: 'app-open-cvd-risk-calculator',
-  imports: [FormField],
+  imports: [FormField, RouterLink],
   templateUrl: './open-cvd-risk-calculator.html',
   styleUrl: './open-cvd-risk-calculator.scss',
 })
@@ -90,6 +93,7 @@ export class OpenCVDRiskCalculator implements OnInit {
   private readonly fhirPatients = inject(FhirPatientService);
   private readonly prefillService = inject(CalculatorPrefillService);
   private readonly cqlEvaluate = inject(CqlEvaluateService);
+  private readonly riskSession = inject(RiskCalculatorSessionService);
   private readonly smartLaunch = inject(SmartLaunchService);
   private readonly toasts = inject(ToastService);
 
@@ -137,6 +141,9 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly risk30yStroke = signal<string>(PLACEHOLDER);
   protected readonly risk30yCvdPercentile = signal<string>(PLACEHOLDER);
   protected readonly selectedRiskModel = signal<PreventModel | null>(null);
+  protected readonly hasCalculatedResults = computed(
+    () => this.risk10yTotal() !== PLACEHOLDER || this.selectedRiskModel() != null,
+  );
 
   protected readonly isSmart = this.patientContext.isSmart;
   protected readonly selectedPatient = this.patientContext.selectedPatient;
@@ -574,9 +581,10 @@ export class OpenCVDRiskCalculator implements OnInit {
       return;
     }
     const hadExclusions = this.hasActiveExclusions();
+    const libraryParameters = this.buildLibraryParameters();
     this.calculateLoading.set(true);
     this.cqlEvaluate
-      .evaluateLibrary('OpenCVDRisk', [...RISK_EXPRESSIONS], this.buildLibraryParameters())
+      .evaluateLibrary('OpenCVDRisk', [...RISK_EXPRESSIONS], libraryParameters)
       .subscribe({
         next: (results) => {
           this.risk10yTotal.set(this.formatPercent(results['TenYearTotalCvdPercent']));
@@ -600,17 +608,18 @@ export class OpenCVDRiskCalculator implements OnInit {
             ),
           );
           const model = results['SelectedPreventModel'];
-          this.selectedRiskModel.set(
+          const selectedModel =
             typeof model === 'string' &&
-              (model === 'base' ||
-                model === 'uacr' ||
-                model === 'hba1c' ||
-                model === 'sdi' ||
-                model === 'full')
+            (model === 'base' ||
+              model === 'uacr' ||
+              model === 'hba1c' ||
+              model === 'sdi' ||
+              model === 'full')
               ? model
-              : this.activeRiskModel(),
-          );
+              : this.activeRiskModel();
+          this.selectedRiskModel.set(selectedModel);
           this.calculatedWithExclusions.set(hadExclusions);
+          this.persistRiskSession(results, libraryParameters, hadExclusions, selectedModel);
           this.calculateLoading.set(false);
         },
         error: (err) => {
@@ -618,6 +627,63 @@ export class OpenCVDRiskCalculator implements OnInit {
           this.toastDomainError(err);
         },
       });
+  }
+
+  private persistRiskSession(
+    results: Record<string, unknown>,
+    libraryParameters: Record<string, CqlLibraryParameterValue>,
+    calculatedWithExclusions: boolean,
+    selectedPreventModel: PreventModel | null,
+  ): void {
+    const patientId = this.patientContext.selectedPatient()?.id;
+    if (!patientId) {
+      return;
+    }
+    const m = this.model();
+    this.riskSession.setFromCalculator({
+      patientId,
+      calculatedAt: new Date().toISOString(),
+      calculatedWithExclusions,
+      selectedPreventModel,
+      rawResults: { ...results },
+      libraryParameters: { ...libraryParameters },
+      display: {
+        risk10yTotal: this.formatPercent(results['TenYearTotalCvdPercent']),
+        risk10yAscvd: this.formatPercent(results['TenYearAscvdPercent']),
+        risk10yHf: this.formatPercent(results['TenYearHeartFailurePercent']),
+        risk10yChd: this.formatPercent(results['TenYearChdPercent']),
+        risk10yStroke: this.formatPercent(results['TenYearStrokePercent']),
+        openCvdRiskAge: this.formatRiskAgeDisplay(
+          this.model().sex,
+          results['BaseTenYearTotalCvdPercent'],
+        ),
+        risk30yTotal: this.formatPercent(results['ThirtyYearTotalCvdPercent']),
+        risk30yAscvd: this.formatPercent(results['ThirtyYearAscvdPercent']),
+        risk30yHf: this.formatPercent(results['ThirtyYearHeartFailurePercent']),
+        risk30yChd: this.formatPercent(results['ThirtyYearChdPercent']),
+        risk30yStroke: this.formatPercent(results['ThirtyYearStrokePercent']),
+        risk30yCvdPercentile: this.formatPercentileDisplay(
+          m.age,
+          m.sex,
+          results['BaseThirtyYearTotalCvdPercent'],
+        ),
+      },
+      preventLifeExpectancyLimited: this.lifeExpectancyLimited(),
+      effectiveDiabetes: m.diabetes === 'yes' ? true : m.diabetes === 'no' ? false : null,
+      effectiveLdlMgDl: this.asFiniteNumber(results['LatestLdlMgDl']),
+      tenYearTotalCvdPercent: this.asFiniteNumber(results['TenYearTotalCvdPercent']),
+    });
+  }
+
+  private asFiniteNumber(value: unknown): number | null {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return value;
+    }
+    if (typeof value === 'string' && value.trim() !== '') {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : null;
+    }
+    return null;
   }
 
   /** Map the current form (and clinician exclusion flags) to OpenCVDRisk library parameters. */
@@ -860,6 +926,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.risk30yStroke.set(PLACEHOLDER);
     this.risk30yCvdPercentile.set(PLACEHOLDER);
     this.selectedRiskModel.set(null);
+    this.riskSession.clear();
   }
 
   private isLocallyOverridden(field: string): boolean {

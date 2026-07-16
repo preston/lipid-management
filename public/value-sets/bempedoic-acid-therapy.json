@@ -1,0 +1,36 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/bempedoic-acid-therapy",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "bempedoic-acid-therapy",
+        "url": "https://asu.edu/fhir/ValueSet/bempedoic-acid-therapy",
+        "name": "BempedoicAcidTherapy",
+        "title": "Bempedoic Acid Therapy",
+        "status": "active",
+        "version": "2026-07-16",
+        "experimental": false,
+        "date": "2026-07-16",
+        "publisher": "ASU CDS",
+        "description": "RxNorm bempedoic acid concepts for Recommendation 19. Prefer VSAC expansion when available.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "concept": [
+                { "code": "2281864", "display": "bempedoic acid" }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/bempedoic-acid-therapy"
+      }
+    }
+  ]
+}

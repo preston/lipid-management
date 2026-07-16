@@ -1,1 +1,97 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'sass:color';
+
+// Align with Bootstrap defaults used by Bootswatch Materia (no hardcoded one-offs elsewhere).
+$guideline-primary: #2196f3;
+$guideline-warning: #ff9800;
+$guideline-gray-100: #f8f9fa;
+$guideline-gray-500: #adb5bd;
+
+.guideline-diagram {
+  .node.active rect,
+  .node.active polygon,
+  .node.active circle {
+    fill: color.mix($guideline-primary, white, 18%) !important;
+    stroke: $guideline-primary !important;
+    stroke-width: 2px !important;
+  }
+
+  .node.unresolved rect,
+  .node.unresolved polygon,
+  .node.unresolved circle {
+    fill: color.mix($guideline-warning, white, 25%) !important;
+    stroke: $guideline-warning !important;
+    stroke-width: 2px !important;
+  }
+
+  .node.idle rect,
+  .node.idle polygon,
+  .node.idle circle {
+    fill: $guideline-gray-100 !important;
+    stroke: $guideline-gray-500 !important;
+  }
+
+  .node.diagram-box-interactive {
+    cursor: pointer;
+  }
+
+  .node.diagram-box-selected rect,
+  .node.diagram-box-selected polygon,
+  .node.diagram-box-selected circle,
+  .node.diagram-box-interactive:focus-visible rect,
+  .node.diagram-box-interactive:focus-visible polygon,
+  .node.diagram-box-interactive:focus-visible circle {
+    stroke-width: 3px !important;
+  }
+
+  .node.diagram-box-focus rect,
+  .node.diagram-box-focus polygon,
+  .node.diagram-box-focus circle {
+    animation: guideline-diagram-box-focus-pulse 1.2s ease-out 1;
+  }
+}
+
+.guideline-legend-active {
+  background-color: color.mix($guideline-primary, white, 18%);
+  border-color: $guideline-primary !important;
+}
+
+.guideline-legend-unresolved {
+  background-color: color.mix($guideline-warning, white, 25%);
+  border-color: $guideline-warning !important;
+}
+
+.guideline-legend-idle {
+  background-color: $guideline-gray-100;
+  border-color: $guideline-gray-500 !important;
+}
+
+@keyframes guideline-diagram-box-focus-pulse {
+  0% {
+    stroke-width: 4px;
+  }
+
+  100% {
+    stroke-width: 2px;
+  }
+}
+
+// Materia sets `.btn { border: none; box-shadow: ... }`, which stacks as a double edge
+// between adjacent unselected outline buttons. Restore a shared border for segmented groups.
+.btn-group.btn-group-segmented {
+  > .btn {
+    box-shadow: none;
+    border: var(--bs-border-width, 1px) solid var(--bs-primary);
+    position: relative;
+    z-index: 0;
+  }
+
+  > .btn-check:not(:first-child) + .btn {
+    margin-left: calc(-1 * var(--bs-border-width, 1px));
+  }
+
+  > .btn-check:checked + .btn,
+  > .btn-check:focus-visible + .btn {
+    z-index: 1;
+    box-shadow: none;
+  }
+}

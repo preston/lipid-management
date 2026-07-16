@@ -1,0 +1,121 @@
+.guideline-diagram {
+  overflow-x: auto;
+
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.guideline-header-copy {
+  flex: 1 1 32rem;
+}
+
+.guideline-header-actions {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+// Fixed dimensions keep evaluation updates from changing the header or grid position.
+.guideline-status-slot {
+  flex: 0 0 14rem;
+  width: 14rem;
+  height: 3.1rem;
+
+  .alert {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .guideline-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
+.guideline-question {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-inline-size: 0;
+}
+
+.guideline-question-legend {
+  float: none;
+  width: auto;
+  margin-bottom: 0.25rem;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.guideline-tri-state {
+  max-width: 100%;
+
+  .btn {
+    min-width: 5.5rem;
+  }
+}
+
+.guideline-recommendations-table-wrap {
+  max-height: 48rem;
+}
+
+.guideline-recommendations-table {
+  th,
+  td {
+    vertical-align: top;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .badge {
+    white-space: normal;
+    text-align: start;
+  }
+}
+
+.guideline-rec-number-col {
+  width: 5.5rem;
+}
+
+.guideline-rec-strength-col,
+.guideline-rec-status-col {
+  width: 8.5rem;
+}
+
+.guideline-rec-source-col {
+  width: 9rem;
+}
+
+.guideline-rec-text {
+  max-width: 62rem;
+}
+
+.guideline-rec-note {
+  max-width: 58rem;
+}
+
+.guideline-diagram-legend {
+  .guideline-legend-swatch {
+    display: inline-block;
+    width: 0.85rem;
+    height: 0.85rem;
+    margin-right: 0.35rem;
+    border: 1px solid;
+    vertical-align: -0.1rem;
+  }
+}

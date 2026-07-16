@@ -1,0 +1,38 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "https://asu.edu/fhir/ValueSet/fibrate-therapy",
+      "resource": {
+        "resourceType": "ValueSet",
+        "id": "fibrate-therapy",
+        "url": "https://asu.edu/fhir/ValueSet/fibrate-therapy",
+        "name": "FibrateTherapy",
+        "title": "Fibrate Therapy",
+        "status": "active",
+        "version": "2026-07-16",
+        "experimental": false,
+        "date": "2026-07-16",
+        "publisher": "ASU CDS",
+        "description": "RxNorm fibrate concepts for Recommendations 12 and 19. Prefer VSAC expansion when available.",
+        "compose": {
+          "include": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "concept": [
+                { "code": "8703", "display": "fenofibrate" },
+                { "code": "4719", "display": "gemfibrozil" },
+                { "code": "259255", "display": "fenofibric acid" }
+              ]
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "ValueSet/fibrate-therapy"
+      }
+    }
+  ]
+}

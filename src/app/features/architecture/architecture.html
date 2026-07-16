@@ -105,10 +105,23 @@
 
   <section class="mb-4" id="architecture-guideline">
     <h2 class="h5" id="architecture-guideline-heading">Guideline basis</h2>
-    <p class="mb-0" id="architecture-guideline-body">
-      Lipid pathway logic follows the 2025 VA/DoD lipid management guideline. The current screens
-      focus on OpenCVDRisk scoring rather than that pathway.
+    <p id="architecture-guideline-body">
+      After a successful OpenCVDRisk calculation, the accepted session (risk, model, overrides) is
+      held in memory and passed to the Guideline page. That page evaluates
+      <code>Library/LipidManagement</code> with the same overrides, optional clinician
+      confirmations (tri-state Yes/No/Unknown), and returns Appendix G pathway status plus
+      Recommendation 1–24 applicability. Mermaid visualizes Boxes 1–21; CQL remains the source of
+      truth. Source: VA/DoD Lipids CPG December 2025 (PDF final 2026-01-06), Appendix G and Table 4.
     </p>
+    <ul class="small mb-0" id="architecture-guideline-notes">
+      <li>Box 14 five-year practice point is distinct from Recommendation 2 (insufficient evidence for frequency).</li>
+      <li>Box 15 reassessment reminder is distinct from Recommendation 15 (continue therapy if LDL-C &lt;30).</li>
+      <li>Box 20 presents fixed-dose and treat-to-target without preference; Recommendation 17 is neither for nor against.</li>
+      <li>Box 6 six-week MI/ACS/CABG/PCI cue is narrower than Recommendation 24’s recent CHD rehab population.</li>
+      <li>Medication outputs are decision-support option sets, never orders.</li>
+      <li>Secondary prevention (Box 5) uses clinical ASCVD Condition codes; CAC score Observations alone do not establish ASCVD.</li>
+      <li>Known non-automatable judgments: life expectancy &lt;5 years, VHR temporal criteria, escalation, patient preference, triglyceride persistence, statin intolerance, CAC clinical-risk class.</li>
+    </ul>
   </section>
 
   <section class="mb-4" id="architecture-project-links">

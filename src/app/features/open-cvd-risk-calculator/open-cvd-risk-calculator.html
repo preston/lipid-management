@@ -55,10 +55,11 @@
     </ul>
     }
     } @else {
-    <input type="file" class="form-control form-control-sm" id="open-cvd-risk-patient-file-input"
-      accept=".json,application/json" (change)="onClientBundleFileSelected($event)" />
+    <input type="file" class="form-control" id="open-cvd-risk-patient-file-input"
+      accept=".json,application/json" aria-label="Custom patient bundle JSON file"
+      (change)="onClientBundleFileSelected($event)" />
     @if (fileStatus(); as status) {
-    <div class="alert alert-secondary mt-2 mb-0 py-2 small" id="open-cvd-risk-patient-file-status" role="status">
+    <div class="alert alert-secondary mt-2 mb-0 py-2" id="open-cvd-risk-patient-file-status" role="status">
       {{ status.message }}
     </div>
     }
@@ -178,21 +179,18 @@
           </div>
           <fieldset>
             <legend class="form-label fs-6 mb-2">Sex</legend>
-            <div class="d-flex flex-wrap gap-3"
+            <div class="btn-group btn-group-segmented"
+              role="radiogroup"
+              aria-label="Sex"
+              [attr.aria-invalid]="openCvdRiskForm.sex().invalid()"
               [attr.aria-describedby]="visibleFieldErrors(openCvdRiskForm.sex().errors())
                 ? 'open-cvd-risk-sex-errors' : null">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="open-cvd-risk-sex-female" value="female"
-                  [class.is-invalid]="openCvdRiskForm.sex().invalid()"
-                  [formField]="openCvdRiskForm.sex" />
-                <label class="form-check-label" for="open-cvd-risk-sex-female">Female</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="open-cvd-risk-sex-male" value="male"
-                  [class.is-invalid]="openCvdRiskForm.sex().invalid()"
-                  [formField]="openCvdRiskForm.sex" />
-                <label class="form-check-label" for="open-cvd-risk-sex-male">Male</label>
-              </div>
+              <input class="btn-check" type="radio" id="open-cvd-risk-sex-female" value="female"
+                [formField]="openCvdRiskForm.sex" />
+              <label class="btn btn-outline-primary" for="open-cvd-risk-sex-female">Female</label>
+              <input class="btn-check" type="radio" id="open-cvd-risk-sex-male" value="male"
+                [formField]="openCvdRiskForm.sex" />
+              <label class="btn btn-outline-primary" for="open-cvd-risk-sex-male">Male</label>
             </div>
             @if (visibleFieldErrors(openCvdRiskForm.sex().errors()); as errors) {
             <div class="invalid-feedback d-block" id="open-cvd-risk-sex-errors">
@@ -658,6 +656,18 @@
              <span class="fw-semibold">{{ risk30yCvdPercentile() }}%</span>
             </dd>
           </dl>
+
+          @if (hasCalculatedResults()) {
+          <div class="d-grid mt-4" id="open-cvd-risk-continue-guideline-wrap">
+            <a
+              class="btn btn-primary btn-lg"
+              id="open-cvd-risk-continue-guideline"
+              routerLink="/guideline"
+            >
+              Continue to Guideline
+            </a>
+          </div>
+          }
         </div>
         <div class="card-footer p-0">
           <div class="alert mb-0 rounded-0 rounded-bottom border-0" [class.alert-warning]="!inputsComplete()"
