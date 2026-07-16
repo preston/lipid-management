@@ -314,6 +314,75 @@ describe('OpenCVDRiskCalculator', () => {
     expect(component['sdiManual']()).toBe(false);
   });
 
+  it('should recalculate after reset when the restored form is complete', async () => {
+    TestBed.resetTestingModule();
+    evaluateLibrary = vi.fn(
+      (libraryId: string, _exprs?: string[], params?: Record<string, unknown>) => {
+        if (libraryId === 'SDI2019') {
+          const zip =
+            typeof params?.['OverrideZipCode'] === 'string'
+              ? params['OverrideZipCode']
+              : null;
+          return of({ SdiDecile: zip != null ? (SDI_FIXTURE[zip] ?? null) : null });
+        }
+        return of({ ...EMPTY_RISK_RESULTS });
+      },
+    );
+    await TestBed.configureTestingModule({
+      imports: [OpenCVDRiskCalculator],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {
+          provide: CalculatorPrefillService,
+          useValue: {
+            prefillFromChart: () =>
+              of({
+                form: {
+                  heightCm: 170,
+                  weightKg: 70,
+                  totalCholesterolMgDl: 200,
+                  hdlMgDl: 50,
+                  systolicBpMmHg: 120,
+                  egfrMlMin173m2: 90,
+                  diabetes: 'no',
+                  currentSmoker: 'no',
+                  onAntihypertensive: 'no',
+                  onStatin: 'no',
+                },
+                provenances: [],
+                exclusions: [],
+              }),
+          },
+        },
+        {
+          provide: CqlEvaluateService,
+          useValue: { evaluateLibrary },
+        },
+      ],
+    }).compileComponents();
+
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    expect(evaluateLibrary.mock.calls.filter((c) => c[0] === 'OpenCVDRisk')).toHaveLength(1);
+    expect(component['risk10yTotal']()).toBe('8.1');
+
+    component['model'].update((m) => ({ ...m, totalCholesterolMgDl: 280, uacrMgG: 40 }));
+    component['clearCalculatedResults']();
+    fixture.detectChanges();
+    expect(component['risk10yTotal']()).toBe('—');
+
+    component['resetToPrefill']();
+    fixture.detectChanges();
+
+    expect(component['model']().totalCholesterolMgDl).toBe(200);
+    expect(component['model']().uacrMgG).toBeNull();
+    expect(evaluateLibrary.mock.calls.filter((c) => c[0] === 'OpenCVDRisk')).toHaveLength(2);
+    expect(component['risk10yTotal']()).toBe('8.1');
+  });
+
   it('should treat out-of-range age as complete inputs but guideline-gated', () => {
     const fixture = createFixture();
     const component = fixture.componentInstance;

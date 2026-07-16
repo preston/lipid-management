@@ -491,7 +491,9 @@ export class OpenCVDRiskCalculator implements OnInit {
     this.dismissedExclusionIds.set(new Set());
     this.proceedDespiteExclusions.set(false);
     this.clearCalculatedResults();
+    this.autoCalculateAttemptedForPrefill = false;
     this.applyZipToSdi();
+    this.tryAutoCalculateAfterPrefill();
   }
 
   private clearProceedIfNoExclusions(): void {
@@ -627,7 +629,7 @@ export class OpenCVDRiskCalculator implements OnInit {
     });
   }
 
-  /** Run Calculate when prefill left the form submittable (optionally waiting on ZIP→SDI). */
+  /** Run Calculate when the form is submittable (optionally waiting on ZIP→SDI). */
   private tryAutoCalculateAfterPrefill(): void {
     if (this.autoCalculateAttemptedForPrefill || this.prefillLoading() || this.calculateLoading()) {
       return;
