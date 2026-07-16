@@ -109,6 +109,25 @@ describe('CqlEvaluateService', () => {
     req.flush({ resourceType: 'Parameters', parameter: [] });
   });
 
+  it('posts blank-session subject with client data Bundle and useServerData false', () => {
+    patientContext.enterBlankSession();
+
+    service.evaluateLibrary('OpenCVDRisk', ['TenYearTotalCvdPercent']).subscribe();
+
+    const req = httpMock.expectOne('http://example.test/fhir/Library/OpenCVDRisk/$evaluate');
+    const body = req.request.body as Parameters;
+    expect(body.parameter?.find((p) => p.name === 'subject')?.valueString).toBe(
+      'Patient/opencvd-blank',
+    );
+    expect(body.parameter?.find((p) => p.name === 'useServerData')?.valueBoolean).toBe(false);
+    const data = body.parameter?.find((p) => p.name === 'data')?.resource as Bundle;
+    expect(data?.resourceType).toBe('Bundle');
+    expect(data?.entry?.[0]?.resource?.resourceType).toBe('Patient');
+    expect((data?.entry?.[0]?.resource as Patient).id).toBe('opencvd-blank');
+
+    req.flush({ resourceType: 'Parameters', parameter: [] });
+  });
+
   it('errors when $evaluate returns an evaluation error OperationOutcome', () => {
     patientContext.setStandalonePatient(patient);
 

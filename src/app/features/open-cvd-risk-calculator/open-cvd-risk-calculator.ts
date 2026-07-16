@@ -107,6 +107,7 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected readonly searchQuery = signal('');
   protected readonly searchHits = signal<PatientSearchHit[]>([]);
+  protected readonly activeSearchHitIndex = signal(-1);
   protected readonly searchLoading = signal(false);
   protected readonly patientSource = signal<PatientSource>('server');
   protected readonly fileStatus = signal<FileStatus | null>(null);
@@ -139,7 +140,8 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   protected readonly isSmart = this.patientContext.isSmart;
   protected readonly selectedPatient = this.patientContext.selectedPatient;
-  protected readonly hasClientData = this.patientContext.hasClientData;
+  protected readonly isBlankSession = this.patientContext.isBlankSession;
+  protected readonly hasRealClientData = this.patientContext.hasRealClientData;
 
   protected readonly openCvdRiskForm = form(this.model, (fields) => {
     required(fields.age, { message: 'Age is required' });
@@ -234,11 +236,18 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected readonly hasActiveExclusions = computed(() => this.activeExclusions().length > 0);
 
   protected readonly patientBanner = computed(() => {
+    if (this.isBlankSession()) {
+      return {
+        blank: true as const,
+        name: 'Manual entry',
+      };
+    }
     const patient = this.selectedPatient();
     if (!patient) {
       return null;
     }
     return {
+      blank: false as const,
       name: this.patientContext.patientDisplayName(patient),
       gender: patient.gender ?? '—',
       birthDate: formatFhirDateTime(patient.birthDate) ?? '—',
@@ -328,7 +337,11 @@ export class OpenCVDRiskCalculator implements OnInit {
         // Standalone may still work if launch route handles authorize.
       }
     }
-    if (this.selectedPatient()) {
+    if (mode === 'standalone' && (this.isBlankSession() || !this.selectedPatient())) {
+      this.enterBlankCalculatorSession();
+      return;
+    }
+    if (this.selectedPatient() && !this.isBlankSession()) {
       this.applyPatientDemographics(this.selectedPatient()!);
       this.runPrefill();
     }
@@ -371,18 +384,61 @@ export class OpenCVDRiskCalculator implements OnInit {
     }
     this.patientSource.set(source);
     this.searchHits.set([]);
+    this.activeSearchHitIndex.set(-1);
     this.searchQuery.set('');
     this.fileStatus.set(null);
   }
 
+  protected onPatientSearchInput(value: string): void {
+    this.searchQuery.set(value);
+    this.activeSearchHitIndex.set(-1);
+  }
+
+  protected onPatientSearchKeydown(event: KeyboardEvent): void {
+    const hits = this.searchHits();
+    if (event.key === 'Escape') {
+      this.searchHits.set([]);
+      this.activeSearchHitIndex.set(-1);
+      return;
+    }
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const activeHit = hits[this.activeSearchHitIndex()];
+      if (activeHit) {
+        this.selectPatient(activeHit);
+      } else {
+        this.searchPatients();
+      }
+      return;
+    }
+    if (hits.length === 0 || (event.key !== 'ArrowDown' && event.key !== 'ArrowUp')) {
+      return;
+    }
+    event.preventDefault();
+    const current = this.activeSearchHitIndex();
+    const next =
+      event.key === 'ArrowDown'
+        ? current >= hits.length - 1
+          ? 0
+          : current + 1
+        : current <= 0
+          ? hits.length - 1
+          : current - 1;
+    this.activeSearchHitIndex.set(next);
+  }
+
   protected searchPatients(): void {
     this.searchLoading.set(true);
+    this.activeSearchHitIndex.set(-1);
     this.fhirPatients.searchByName(this.searchQuery()).subscribe({
       next: (hits) => {
         this.searchHits.set(hits);
+        this.activeSearchHitIndex.set(-1);
         this.searchLoading.set(false);
       },
       error: (err) => {
+        this.searchHits.set([]);
+        this.activeSearchHitIndex.set(-1);
         this.searchLoading.set(false);
         this.toastDomainError(err);
       },
@@ -392,6 +448,7 @@ export class OpenCVDRiskCalculator implements OnInit {
   protected selectPatient(hit: PatientSearchHit): void {
     this.patientContext.setStandalonePatient(hit.patient);
     this.searchHits.set([]);
+    this.activeSearchHitIndex.set(-1);
     this.searchQuery.set('');
     this.fileStatus.set(null);
     this.resetFormAndResults();
@@ -438,9 +495,11 @@ export class OpenCVDRiskCalculator implements OnInit {
   }
 
   protected clearPatient(): void {
-    this.patientContext.clearPatient();
     this.fileStatus.set(null);
-    this.resetFormAndResults();
+    this.searchHits.set([]);
+    this.activeSearchHitIndex.set(-1);
+    this.searchQuery.set('');
+    this.enterBlankCalculatorSession();
   }
 
   protected provenanceFor(field: string): string | null {
@@ -448,6 +507,14 @@ export class OpenCVDRiskCalculator implements OnInit {
       return 'Overridden locally.';
     }
     return this.provenances()[field]?.summary ?? null;
+  }
+
+  /** Omit required-only errors; missing fields are indicated by invalid styling. */
+  protected visibleFieldErrors(
+    errors: readonly { readonly kind: string; readonly message?: string }[],
+  ): readonly { readonly kind: string; readonly message?: string }[] | null {
+    const visible = errors.filter((error) => error.kind !== 'required');
+    return visible.length > 0 ? visible : null;
   }
 
   protected formatDate(value: string | undefined | null): string | null {
@@ -601,7 +668,15 @@ export class OpenCVDRiskCalculator implements OnInit {
     return params;
   }
 
+  private enterBlankCalculatorSession(): void {
+    this.patientContext.enterBlankSession();
+    this.resetFormAndResults();
+  }
+
   private runPrefill(): void {
+    if (this.isBlankSession()) {
+      return;
+    }
     this.prefillLoading.set(true);
     this.autoCalculateAttemptedForPrefill = false;
     this.prefillService.prefillFromChart().subscribe({
@@ -631,7 +706,12 @@ export class OpenCVDRiskCalculator implements OnInit {
 
   /** Run Calculate when the form is submittable (optionally waiting on ZIP→SDI). */
   private tryAutoCalculateAfterPrefill(): void {
-    if (this.autoCalculateAttemptedForPrefill || this.prefillLoading() || this.calculateLoading()) {
+    if (
+      this.isBlankSession() ||
+      this.autoCalculateAttemptedForPrefill ||
+      this.prefillLoading() ||
+      this.calculateLoading()
+    ) {
       return;
     }
     // ZIP→SDI uses async SDI2019 $evaluate; wait so the first calc includes SDI when available.

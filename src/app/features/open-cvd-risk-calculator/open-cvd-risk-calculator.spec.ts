@@ -103,6 +103,13 @@ describe('OpenCVDRiskCalculator', () => {
     return fixture;
   }
 
+  function createBlankFixture() {
+    TestBed.inject(PatientContextService).resetForTests();
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    fixture.detectChanges();
+    return fixture;
+  }
+
   function fillCompleteForm(component: OpenCVDRiskCalculator): void {
     component['model'].set({
       age: 55,
@@ -236,7 +243,7 @@ describe('OpenCVDRiskCalculator', () => {
     expect(root.querySelector('#open-cvd-risk-zip-help')?.textContent).toContain('chart address');
   });
 
-  it('should highlight missing required fields before touch', () => {
+  it('should highlight missing required fields before touch without required text', () => {
     const fixture = createFixture();
     const component = fixture.componentInstance;
     const root = fixture.nativeElement as HTMLElement;
@@ -250,13 +257,29 @@ describe('OpenCVDRiskCalculator', () => {
     expect(ageField.invalid()).toBe(true);
     expect(ageField.touched()).toBe(false);
     expect(ageInput.classList.contains('is-invalid')).toBe(true);
-    expect(root.querySelector('#open-cvd-risk-age-errors')?.textContent).toContain('Age is required');
+    expect(root.querySelector('#open-cvd-risk-age-errors')).toBeNull();
 
     component['model'].update((m) => ({ ...m, age: 55 }));
     fixture.detectChanges();
 
     expect(ageInput.classList.contains('is-invalid')).toBe(false);
     expect(root.querySelector('#open-cvd-risk-age-errors')).toBeNull();
+  });
+
+  it('should still show range validation messages when a value is out of range', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+
+    component['model'].update((m) => ({ ...m, systolicBpMmHg: 80 }));
+    fixture.detectChanges();
+
+    expect(root.querySelector('#open-cvd-risk-systolic-bp')?.classList.contains('is-invalid')).toBe(
+      true,
+    );
+    expect(root.querySelector('#open-cvd-risk-systolic-bp-errors')?.textContent).toContain(
+      'at least 90',
+    );
   });
 
   it('should compute BMI from height and weight', () => {
@@ -630,5 +653,219 @@ describe('OpenCVDRiskCalculator', () => {
     expect(params['OverrideAgeYears']).toEqual({ integer: 55 });
     expect(params['LifeExpectancyLimited']).toBe(true);
     expect(params['OverrideBmiKgM2']).toEqual({ decimal: expect.any(Number) });
+  });
+
+  it('should enter blank session by default in standalone mode', () => {
+    const prefill = TestBed.inject(CalculatorPrefillService);
+    const prefillSpy = vi.spyOn(prefill, 'prefillFromChart');
+    const fixture = createBlankFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+    const ctx = TestBed.inject(PatientContextService);
+
+    expect(ctx.isBlankSession()).toBe(true);
+    expect(component['selectedPatient']()?.id).toBe('opencvd-blank');
+    expect(root.querySelector('#open-cvd-risk-calculator-form')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-selection')).toBeTruthy();
+    expect(root.querySelector('#open-cvd-risk-patient-banner-name')?.textContent?.trim()).toBe(
+      'Manual entry',
+    );
+    expect(root.querySelector('#open-cvd-risk-patient-banner-meta')).toBeNull();
+    expect(prefillSpy).not.toHaveBeenCalled();
+  });
+
+  it('should allow calculate in blank mode without chart prefill', () => {
+    const fixture = createBlankFixture();
+    const component = fixture.componentInstance;
+    fillCompleteForm(component);
+    fixture.detectChanges();
+
+    expect(component['canCalculate']()).toBe(true);
+    component['calculateRisk']();
+
+    expect(evaluateLibrary).toHaveBeenCalledWith(
+      'OpenCVDRisk',
+      expect.arrayContaining(['SelectedPreventModel', 'TenYearTotalCvdPercent']),
+      expect.objectContaining({
+        OverrideAgeYears: { integer: 55 },
+        OverrideIsFemale: true,
+      }),
+    );
+    expect(component['risk10yTotal']()).toBe('8.1');
+  });
+
+  it('should navigate patient search results with arrow keys and select with Enter', () => {
+    const fixture = createBlankFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+    const input = root.querySelector('#open-cvd-risk-patient-search') as HTMLInputElement;
+    const secondPatient: Patient = {
+      resourceType: 'Patient',
+      id: 'example-2',
+      name: [{ family: 'Smith', given: ['John'] }],
+      gender: 'male',
+      birthDate: '1965-04-20',
+    };
+    component['searchHits'].set([
+      {
+        id: SAMPLE_PATIENT.id!,
+        displayName: 'Jane Doe',
+        gender: 'female',
+        birthDate: SAMPLE_PATIENT.birthDate,
+        patient: SAMPLE_PATIENT,
+      },
+      {
+        id: secondPatient.id!,
+        displayName: 'John Smith',
+        gender: 'male',
+        birthDate: secondPatient.birthDate,
+        patient: secondPatient,
+      },
+    ]);
+    fixture.detectChanges();
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    fixture.detectChanges();
+    expect(component['activeSearchHitIndex']()).toBe(0);
+    expect(input.getAttribute('aria-activedescendant')).toBe(
+      'open-cvd-risk-patient-search-result-0',
+    );
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    fixture.detectChanges();
+    expect(component['activeSearchHitIndex']()).toBe(1);
+    expect(
+      root.querySelector('#open-cvd-risk-patient-search-result-1')?.classList.contains('active'),
+    ).toBe(true);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(TestBed.inject(PatientContextService).selectedPatient()?.id).toBe('example-2');
+    expect(component['searchHits']()).toEqual([]);
+    expect(component['activeSearchHitIndex']()).toBe(-1);
+  });
+
+  it('should wrap upward to the last patient search result and clear results with Escape', () => {
+    const fixture = createBlankFixture();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+    const input = root.querySelector('#open-cvd-risk-patient-search') as HTMLInputElement;
+    component['searchHits'].set([
+      {
+        id: SAMPLE_PATIENT.id!,
+        displayName: 'Jane Doe',
+        gender: 'female',
+        birthDate: SAMPLE_PATIENT.birthDate,
+        patient: SAMPLE_PATIENT,
+      },
+      {
+        id: 'example-2',
+        displayName: 'John Smith',
+        patient: { resourceType: 'Patient', id: 'example-2' },
+      },
+    ]);
+    fixture.detectChanges();
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    fixture.detectChanges();
+    expect(component['activeSearchHitIndex']()).toBe(1);
+
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    fixture.detectChanges();
+    expect(component['searchHits']()).toEqual([]);
+    expect(component['activeSearchHitIndex']()).toBe(-1);
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('should exit blank mode and prefill when a searched patient is selected', () => {
+    const prefill = TestBed.inject(CalculatorPrefillService);
+    const prefillSpy = vi.spyOn(prefill, 'prefillFromChart');
+    const fixture = createBlankFixture();
+    const component = fixture.componentInstance;
+    const ctx = TestBed.inject(PatientContextService);
+
+    expect(ctx.isBlankSession()).toBe(true);
+
+    component['selectPatient']({
+      id: SAMPLE_PATIENT.id!,
+      displayName: 'Jane Doe',
+      gender: 'female',
+      birthDate: '1970-01-15',
+      patient: SAMPLE_PATIENT,
+    });
+    fixture.detectChanges();
+
+    expect(ctx.isBlankSession()).toBe(false);
+    expect(ctx.selectedPatient()?.id).toBe('example-1');
+    expect(prefillSpy).toHaveBeenCalled();
+    expect(component['model']().sex).toBe('female');
+  });
+
+  it('should exit blank mode and prefill when a client bundle is loaded', async () => {
+    const prefill = TestBed.inject(CalculatorPrefillService);
+    const prefillSpy = vi.spyOn(prefill, 'prefillFromChart');
+    const fixture = createBlankFixture();
+    const component = fixture.componentInstance;
+    const ctx = TestBed.inject(PatientContextService);
+
+    const bundle = {
+      resourceType: 'Bundle',
+      type: 'collection',
+      entry: [{ fullUrl: 'Patient/example-1', resource: SAMPLE_PATIENT }],
+    };
+    const file = new File([JSON.stringify(bundle)], 'patient.json', {
+      type: 'application/json',
+    });
+    const input = document.createElement('input');
+    Object.defineProperty(input, 'files', { value: [file] });
+
+    await component['onClientBundleFileSelected']({ target: input } as unknown as Event);
+    fixture.detectChanges();
+
+    expect(ctx.isBlankSession()).toBe(false);
+    expect(ctx.hasRealClientData()).toBe(true);
+    expect(ctx.selectedPatient()?.id).toBe('example-1');
+    expect(prefillSpy).toHaveBeenCalled();
+  });
+
+  it('should return to blank session when Clear is pressed', () => {
+    const fixture = createFixture();
+    const component = fixture.componentInstance;
+    const ctx = TestBed.inject(PatientContextService);
+    fillCompleteForm(component);
+    fixture.detectChanges();
+
+    expect(ctx.isBlankSession()).toBe(false);
+
+    component['clearPatient']();
+    fixture.detectChanges();
+
+    expect(ctx.isBlankSession()).toBe(true);
+    expect(component['model']().age).toBeNull();
+    expect(component['risk10yTotal']()).toBe('—');
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('#open-cvd-risk-calculator-form'),
+    ).toBeTruthy();
+  });
+
+  it('should not enter blank session under SMART launch', async () => {
+    const ctx = TestBed.inject(PatientContextService);
+    ctx.resetForTests();
+    ctx.setSmartSession(SAMPLE_PATIENT, 'https://smart.example/fhir');
+
+    const prefill = TestBed.inject(CalculatorPrefillService);
+    const prefillSpy = vi.spyOn(prefill, 'prefillFromChart');
+    const fixture = TestBed.createComponent(OpenCVDRiskCalculator);
+    await fixture.componentInstance.ngOnInit();
+    fixture.detectChanges();
+
+    expect(ctx.isBlankSession()).toBe(false);
+    expect(ctx.isSmart()).toBe(true);
+    expect(ctx.selectedPatient()?.id).toBe('example-1');
+    expect(prefillSpy).toHaveBeenCalled();
+    expect(
+      (fixture.nativeElement as HTMLElement).querySelector('#open-cvd-risk-patient-selection'),
+    ).toBeNull();
   });
 });
