@@ -48,3 +48,16 @@ percentage points. CHD/Stroke are app-only (S12); not compared to AHA web UI.
 
 When goldens include `aha_prevent_age` / `aha_30y_cvd_percentile`, those must match
 app/TS exactly (integer years / percentiles). Empty AHA cells are skipped.
+
+
+## Live Demonstration Script
+
+1. Application scope, source code and licensing notes
+2. CVD Risk calculator:
+   1. Standalone and SMART launch
+   2. FHIR prepopulation
+   3. CQL execution
+3. Underlying CQL libraries
+4. Interactive guideline
+5. Computable guideline CQL
+
