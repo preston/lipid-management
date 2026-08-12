@@ -1,6 +1,6 @@
 /*
   VA/DoD Clinical Practice Guideline on Lipid Management for Cardiovascular Disease Risk Reduction (2025).
-  Management algorithm (Appendix G narrative; figure page 20) plus Recommendation 1–24 applicability signals.
+  Management algorithm (Appendix G narrative; figure page 20) plus Recommendation 1-24 applicability signals.
 
   10-year risk: OpenCVDRisk.TenYearTotalCvdPercent (PREVENT total CVD % × 100). Host systems should pass the
   same Override* Parameters used by the calculator so Box 8/12 thresholds match the accepted session.
