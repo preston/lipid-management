@@ -20,6 +20,7 @@ import {
   RowLoadStatus,
 } from '../../services/fhir-bundle-loader.service';
 import { SettingsService } from '../../services/settings.service';
+import { FhirPackageService } from '../../services/fhir-package.service';
 import { isHttpOfflineOrServerError, ToastService } from '../../services/toast.service';
 
 interface CqlRow {
@@ -68,6 +69,7 @@ export class Loader {
   protected readonly settingsService = inject(SettingsService);
   private readonly libraries = inject(FhirLibraryService);
   private readonly bundles = inject(FhirBundleLoaderService);
+  private readonly fhirPackage = inject(FhirPackageService);
   private readonly toasts = inject(ToastService);
 
   protected readonly fhirBaseUrl = computed(() => this.settingsService.getEffectiveFhirBaseUrl());
@@ -157,6 +159,14 @@ export class Loader {
       default:
         return status.charAt(0).toUpperCase() + status.slice(1);
     }
+  }
+
+  async downloadFhirPackage(): Promise<void> {
+    await this.runBusyOp('FHIR package download', async () => {
+      this.toasts.info('Building FHIR package…');
+      await this.fhirPackage.downloadPackage();
+      this.toasts.success('FHIR package downloaded');
+    });
   }
 
   async loadAll(): Promise<void> {

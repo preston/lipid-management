@@ -51,6 +51,17 @@ describe('Loader', () => {
     );
   });
 
+  it('renders download package button before load all', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    const downloadBtn = el.querySelector('#loader-download-package-btn');
+    const loadAllBtn = el.querySelector('#loader-load-all-btn');
+    expect(downloadBtn).toBeTruthy();
+    expect(loadAllBtn).toBeTruthy();
+    expect(
+      downloadBtn!.compareDocumentPosition(loadAllBtn!) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
   it('renders CQL descriptions and download links', () => {
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('#loader-cql-intro')?.textContent).toContain(

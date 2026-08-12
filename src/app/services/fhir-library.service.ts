@@ -65,7 +65,14 @@ export class FhirLibraryService {
     );
   }
 
-  buildLibraryFromCql(cqlContent: string, fileName: string): Library {
+  buildLibraryFromCql(
+    cqlContent: string,
+    fileName: string,
+    options?: {
+      canonicalBaseUrl?: string;
+      relatedArtifacts?: Library['relatedArtifact'];
+    },
+  ): Library {
     const contentWithoutComments = this.stripCqlComments(cqlContent);
     const libraryNameMatch = contentWithoutComments.match(/library\s+(\w+)/i);
     const libraryName = libraryNameMatch ? libraryNameMatch[1] : fileName.replace(/\.cql$/i, '');
@@ -78,7 +85,9 @@ export class FhirLibraryService {
       ? descriptionMatch[1].trim().replace(/\s+/g, ' ').slice(0, 500)
       : `CQL Library: ${libraryName}`;
 
-    const canonicalUrl = `${this.baseUrl()}/Library/${libraryName}`;
+    const canonicalUrl = options?.canonicalBaseUrl
+      ? `${options.canonicalBaseUrl.replace(/\/$/, '')}/${libraryName}`
+      : `${this.baseUrl().replace(/\/$/, '')}/Library/${libraryName}`;
 
     return {
       resourceType: 'Library',
@@ -103,6 +112,9 @@ export class FhirLibraryService {
           data: encodeUtf8Base64(cqlContent),
         },
       ],
+      ...(options?.relatedArtifacts?.length
+        ? { relatedArtifact: options.relatedArtifacts }
+        : {}),
     };
   }
 
