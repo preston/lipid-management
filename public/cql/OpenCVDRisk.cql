@@ -9,7 +9,7 @@
   DOI: 10.1161/CIRCULATIONAHA.123.067626
 
   Simplified logistic coefficients and transforms are taken from Khan Supplemental
-  Table S12A–J (base / UACR / HbA1c / SDI / full × 10- and 30-year). Cholesterol
+  Table S12A-J (base / UACR / HbA1c / SDI / full × 10- and 30-year). Cholesterol
   uses Excel's mg/dL→mmol/L factor ×0.02586. Model selection for optional predictors
   follows the preventr / AHA calculator rules (0→base, 1→that add-on, ≥2→full with
   missing indicators).
@@ -25,7 +25,7 @@
 
   Author: Preston Lee
 */
-library OpenCVDRisk version '0.5.3'
+library OpenCVDRisk version '0.6.0'
 
 using FHIR version '4.0.1'
 

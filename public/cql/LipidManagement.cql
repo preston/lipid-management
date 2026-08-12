@@ -13,12 +13,12 @@
 
   Author: Preston Lee
 */
-library LipidManagement version '0.1.1'
+library LipidManagement version '0.2.0'
 
 using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.0.1'
-include OpenCVDRisk version '0.5.3' called OpenCVDRisk
+include OpenCVDRisk version '0.6.0' called OpenCVDRisk
 
 codesystem "SNOMED": 'http://snomed.info/sct'
 codesystem "LOINC": 'http://loinc.org'
