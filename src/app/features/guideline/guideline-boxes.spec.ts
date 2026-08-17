@@ -7,6 +7,8 @@ import {
   diagramBoxForQuestion,
   formatBoxLabel,
   formatRelatedBoxLabels,
+  pathBlockingQuestionIds,
+  questionsForBox,
 } from './guideline-boxes';
 
 describe('guideline-boxes catalog', () => {
@@ -21,6 +23,9 @@ describe('guideline-boxes catalog', () => {
     expect(diagramBoxForQuestion('lifeExpectancyLimitedUnder5Years')).toBe(3);
     expect(diagramBoxForQuestion('borderlineRiskPatientDesiresStatin')).toBe(12);
     expect(diagramBoxForQuestion('escalationNeeded')).toBe(18);
+    expect(diagramBoxForQuestion('onLipidLoweringTherapy')).toBe(7);
+    expect(diagramBoxForQuestion('veryHighRiskRecentAcsOrMiOnTherapy')).toBe(7);
+    expect(diagramBoxForQuestion('veryHighRiskRecurrentEventsOnTherapy')).toBe(7);
     expect(diagramBoxForQuestion('clinicalRiskLow')).toBeNull();
   });
 
@@ -31,5 +36,20 @@ describe('guideline-boxes catalog', () => {
     expect(boxMeta(1).title).toBe('Adult patient');
     expect(boxMeta(5).kind).toBe('decision');
     expect(boxMeta(9).kind).toBe('action');
+  });
+
+  it('maps path-blocking questions for unresolved boxes including Box 7', () => {
+    expect(questionsForBox(7)).toEqual([
+      'onLipidLoweringTherapy',
+      'veryHighRiskRecentAcsOrMiOnTherapy',
+      'veryHighRiskRecurrentEventsOnTherapy',
+    ]);
+    expect([...pathBlockingQuestionIds([7])]).toEqual([
+      'onLipidLoweringTherapy',
+      'veryHighRiskRecentAcsOrMiOnTherapy',
+      'veryHighRiskRecurrentEventsOnTherapy',
+    ]);
+    expect(pathBlockingQuestionIds([])).toEqual(new Set());
+    expect(questionsForBox(6)).toEqual(['recentMiAcsOrCabgPciWithin6Weeks']);
   });
 });

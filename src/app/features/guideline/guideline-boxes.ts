@@ -65,10 +65,33 @@ export const APPENDIX_G_BOXES: readonly AppendixGBoxMeta[] = [
 
 const BY_ID = new Map(APPENDIX_G_BOXES.map((b) => [b.id, b]));
 
+/** Path-blocking clinician questions keyed by unresolved Appendix G box. */
+export const PATH_BLOCKING_QUESTIONS_BY_BOX: ReadonlyMap<
+  number,
+  readonly (keyof GuidelineClinicianAnswers)[]
+> = new Map([
+  [3, ['lifeExpectancyLimitedUnder5Years']],
+  [
+    7,
+    [
+      'onLipidLoweringTherapy',
+      'veryHighRiskRecentAcsOrMiOnTherapy',
+      'veryHighRiskRecurrentEventsOnTherapy',
+    ],
+  ],
+  [12, ['borderlineRiskPatientDesiresStatin']],
+  [18, ['escalationNeeded']],
+]);
+
 const QUESTION_TO_BOX = new Map<keyof GuidelineClinicianAnswers, number>();
 for (const box of APPENDIX_G_BOXES) {
   if (box.questionId) {
     QUESTION_TO_BOX.set(box.questionId, box.id);
+  }
+}
+for (const [boxId, questionIds] of PATH_BLOCKING_QUESTIONS_BY_BOX) {
+  for (const questionId of questionIds) {
+    QUESTION_TO_BOX.set(questionId, boxId);
   }
 }
 
@@ -84,10 +107,29 @@ export function formatBoxLabel(id: number): string {
   return `Box ${id}`;
 }
 
-export function diagramBoxForQuestion(
-  questionId: keyof GuidelineClinicianAnswers,
-): number | null {
+export function diagramBoxForQuestion(questionId: keyof GuidelineClinicianAnswers): number | null {
   return QUESTION_TO_BOX.get(questionId) ?? null;
+}
+
+export function questionsForBox(boxId: number): readonly (keyof GuidelineClinicianAnswers)[] {
+  const mapped = PATH_BLOCKING_QUESTIONS_BY_BOX.get(boxId);
+  if (mapped) {
+    return mapped;
+  }
+  const questionId = BY_ID.get(boxId)?.questionId;
+  return questionId ? [questionId] : [];
+}
+
+export function pathBlockingQuestionIds(
+  unresolvedBoxes: readonly number[],
+): Set<keyof GuidelineClinicianAnswers> {
+  const ids = new Set<keyof GuidelineClinicianAnswers>();
+  for (const boxId of unresolvedBoxes) {
+    for (const questionId of PATH_BLOCKING_QUESTIONS_BY_BOX.get(boxId) ?? []) {
+      ids.add(questionId);
+    }
+  }
+  return ids;
 }
 
 export function formatRelatedBoxLabels(ids: readonly number[]): string {

@@ -26,7 +26,9 @@ vi.mock('mermaid', () => ({
   },
 }));
 
-function evaluationFixture(overrides: Partial<GuidelineEvaluationView> = {}): GuidelineEvaluationView {
+function evaluationFixture(
+  overrides: Partial<GuidelineEvaluationView> = {},
+): GuidelineEvaluationView {
   return {
     algorithmStatus: 'NeedsClinicalInput',
     algorithmPath: 'NeedsClinicalInput_LifeExpectancy',
@@ -182,13 +184,54 @@ describe('Guideline with session', () => {
     expect(evaluate).toHaveBeenCalled();
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('#guideline-session-summary')).toBeTruthy();
+    expect(el.querySelector('#guideline-patient-name')?.textContent).toContain('Ada Lovelace');
+    expect(
+      el
+        .querySelector('#guideline-title')
+        ?.closest('header')
+        ?.querySelector('#guideline-session-summary'),
+    ).toBeTruthy();
     expect(el.querySelector('#guideline-exclusion-honesty')).toBeTruthy();
-    expect(el.querySelector('#guideline-pathway')).toBeTruthy();
+    expect(el.querySelector('#guideline-pathway')).toBeNull();
+    expect(el.querySelector('#guideline-intro')).toBeNull();
+    expect(el.querySelector('#guideline-applicability')).toBeNull();
+    expect(el.querySelector('#guideline-path-questions')).toBeTruthy();
+    expect(el.querySelector('#guideline-questions-confirm-heading')?.textContent).toContain(
+      'Confirm',
+    );
+    expect(el.querySelector('#guideline-questions-heading')?.textContent?.trim()).toBe('Questions');
+    expect(el.querySelector('#guideline-summary-recs')).toBeNull();
+    expect(el.querySelector('#guideline-algorithm')).toBeTruthy();
+    expect(el.querySelector('#guideline-evidence')).toBeTruthy();
+    expect(el.querySelector('#guideline-sidebars-table')).toBeTruthy();
+    expect(el.querySelector('#guideline-references-row #guideline-evidence')).toBeTruthy();
+    expect(el.querySelector('#guideline-references-row #guideline-sidebars')).toBeTruthy();
+    expect(el.querySelector('#guideline-sidebars-accordion')).toBeNull();
+    expect(el.querySelector('#guideline-sidebar-1')).toBeTruthy();
+    expect(el.querySelector('#guideline-appendix-i')).toBeTruthy();
     expect(el.querySelectorAll('[id^="guideline-rec-"]').length).toBeGreaterThan(0);
+
+    const workspace = el.querySelector('#guideline-workspace');
+    const questions = el.querySelector('#guideline-questions');
+    const algorithm = el.querySelector('#guideline-algorithm');
+    const recs = el.querySelector('#guideline-recommendations');
+    expect(workspace && questions && algorithm && recs).toBeTruthy();
+    expect(el.querySelector('#guideline-questions-col.col-lg-4')).toBeTruthy();
+    expect(el.querySelector('#guideline-algorithm-col.col-lg-8')).toBeTruthy();
+    expect(workspace!.contains(questions!)).toBe(true);
+    expect(workspace!.contains(algorithm!)).toBe(true);
+    expect(
+      questions!.compareDocumentPosition(algorithm!) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      workspace!.compareDocumentPosition(recs!) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
   });
 
   it('exposes diagram toolbar and focuses a path box', async () => {
     const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#guideline-diagram-view-full')).toBeTruthy();
+    expect(el.querySelector('#guideline-diagram-view-path')).toBeTruthy();
     expect(el.querySelector('#guideline-diagram-download-svg')).toBeTruthy();
     expect(el.querySelector('#guideline-diagram-download-png')).toBeTruthy();
     expect(el.querySelector('#guideline-diagram-legend')).toBeTruthy();
@@ -197,19 +240,39 @@ describe('Guideline with session', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance['selectedDiagramBox']()).toBe(3);
     expect(el.querySelector('#guideline-diagram-selection')).toBeTruthy();
-    expect(el.querySelector('#guideline-path-box-3-link')).toBeTruthy();
-    expect(el.querySelector('#guideline-question-diagram-lifeExpectancyLimitedUnder5Years')).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-diagram-selection-question-lifeExpectancyLimitedUnder5Years'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-question-diagram-lifeExpectancyLimitedUnder5Years'),
+    ).toBeNull();
+    expect(
+      el.querySelector(
+        '#guideline-path-questions #guideline-question-lifeExpectancyLimitedUnder5Years',
+      ),
+    ).toBeTruthy();
+    expect(
+      el.querySelector(
+        '#guideline-questions-list #guideline-question-lifeExpectancyLimitedUnder5Years',
+      ),
+    ).toBeNull();
   });
 
   it('re-evaluates when a clinician answer changes', () => {
     evaluate.mockClear();
-    evaluate.mockReturnValue(of(evaluationFixture({ algorithmPath: 'Box13_14_NoMedicationRepeatRiskEvery5YearsUnlessNewRiskFactors' })));
+    evaluate.mockReturnValue(
+      of(
+        evaluationFixture({
+          algorithmPath: 'Box13_14_NoMedicationRepeatRiskEvery5YearsUnlessNewRiskFactors',
+        }),
+      ),
+    );
     fixture.componentInstance.setAnswer('lifeExpectancyLimitedUnder5Years', 'no');
     fixture.detectChanges();
     expect(evaluate).toHaveBeenCalled();
   });
 
-  it('suppresses deterministic treatment wording outside population', () => {
+  it('keeps the algorithm visible outside the CPG population', () => {
     evaluate.mockReturnValue(
       of(
         evaluationFixture({
@@ -223,8 +286,154 @@ describe('Guideline with session', () => {
     fixture = TestBed.createComponent(Guideline);
     fixture.detectChanges();
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('#guideline-outside-population')).toBeTruthy();
-    expect(el.querySelector('#guideline-action-box2')).toBeNull();
+    expect(el.querySelector('#guideline-pathway')).toBeNull();
+    expect(el.querySelector('#guideline-outside-population')).toBeNull();
+    expect(el.querySelector('#guideline-algorithm')).toBeTruthy();
+  });
+
+  it('surfaces Box 7 Sidebar 4 questions only in the path-blocking section', async () => {
+    evaluate.mockReturnValue(
+      of(
+        evaluationFixture({
+          algorithmStatus: 'NeedsClinicalInput',
+          algorithmPath: 'NeedsClinicalInput_VeryHighRisk',
+          unresolvedBoxes: [7],
+          activeBoxes: [1, 2, 3, 5, 6, 7],
+        }),
+      ),
+    );
+    fixture = TestBed.createComponent(Guideline);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#guideline-algorithm')).toBeTruthy();
+    expect(el.querySelector('#guideline-algorithm-diagram')).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-path-questions #guideline-question-onLipidLoweringTherapy'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector(
+        '#guideline-path-questions #guideline-question-veryHighRiskRecentAcsOrMiOnTherapy',
+      ),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-onLipidLoweringTherapy'),
+    ).toBeNull();
+  });
+
+  it('lists applies-now recs in Recommendations 1–24 and highlights mapped table rows', async () => {
+    evaluate.mockReturnValue(
+      of(
+        evaluationFixture({
+          unresolvedBoxes: [],
+          recommendations: GUIDELINE_RECOMMENDATIONS.map((meta) => ({
+            ...meta,
+            status: meta.id === 7 ? ('Applicable' as const) : ('NotApplicable' as const),
+            tier: meta.id === 7 ? ('applies-now' as const) : ('does-not-apply' as const),
+          })),
+        }),
+      ),
+    );
+    fixture = TestBed.createComponent(Guideline);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#guideline-summary-recs')).toBeNull();
+    expect(el.querySelector('#guideline-rec-filters')).toBeTruthy();
+    expect(el.querySelector('#guideline-rec-group-applies-now')).toBeTruthy();
+    expect(el.querySelector('#guideline-rec-7')).toBeTruthy();
+    expect(el.querySelector('#guideline-rec-group-does-not-apply')).toBeNull();
+    expect(el.querySelector('#guideline-questions')).toBeTruthy();
+    expect(el.querySelector('#guideline-questions-confirm-heading')).toBeNull();
+    expect(el.querySelector('#guideline-path-questions')).toBeNull();
+    expect(el.querySelector('#guideline-questions-additional-heading')?.textContent).toContain(
+      'Additional',
+    );
+
+    fixture.componentInstance.focusDiagramBox(9);
+    fixture.detectChanges();
+    expect(el.querySelector('#guideline-rec-7')?.classList.contains('table-active')).toBe(true);
+  });
+
+  it('shows only applicable recommendation rows until other status filters are enabled', async () => {
+    evaluate.mockReturnValue(
+      of(
+        evaluationFixture({
+          unresolvedBoxes: [],
+          recommendations: GUIDELINE_RECOMMENDATIONS.map((meta) => ({
+            ...meta,
+            status:
+              meta.id === 7
+                ? ('Applicable' as const)
+                : meta.id === 8
+                  ? ('NeedsClinicalInput' as const)
+                  : meta.id === 18
+                    ? ('Informational' as const)
+                    : ('NotApplicable' as const),
+            tier:
+              meta.id === 7
+                ? ('applies-now' as const)
+                : meta.id === 8
+                  ? ('discuss' as const)
+                  : meta.id === 18
+                    ? ('informational' as const)
+                    : ('does-not-apply' as const),
+          })),
+        }),
+      ),
+    );
+    fixture = TestBed.createComponent(Guideline);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const applicable = el.querySelector('#guideline-rec-filter-applicable') as HTMLInputElement;
+    const needsInput = el.querySelector(
+      '#guideline-rec-filter-needs-clinical-input',
+    ) as HTMLInputElement;
+    const informational = el.querySelector(
+      '#guideline-rec-filter-informational',
+    ) as HTMLInputElement;
+    const notApplicable = el.querySelector(
+      '#guideline-rec-filter-not-applicable',
+    ) as HTMLInputElement;
+
+    expect(applicable?.checked).toBe(true);
+    expect(needsInput?.checked).toBe(false);
+    expect(informational?.checked).toBe(false);
+    expect(notApplicable?.checked).toBe(false);
+    expect(el.querySelector('#guideline-rec-7')).toBeTruthy();
+    expect(el.querySelector('#guideline-rec-8')).toBeNull();
+    expect(el.querySelector('#guideline-rec-18')).toBeNull();
+    expect(el.querySelector('#guideline-rec-group-does-not-apply')).toBeNull();
+
+    fixture.componentInstance.setRecommendationFilter('discuss', true);
+    fixture.componentInstance.setRecommendationFilter('informational', true);
+    fixture.componentInstance.setRecommendationFilter('does-not-apply', true);
+    fixture.detectChanges();
+    expect(el.querySelector('#guideline-rec-8')).toBeTruthy();
+    expect(el.querySelector('#guideline-rec-18')).toBeTruthy();
+    expect(el.querySelector('#guideline-rec-group-does-not-apply')).toBeTruthy();
+
+    fixture.componentInstance.setRecommendationFilter('applies-now', false);
+    fixture.detectChanges();
+    expect(el.querySelector('#guideline-rec-7')).toBeNull();
+  });
+
+  it('switches to patient-path view and clears an off-path selection', async () => {
+    const el: HTMLElement = fixture.nativeElement;
+    fixture.componentInstance.focusDiagramBox(16);
+    fixture.detectChanges();
+    expect(fixture.componentInstance['selectedDiagramBox']()).toBe(16);
+
+    fixture.componentInstance.setDiagramViewMode('path');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.componentInstance['diagramViewMode']()).toBe('path');
+    expect(fixture.componentInstance['selectedDiagramBox']()).toBeNull();
+    expect(el.querySelector('#guideline-diagram-view-path')).toBeTruthy();
   });
 });
 
@@ -243,6 +452,7 @@ describe('guideline diagrams builder', () => {
     expect(def).toContain('class B9 active');
     expect(def).toContain('class B12 unresolved');
     expect(def).toContain('class B16 idle');
+    expect(def).toContain('linkStyle');
   });
 });
 
@@ -254,7 +464,9 @@ describe('recommendation catalog', () => {
         expect(['Informational', 'insufficient']).toBeTruthy();
       }
     }
-    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 17)?.strength).toBe('Neither for nor against');
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 17)?.strength).toBe(
+      'Neither for nor against',
+    );
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 2)?.displayNote).toMatch(/Box 14/);
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 15)?.displayNote).toMatch(/Box 15/);
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 7)?.relatedBoxIds).toEqual([8, 9]);

@@ -59,15 +59,13 @@
 }
 
 .guideline-tri-state {
+  width: 100%;
   max-width: 100%;
 
   .btn {
-    min-width: 5.5rem;
+    flex: 1 1 0;
+    min-width: 0;
   }
-}
-
-.guideline-recommendations-table-wrap {
-  max-height: 48rem;
 }
 
 .guideline-recommendations-table {
@@ -76,16 +74,14 @@
     vertical-align: top;
   }
 
-  thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
   .badge {
     white-space: normal;
     text-align: start;
   }
+}
+
+.guideline-sidebar-title-col {
+  width: 18rem;
 }
 
 .guideline-rec-number-col {

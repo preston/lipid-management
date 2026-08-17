@@ -3,6 +3,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildGuidelineDiagramModel,
+  filterDiagramModelToPath,
   toMermaidDefinition,
 } from './guideline.diagrams';
 import { EMPTY_CLINICIAN_ANSWERS, type GuidelineEvaluationView } from './guideline.model';
@@ -53,9 +54,11 @@ describe('guideline diagram model', () => {
     const yesEdge = model.edges.find((e) => e.from === 8 && e.to === 9);
     expect(yesEdge?.emphasisLabel).toMatch(/Yes/);
     expect(yesEdge?.emphasisLabel).toMatch(/DM|LDL/);
+    expect(yesEdge?.taken).toBe(true);
 
     const noEdge = model.edges.find((e) => e.from === 8 && e.to === 10);
     expect(noEdge?.emphasisLabel).toBeNull();
+    expect(noEdge?.taken).toBe(false);
   });
 
   it('shows unresolved Box 12 desire without taken Yes/No emphasis', () => {
@@ -200,5 +203,28 @@ describe('guideline diagram model', () => {
     expect(def).toContain('class B9 active');
     expect(def).toContain('class B12 unresolved');
     expect(def).toContain('class B16 idle');
+    expect(def).toContain('linkStyle');
+  });
+
+  it('filters to the patient path and styles unlabeled taken edges', () => {
+    const model = buildGuidelineDiagramModel(baseView(), EMPTY_CLINICIAN_ANSWERS);
+    const first = model.edges.find((e) => e.from === 1 && e.to === 2);
+    expect(first?.taken).toBe(true);
+    expect(first?.emphasisLabel).toBeNull();
+
+    const path = filterDiagramModelToPath(model, new Set([1, 2, 3, 5, 8, 9, 15, 21]));
+    expect(path.nodes.map((n) => n.id)).toEqual([1, 2, 3, 5, 8, 9, 15, 21]);
+    expect(path.edges.every((e) => [1, 2, 3, 5, 8, 9, 15, 21].includes(e.from))).toBe(true);
+    expect(path.nodes.some((n) => n.id === 16)).toBe(false);
+
+    const fullDef = toMermaidDefinition(model);
+    expect(fullDef).toContain('stroke:#2196f3');
+    expect(fullDef).toContain('stroke:#adb5bd');
+
+    const def = toMermaidDefinition(path);
+    expect(def).toContain('B9');
+    expect(def).not.toContain('B16');
+    expect(def).toContain('stroke:#2196f3');
+    expect(def).not.toContain('stroke:#adb5bd');
   });
 });

@@ -10,6 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Subscription, switchMap, of, catchError } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -21,19 +22,23 @@ import {
   EMPTY_CLINICIAN_ANSWERS,
   type GuidelineClinicianAnswers,
   type GuidelineEvaluationView,
+  type GuidelineRecommendationResult,
+  type RecommendationDisplayTier,
   type TriState,
 } from './guideline.model';
 import {
   buildGuidelineDiagramModel,
+  filterDiagramModelToPath,
   orderedPathDescription,
   toMermaidDefinition,
   type GuidelineDiagramModel,
 } from './guideline.diagrams';
 import {
   boxMeta,
-  diagramBoxForQuestion,
   formatBoxLabel,
   formatRelatedBoxLabels,
+  pathBlockingQuestionIds,
+  questionsForBox,
 } from './guideline-boxes';
 import {
   attachDiagramInteractivity,
@@ -106,7 +111,8 @@ const CLINICIAN_QUESTIONS: ClinicianQuestionDef[] = [
   },
   {
     id: 'persistentlyElevatedFastingTriglycerides',
-    label: 'Persistently elevated fasting triglycerides ≥150 mg/dL after secondary causes? (Rec 16)',
+    label:
+      'Persistently elevated fasting triglycerides ≥150 mg/dL after secondary causes? (Rec 16)',
     help: 'Persistence is clinician-confirmed when chart data are ambiguous.',
   },
   {
@@ -121,9 +127,89 @@ const CLINICIAN_QUESTIONS: ClinicianQuestionDef[] = [
   },
 ];
 
+interface ReferenceSidebarRow {
+  id: string;
+  title: string;
+  body: string;
+}
+
+const REFERENCE_SIDEBARS: readonly ReferenceSidebarRow[] = [
+  {
+    id: 'guideline-sidebar-1',
+    title: '1 — PREVENT calculator',
+    body: 'Use PREVENT for 10-year total CVD risk in eligible adults. Do not insert Lp(a) into PREVENT. Calculator exclusions (<1 year life expectancy, etc.) differ from CPG population exclusions.',
+  },
+  {
+    id: 'guideline-sidebar-2',
+    title: '2 — Novel markers',
+    body: 'CAC (Recs 3–4), Lp(a) once lifetime (Rec 5), and insufficient evidence for ABI, ApoB, PRS, TPA, hs-CRP (Rec 6). Imaging-only atherosclerosis does not independently define secondary prevention (see Sidebar 3).',
+  },
+  {
+    id: 'guideline-sidebar-3',
+    title: '3 — Clinical ASCVD',
+    body: 'Clinical ASCVD for secondary prevention excludes asymptomatic imaging-only atherosclerosis. Use established clinical ASCVD diagnoses for Box 5.',
+  },
+  {
+    id: 'guideline-sidebar-4',
+    title: '4 — Very high risk',
+    body: 'All three very-high-risk criteria require current lipid-lowering therapy. ASCVD with LDL-C ≥70 mg/dL without therapy is not automatically very high risk.',
+  },
+  {
+    id: 'guideline-sidebar-5',
+    title: '5 — Statin intensity',
+    body: 'Moderate- and high-intensity statin definitions as in the CPG. Outputs are intensity guidance and option sets, not prescriptions.',
+  },
+  {
+    id: 'guideline-sidebar-6',
+    title: '6 — Non-statin therapies',
+    body: 'Ezetimibe, PCSK9 monoclonal antibodies, and bempedoic acid appear in secondary and statin-intolerance option sets (Recs 13–14, 19). Unranked when the CPG presents alternatives.',
+  },
+  {
+    id: 'guideline-sidebar-7',
+    title: '7 — Statin intolerance',
+    body: 'Rechallenge before switching (Rec 18). Unable-to-take-statin options (Rec 19). Intolerance and inability are clinician-confirmed.',
+  },
+  {
+    id: 'guideline-sidebar-8',
+    title: '8 — Elevated triglycerides',
+    body: 'Secondary-prevention IPE when statin use and persistently elevated fasting triglycerides ≥150 mg/dL are established (Rec 16). Suggest against non-IPE omega-3 supplements (Rec 21). Triglycerides >500 mg/dL relate to genetic-dyslipidemia population exclusion.',
+  },
+  {
+    id: 'guideline-appendix-i',
+    title: 'Appendix I — Pharmacotherapy reference (non-ordering)',
+    body: 'Agents surfaced by recommendations include statins (intensity per Sidebar 5), ezetimibe, PCSK9 monoclonal antibodies, bempedoic acid, fibrates (suggest against adding to statin — Rec 12), and icosapent ethyl. This panel is a reference aid only; it does not authorize or rank orders.',
+  },
+];
+
+type DiagramViewMode = 'full' | 'path';
+
+interface RecommendationFilterButton {
+  id: RecommendationDisplayTier;
+  label: string;
+  inputId: string;
+}
+
+const RECOMMENDATION_FILTERS: readonly RecommendationFilterButton[] = [
+  { id: 'applies-now', label: 'Applicable', inputId: 'guideline-rec-filter-applicable' },
+  {
+    id: 'discuss',
+    label: 'Needs clinical input',
+    inputId: 'guideline-rec-filter-needs-clinical-input',
+  },
+  { id: 'informational', label: 'Informational', inputId: 'guideline-rec-filter-informational' },
+  { id: 'does-not-apply', label: 'Not applicable', inputId: 'guideline-rec-filter-not-applicable' },
+];
+
+const DEFAULT_RECOMMENDATION_FILTERS: Record<RecommendationDisplayTier, boolean> = {
+  'applies-now': true,
+  discuss: false,
+  informational: false,
+  'does-not-apply': false,
+};
+
 @Component({
   selector: 'app-guideline',
-  imports: [RouterLink],
+  imports: [RouterLink, NgTemplateOutlet],
   templateUrl: './guideline.html',
   styleUrl: './guideline.scss',
 })
@@ -152,8 +238,13 @@ export class Guideline implements OnDestroy {
   protected readonly diagramError = signal<string | null>(null);
   protected readonly selectedDiagramBox = signal<number | null>(null);
   protected readonly diagramReady = signal(false);
+  protected readonly diagramViewMode = signal<DiagramViewMode>('full');
+  protected readonly recommendationFilters = signal<Record<RecommendationDisplayTier, boolean>>({
+    ...DEFAULT_RECOMMENDATION_FILTERS,
+  });
+  protected readonly recommendationFilterButtons = RECOMMENDATION_FILTERS;
 
-  protected readonly diagramModel = computed<GuidelineDiagramModel | null>(() => {
+  protected readonly fullDiagramModel = computed<GuidelineDiagramModel | null>(() => {
     const view = this.evaluation();
     if (!view) {
       return null;
@@ -161,20 +252,37 @@ export class Guideline implements OnDestroy {
     return buildGuidelineDiagramModel(view, this.answers());
   });
 
+  protected readonly diagramModel = computed<GuidelineDiagramModel | null>(() => {
+    const full = this.fullDiagramModel();
+    const view = this.evaluation();
+    if (!full || !view) {
+      return null;
+    }
+    if (this.diagramViewMode() === 'full') {
+      return full;
+    }
+    return filterDiagramModelToPath(full, new Set([...view.activeBoxes, ...view.unresolvedBoxes]));
+  });
+
   protected readonly selectedDiagramDetail = computed(() => {
     const boxId = this.selectedDiagramBox();
-    const model = this.diagramModel();
-    if (boxId == null || !model) {
+    const view = this.evaluation();
+    const model = this.fullDiagramModel();
+    if (boxId == null || !view || !model) {
       return null;
     }
     const meta = boxMeta(boxId);
     const node = model.nodes.find((n) => n.id === boxId);
+    const questionIds = questionsForBox(boxId);
     return {
       boxId,
       label: formatBoxLabel(boxId),
       title: meta.title,
       subtitle: node?.subtitle ?? null,
-      questionId: meta.questionId ?? null,
+      questions: questionIds.map((id) => ({
+        id,
+        label: CLINICIAN_QUESTIONS.find((q) => q.id === id)?.label ?? id,
+      })),
     };
   });
 
@@ -186,10 +294,23 @@ export class Guideline implements OnDestroy {
     return orderedPathDescription(view.activeBoxes, view.unresolvedBoxes, view.algorithmPath);
   });
 
-  protected readonly visibleQuestions = computed(() => CLINICIAN_QUESTIONS);
+  protected readonly pathBlockingQuestions = computed(() => {
+    const unresolved = this.evaluation()?.unresolvedBoxes ?? [];
+    const ids = pathBlockingQuestionIds(unresolved);
+    return CLINICIAN_QUESTIONS.filter((q) => ids.has(q.id));
+  });
 
-  protected readonly unresolvedQuestionCount = computed(
-    () => CLINICIAN_QUESTIONS.filter((q) => this.answers()[q.id] === 'unknown').length,
+  protected readonly detailQuestions = computed(() => {
+    const blocking = new Set(this.pathBlockingQuestions().map((q) => q.id));
+    return CLINICIAN_QUESTIONS.filter((q) => !blocking.has(q.id));
+  });
+
+  protected readonly pathBlockingUnresolvedCount = computed(
+    () => this.pathBlockingQuestions().filter((q) => this.answers()[q.id] === 'unknown').length,
+  );
+
+  protected readonly detailUnresolvedCount = computed(
+    () => this.detailQuestions().filter((q) => this.answers()[q.id] === 'unknown').length,
   );
 
   protected readonly recommendationsByTier = computed(() => {
@@ -202,13 +323,29 @@ export class Guideline implements OnDestroy {
     };
   });
 
-  protected readonly suppressDeterministicTreatmentWording = computed(
-    () => this.evaluation()?.algorithmStatus === 'OutsidePopulation',
-  );
+  protected readonly visibleRecommendationGroups = computed(() => {
+    const byTier = this.recommendationsByTier();
+    const filters = this.recommendationFilters();
+    const groups: {
+      id: RecommendationDisplayTier;
+      title: string;
+      items: GuidelineRecommendationResult[];
+    }[] = [
+      { id: 'applies-now', title: 'Applies now', items: byTier.appliesNow },
+      { id: 'discuss', title: 'Discuss with patient', items: byTier.discuss },
+      {
+        id: 'informational',
+        title: 'Informational / evidence uncertain',
+        items: byTier.informational,
+      },
+      { id: 'does-not-apply', title: 'Does not currently apply', items: byTier.doesNotApply },
+    ];
+    return groups.filter((group) => filters[group.id]);
+  });
 
   protected readonly formatBoxLabel = formatBoxLabel;
   protected readonly formatRelatedBoxLabels = formatRelatedBoxLabels;
-  protected readonly diagramBoxForQuestion = diagramBoxForQuestion;
+  protected readonly referenceSidebars = REFERENCE_SIDEBARS;
 
   constructor() {
     this.riskSession.clearIfPatientMismatch();
@@ -253,7 +390,8 @@ export class Guideline implements OnDestroy {
 
     effect(() => {
       const model = this.diagramModel();
-      if (model) {
+      const host = this.diagramHost();
+      if (model && host) {
         void this.renderDiagram(model);
       }
     });
@@ -269,12 +407,46 @@ export class Guideline implements OnDestroy {
     this.answers.update((a) => ({ ...a, [id]: value }));
   }
 
+  setRecommendationFilter(id: RecommendationDisplayTier, enabled: boolean): void {
+    this.recommendationFilters.update((filters) => ({ ...filters, [id]: enabled }));
+  }
+
+  protected onRecommendationFilterChange(id: RecommendationDisplayTier, event: Event): void {
+    const target = event.target;
+    if (target instanceof HTMLInputElement) {
+      this.setRecommendationFilter(id, target.checked);
+    }
+  }
+
+  setDiagramViewMode(mode: DiagramViewMode): void {
+    this.diagramViewMode.set(mode);
+    const selected = this.selectedDiagramBox();
+    if (selected == null) {
+      return;
+    }
+    const model = this.diagramModel();
+    if (!model?.nodes.some((node) => node.id === selected)) {
+      this.selectedDiagramBox.set(null);
+      this.diagramController?.clearSelection();
+    }
+  }
+
+  selectDiagramBox(boxId: number): void {
+    this.selectedDiagramBox.set(boxId);
+    this.diagramController?.select(boxId);
+  }
+
   focusDiagramBox(boxId: number): void {
     this.selectedDiagramBox.set(boxId);
-    const section = this.host.nativeElement.querySelector('#guideline-algorithm');
-    if (section && typeof section.scrollIntoView === 'function') {
-      section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const visible = this.diagramModel()?.nodes.some((node) => node.id === boxId) ?? false;
+    if (!visible && this.diagramViewMode() === 'path') {
+      this.diagramViewMode.set('full');
+      this.pendingFocusBox = boxId;
+      this.scrollToElement('#guideline-algorithm');
+      return;
     }
+
+    this.scrollToElement('#guideline-algorithm');
 
     if (!this.diagramController) {
       this.pendingFocusBox = boxId;
@@ -285,10 +457,20 @@ export class Guideline implements OnDestroy {
   }
 
   scrollToQuestion(questionId: keyof GuidelineClinicianAnswers): void {
-    const el = this.host.nativeElement.querySelector(`#guideline-question-${questionId}`);
-    if (el && typeof el.scrollIntoView === 'function') {
-      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    this.scrollToElement(`#guideline-question-${questionId}`);
+  }
+
+  recRowHighlighted(rec: GuidelineRecommendationResult): boolean {
+    const boxId = this.selectedDiagramBox();
+    return boxId != null && rec.relatedBoxIds.includes(boxId);
+  }
+
+  protected isAnswer(question: ClinicianQuestionDef, value: TriState): boolean {
+    return this.answers()[question.id] === value;
+  }
+
+  protected setQuestionAnswer(question: ClinicianQuestionDef, value: TriState): void {
+    this.setAnswer(question.id, value);
   }
 
   downloadDiagramSvg(): void {
@@ -348,6 +530,13 @@ export class Guideline implements OnDestroy {
     return `appendix-g-algorithm-${patientId}.${ext}`;
   }
 
+  private scrollToElement(selector: string): void {
+    const el = this.host.nativeElement.querySelector(selector);
+    if (el && typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
   private async renderDiagram(model: GuidelineDiagramModel): Promise<void> {
     const generation = ++this.renderGeneration;
     const hostRef = this.diagramHost();
@@ -381,7 +570,7 @@ export class Guideline implements OnDestroy {
       if (svgEl) {
         const tooltips = new Map(model.nodes.map((n) => [n.id, n.tooltip]));
         this.diagramController = attachDiagramInteractivity(svgEl, {
-          onSelect: (boxId) => this.focusDiagramBox(boxId),
+          onSelect: (boxId) => this.selectDiagramBox(boxId),
           tooltipForBox: (boxId) => tooltips.get(boxId) ?? formatBoxLabel(boxId),
         });
         const selected = this.selectedDiagramBox();

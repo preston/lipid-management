@@ -21,6 +21,7 @@ export interface GuidelineDiagramEdge {
   to: number;
   baseLabel: string;
   emphasisLabel: string | null;
+  taken: boolean;
 }
 
 export interface GuidelineDiagramModel {
@@ -144,7 +145,9 @@ function nodeSubtitle(
   switch (id) {
     case 1: {
       const age =
-        view.effectiveAgeYears != null ? `Age ${Math.round(view.effectiveAgeYears)}` : 'Age unknown';
+        view.effectiveAgeYears != null
+          ? `Age ${Math.round(view.effectiveAgeYears)}`
+          : 'Age unknown';
       return `${age}; ${view.algorithmStatus === 'NotAdult' ? 'not adult' : 'adult'}`;
     }
     case 3:
@@ -169,11 +172,7 @@ function nodeSubtitle(
   }
 }
 
-function nodeTooltip(
-  id: number,
-  state: DiagramNodeState,
-  subtitle: string | null,
-): string {
+function nodeTooltip(id: number, state: DiagramNodeState, subtitle: string | null): string {
   const meta = boxMeta(id);
   const parts = [`${formatBoxLabel(id)}: ${meta.title}`, `Status: ${state}`];
   if (subtitle) {
@@ -322,10 +321,7 @@ function takenEdgesForAlgorithmPath(algorithmPath: string): ReadonlySet<string> 
   }
 }
 
-function edgeIsTaken(
-  edge: StaticEdge,
-  taken: ReadonlySet<string>,
-): boolean {
+function edgeIsTaken(edge: StaticEdge, taken: ReadonlySet<string>): boolean {
   return taken.has(edgeKey(edge.from, edge.to, edge.baseLabel));
 }
 
@@ -386,6 +382,7 @@ export function buildGuidelineDiagramModel(
       to: edge.to,
       baseLabel: edge.baseLabel,
       emphasisLabel: edgeEmphasisLabel(edge, isTaken, view),
+      taken: isTaken,
     };
   });
 
@@ -422,11 +419,35 @@ function mermaidEdgeLine(edge: GuidelineDiagramEdge): string {
   return `${from} -->|${escapeMermaidLabel(label)}| ${to}`;
 }
 
+const LINK_TAKEN_STYLE = 'stroke:#2196f3,stroke-width:2px';
+const LINK_IDLE_STYLE = 'stroke:#adb5bd,stroke-width:1px';
+
+function mermaidLinkStyleLines(edges: readonly GuidelineDiagramEdge[]): string[] {
+  const takenIdx: number[] = [];
+  const idleIdx: number[] = [];
+  edges.forEach((edge, index) => {
+    if (edge.taken) {
+      takenIdx.push(index);
+    } else {
+      idleIdx.push(index);
+    }
+  });
+  const lines: string[] = [];
+  if (takenIdx.length) {
+    lines.push(`linkStyle ${takenIdx.join(',')} ${LINK_TAKEN_STYLE}`);
+  }
+  if (idleIdx.length) {
+    lines.push(`linkStyle ${idleIdx.join(',')} ${LINK_IDLE_STYLE}`);
+  }
+  return lines;
+}
+
 /** Serialize a diagram model to a Mermaid flowchart definition. */
 export function toMermaidDefinition(model: GuidelineDiagramModel): string {
   const classLines = model.nodes.map((n) => `class B${n.id} ${n.state}`);
   const nodeLines = model.nodes.map(mermaidNodeLine);
   const edgeLines = model.edges.map(mermaidEdgeLine);
+  const linkStyleLines = mermaidLinkStyleLines(model.edges);
 
   return `
 flowchart TD
@@ -435,7 +456,24 @@ flowchart TD
   ${edgeLines.join('\n  ')}
 
   ${classLines.join('\n  ')}
+  ${linkStyleLines.join('\n  ')}
 `.trim();
+}
+
+/** Keep only boxes on the active / unresolved path and edges between them. */
+export function filterDiagramModelToPath(
+  model: GuidelineDiagramModel,
+  boxIds: ReadonlySet<number>,
+): GuidelineDiagramModel {
+  const nodes = model.nodes.filter((node) => boxIds.has(node.id));
+  if (nodes.length === 0) {
+    return model;
+  }
+  const kept = new Set(nodes.map((node) => node.id));
+  return {
+    nodes,
+    edges: model.edges.filter((edge) => kept.has(edge.from) && kept.has(edge.to)),
+  };
 }
 
 /** Convenience: build model then serialize (for callers that only need the string). */
@@ -453,9 +491,7 @@ export function orderedPathDescription(
 ): string {
   const parts = activeBoxes.map((n) => formatBoxLabel(n));
   if (unresolvedBoxes.length) {
-    parts.push(
-      `unresolved decision at ${unresolvedBoxes.map(formatBoxLabel).join(', ')}`,
-    );
+    parts.push(`unresolved decision at ${unresolvedBoxes.map(formatBoxLabel).join(', ')}`);
   }
   parts.push(`path ${algorithmPath}`);
   return parts.join('; ');
