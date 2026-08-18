@@ -199,8 +199,13 @@ describe('guideline diagram model', () => {
       EMPTY_CLINICIAN_ANSWERS,
     );
     const def = toMermaidDefinition(model);
-    expect(def).toContain('B1(["Box 1\\nAdult patient\\nAge 62; adult"])');
-    expect(def).toContain('B3{{"Box 3\\nIs life expectancy limited (<5 years)?');
+    expect(def).toContain('B1(["`Box 1\nAdult patient\n\n**Age 62; adult**`"])');
+    expect(def).toContain(
+      'B3{{"`Box 3\nIs life expectancy limited (<5 years)?\n\n**Unknown**`"}}',
+    );
+    expect(def).toContain('**DM; 200 mg/dL; 12.0%**');
+    expect(def).toContain('B9["Box 9\\n');
+    expect(def).not.toMatch(/B9\["`/);
     expect(def).not.toContain('Outside adult algorithm');
     expect(def).toContain('B21');
     expect(def).toContain('class B9 active');

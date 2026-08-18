@@ -393,13 +393,21 @@ function escapeMermaidLabel(text: string): string {
   return text.replace(/"/g, "'").replace(/\n/g, '\\n');
 }
 
-function mermaidNodeLine(node: GuidelineDiagramNode): string {
+/** Mermaid markdown strings support **bold** and real newlines, not `\n` or horizontal rules. */
+function mermaidNodeLabel(node: GuidelineDiagramNode): string {
   const meta = boxMeta(node.id);
-  const lines = [`Box ${node.id}`, meta.title];
-  if (node.subtitle) {
-    lines.push(node.subtitle);
+  const heading = [`Box ${node.id}`, meta.title];
+  if (!node.subtitle) {
+    return escapeMermaidLabel(heading.join('\\n'));
   }
-  const label = escapeMermaidLabel(lines.join('\\n'));
+  const blurb = node.subtitle.replace(/[*_`]/g, '');
+  const markdown = [...heading, '', `**${blurb}**`].join('\n').replace(/"/g, "'");
+  return `\`${markdown}\``;
+}
+
+function mermaidNodeLine(node: GuidelineDiagramNode): string {
+  const label = mermaidNodeLabel(node);
+  const meta = boxMeta(node.id);
   if (meta.kind === 'start') {
     return `B${node.id}(["${label}"])`;
   }

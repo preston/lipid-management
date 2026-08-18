@@ -610,6 +610,7 @@ export class Guideline implements OnDestroy {
         securityLevel: 'strict',
         theme: 'default',
         htmlLabels: false,
+        markdownAutoWrap: false,
         flowchart: { htmlLabels: false },
       });
       const definition = toMermaidDefinition(model);
