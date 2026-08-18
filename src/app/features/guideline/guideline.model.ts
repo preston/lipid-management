@@ -29,6 +29,11 @@ export type RecommendationDisplayTier =
 
 export interface GuidelineClinicianAnswers {
   lifeExpectancyLimitedUnder5Years: TriState;
+  establishedCvd: TriState;
+  hivInfection: TriState;
+  veryHighRiskCvd: TriState;
+  primaryPreventionStatinIndication: TriState;
+  borderlineRiskBand: TriState;
   borderlineRiskPatientDesiresStatin: TriState;
   recentMiAcsOrCabgPciWithin6Weeks: TriState;
   veryHighRiskRecentAcsOrMiOnTherapy: TriState;
@@ -41,11 +46,16 @@ export interface GuidelineClinicianAnswers {
   cacWouldChangeManagement: TriState;
   clinicalRiskIntermediateOrHigh: TriState;
   clinicalRiskLow: TriState;
-  astAltLessThan3xUlnConfirmed: TriState;
+  elevatedAstOrAltLessThan3xUln: TriState;
 }
 
 export const EMPTY_CLINICIAN_ANSWERS: GuidelineClinicianAnswers = {
   lifeExpectancyLimitedUnder5Years: 'unknown',
+  establishedCvd: 'unknown',
+  hivInfection: 'unknown',
+  veryHighRiskCvd: 'unknown',
+  primaryPreventionStatinIndication: 'unknown',
+  borderlineRiskBand: 'unknown',
   borderlineRiskPatientDesiresStatin: 'unknown',
   recentMiAcsOrCabgPciWithin6Weeks: 'unknown',
   veryHighRiskRecentAcsOrMiOnTherapy: 'unknown',
@@ -58,7 +68,7 @@ export const EMPTY_CLINICIAN_ANSWERS: GuidelineClinicianAnswers = {
   cacWouldChangeManagement: 'unknown',
   clinicalRiskIntermediateOrHigh: 'unknown',
   clinicalRiskLow: 'unknown',
-  astAltLessThan3xUlnConfirmed: 'unknown',
+  elevatedAstOrAltLessThan3xUln: 'unknown',
 };
 
 export interface GuidelineRecommendationMeta {
@@ -77,6 +87,28 @@ export interface GuidelineRecommendationResult extends GuidelineRecommendationMe
   tier: RecommendationDisplayTier;
 }
 
+export interface GuidelineChartEvidence {
+  establishedCvd: string | null;
+  hivInfection: string | null;
+  latestLdlDate: string | null;
+  diabetes: string | null;
+  lipidLoweringTherapy: string | null;
+  triglycerides: string | null;
+  astAlt: string | null;
+  chartIndexEvent: string | null;
+}
+
+export const EMPTY_CHART_EVIDENCE: GuidelineChartEvidence = {
+  establishedCvd: null,
+  hivInfection: null,
+  latestLdlDate: null,
+  diabetes: null,
+  lipidLoweringTherapy: null,
+  triglycerides: null,
+  astAlt: null,
+  chartIndexEvent: null,
+};
+
 export interface GuidelineEvaluationView {
   algorithmStatus: AlgorithmStatus;
   algorithmPath: string;
@@ -89,6 +121,8 @@ export interface GuidelineEvaluationView {
   effectiveDiabetes: boolean | null;
   hasEstablishedCvd: boolean;
   hasHivInfection: boolean;
+  primaryPreventionStatinIndicationBox8: boolean;
+  primaryPreventionBorderlineRiskBand: boolean;
   effectiveOnLipidLoweringTherapy: boolean | null;
   veryHighRiskCvd: boolean | null;
   box8UsedNullPreventRisk: boolean;
@@ -101,6 +135,7 @@ export interface GuidelineEvaluationView {
   unresolvedBoxes: number[];
   recommendations: GuidelineRecommendationResult[];
   supportingFactors: { label: string; value: string }[];
+  chartEvidence: GuidelineChartEvidence;
 }
 
 export function triStateToBooleanOrOmit(
@@ -140,7 +175,7 @@ export function pathwayCopy(path: string): { title: string; summary: string } {
       return {
         title: 'Outside guideline population',
         summary:
-          'One or more CPG population exclusions apply (for example HFrEF with LVEF ≤35%, life expectancy <5 years, ESRD, or genetic dyslipidemia). Results remain decision support only.',
+          'One or more CPG population exclusions apply (HFrEF with LVEF ≤35%, ESRD, genetic dyslipidemia / TG >500 mg/dL). Life expectancy <5 years is Box 3/4, not this hard off-path. Results remain decision support only.',
       };
     case 'Box4_DiscussUncertainBenefitLimitedLifeExpectancy':
       return {

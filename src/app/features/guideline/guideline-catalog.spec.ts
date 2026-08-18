@@ -24,6 +24,28 @@ describe('Guideline terminology and catalog integrity', () => {
         expect(VALID_BOX_IDS.has(boxId), `Rec ${rec.id} box ${boxId}`).toBe(true);
       }
     }
+    expect(
+      GUIDELINE_RECOMMENDATIONS.filter((r) => r.strength === 'Strong for').map((r) => r.id),
+    ).toEqual([7, 24]);
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 22)?.strength).toBe('Weak for');
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 23)?.strength).toBe('Weak for');
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 8)?.relatedBoxIds).toEqual([12, 11]);
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 19)?.text).toMatch(/fibrates/);
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 20)?.text).toMatch(
+      /fiber, garlic, ginger, green tea, and red yeast rice/,
+    );
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 14)?.text).toMatch(
+      /ezetimibe and PCSK9 inhibitor/,
+    );
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 14)?.displayNote).toMatch(/peer/);
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 24)?.text).toMatch(
+      /diagnosis of coronary artery disease/,
+    );
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 24)?.text).not.toMatch(
+      /acute coronary syndrome/i,
+    );
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 5)?.text).not.toMatch(/lifetime/);
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 16)?.text).not.toMatch(/secondary causes/);
   });
 
   it('has on-disk ValueSet bundles for every catalog entry', () => {
@@ -38,6 +60,42 @@ describe('Guideline terminology and catalog integrity', () => {
       const vs = json.entry?.find((e) => e.resource?.resourceType === 'ValueSet')?.resource;
       expect(vs?.url, entry.id).toBeTruthy();
     }
+  });
+
+  it('LipidManagement.cql pins 0.3.9 and Rec 11/21/24 population rules', () => {
+    const cql = readFileSync(join(ROOT, 'public/cql/LipidManagement.cql'), 'utf8');
+    expect(cql).toMatch(/library LipidManagement version '0.3.9'/);
+    expect(cql).toContain('parameter ElevatedAstOrAltLessThan3xUln Boolean');
+    expect(cql).toContain('parameter EstablishedCvd Boolean');
+    expect(cql).toContain('parameter HivInfection Boolean');
+    expect(cql).toContain('parameter PrimaryPreventionStatinIndication Boolean');
+    expect(cql).toContain('parameter BorderlineRiskBand Boolean');
+    expect(cql).toContain('parameter VeryHighRisk Boolean');
+    expect(cql).toContain('Coalesce(EstablishedCvd, ChartHasEstablishedCvd)');
+    expect(cql).toContain('Coalesce(HivInfection, ChartHasHivInfection)');
+    expect(cql).toContain(
+      'Coalesce(PrimaryPreventionStatinIndication, ComputedPrimaryPreventionStatinIndicationBox8)',
+    );
+    expect(cql).toContain('Coalesce(BorderlineRiskBand, ComputedPrimaryPreventionBorderlineRiskBand)');
+    expect(cql).toContain('Coalesce(VeryHighRisk, ComputedVeryHighRiskCvd)');
+    expect(cql).toContain('define ActiveBox12: ActiveBox10 and not HasHivInfection');
+    expect(cql).toMatch(/Rec21Status:\s*\n\s*case when IsAdult then 'Applicable'/);
+    expect(cql).not.toMatch(/when ChartSuggestsRecentIndexEvent then 'Applicable'/);
+    expect(cql).toContain("VS.code ~ 'entered-in-error'");
+    expect(cql).toMatch(/VS.code ~ 'refuted'/);
+    expect(cql).toContain('HasStatinIndicationForRec11');
+    expect(cql).toContain('BorderlineRiskPatientDesiresStatin is false');
+    expect(cql).toMatch(
+      /define Rec24Status:[\s\S]*?else 'Informational'\s*\n\s*end/,
+    );
+    expect(cql).toContain('ToString(date from FHIRHelpers.ToDateTime(value))');
+    expect(cql).not.toMatch(/Replace\(/);
+    expect(cql).not.toContain('define LatestCabgPciPerformedAt:');
+    expect(cql).not.toMatch(/sort by recordedDate/);
+    expect(cql).not.toMatch(/sort by performedAt/);
+    expect(cql).toContain('define EstablishedCvdEvidence:');
+    expect(cql).toContain('define HivInfectionEvidence:');
+    expect(cql).toContain('define LatestLdlObservationDate:');
   });
 
   it('LipidManagement.cql references committed ValueSet URLs', () => {

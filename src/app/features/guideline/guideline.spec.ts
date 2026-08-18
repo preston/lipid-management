@@ -10,7 +10,8 @@ import { GuidelineEvaluationService } from '../../services/guideline-evaluation.
 import { PatientContextService } from '../../services/patient-context.service';
 import { ToastService } from '../../services/toast.service';
 import type { GuidelineEvaluationView } from './guideline.model';
-import { EMPTY_CLINICIAN_ANSWERS } from './guideline.model';
+import { EMPTY_CLINICIAN_ANSWERS, EMPTY_CHART_EVIDENCE } from './guideline.model';
+import { questionAffectsDiagram } from './guideline-boxes';
 import { GUIDELINE_RECOMMENDATIONS } from './guideline-recommendations';
 import { buildGuidelineMermaidDefinition } from './guideline.diagrams';
 
@@ -41,6 +42,8 @@ function evaluationFixture(
     effectiveDiabetes: false,
     hasEstablishedCvd: false,
     hasHivInfection: false,
+    primaryPreventionStatinIndicationBox8: false,
+    primaryPreventionBorderlineRiskBand: true,
     effectiveOnLipidLoweringTherapy: false,
     veryHighRiskCvd: false,
     box8UsedNullPreventRisk: false,
@@ -57,6 +60,7 @@ function evaluationFixture(
       tier: meta.id === 18 || meta.id === 19 ? 'informational' : 'does-not-apply',
     })),
     supportingFactors: [{ label: 'PREVENT model', value: 'base' }],
+    chartEvidence: EMPTY_CHART_EVIDENCE,
     ...overrides,
   };
 }
@@ -181,6 +185,10 @@ describe('Guideline with session', () => {
   it('prefills life expectancy Yes from calculator PREVENT flag and evaluates', () => {
     const component = fixture.componentInstance;
     expect(component['answers']().lifeExpectancyLimitedUnder5Years).toBe('yes');
+    expect(component['answers']().establishedCvd).toBe('no');
+    expect(component['answers']().hivInfection).toBe('no');
+    expect(component['answers']().primaryPreventionStatinIndication).toBe('no');
+    expect(component['answers']().borderlineRiskBand).toBe('yes');
     expect(evaluate).toHaveBeenCalled();
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('#guideline-session-summary')).toBeTruthy();
@@ -195,11 +203,54 @@ describe('Guideline with session', () => {
     expect(el.querySelector('#guideline-pathway')).toBeNull();
     expect(el.querySelector('#guideline-intro')).toBeNull();
     expect(el.querySelector('#guideline-applicability')).toBeNull();
-    expect(el.querySelector('#guideline-path-questions')).toBeTruthy();
-    expect(el.querySelector('#guideline-questions-confirm-heading')?.textContent).toContain(
-      'Confirm',
+    expect(el.querySelector('#guideline-questions-heading')?.textContent?.trim()).toBe(
+      'Visualization Questions',
     );
-    expect(el.querySelector('#guideline-questions-heading')?.textContent?.trim()).toBe('Questions');
+    expect(el.querySelector('#guideline-detail-questions-heading')?.textContent?.trim()).toBe(
+      'Recommendation questions',
+    );
+    expect(el.querySelector('#guideline-questions-confirm-heading')).toBeNull();
+    expect(el.querySelector('#guideline-path-questions')).toBeNull();
+    expect(el.querySelector('#guideline-questions-additional-heading')).toBeNull();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-lifeExpectancyLimitedUnder5Years'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-establishedCvd'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-veryHighRiskCvd'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector(
+        '#guideline-questions-list #guideline-question-primaryPreventionStatinIndication',
+      ),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-borderlineRiskBand'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-hivInfection'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-onLipidLoweringTherapy'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-clinicalRiskLow'),
+    ).toBeNull();
+    expect(
+      el.querySelector('#guideline-detail-questions-list #guideline-question-clinicalRiskLow'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector(
+        '#guideline-detail-questions-list #guideline-question-recentMiAcsOrCabgPciWithin6Weeks',
+      ),
+    ).toBeTruthy();
+    const catalogCount = Object.keys(EMPTY_CLINICIAN_ANSWERS).length;
+    expect(
+      el.querySelectorAll('#guideline-questions-list .guideline-question').length +
+        el.querySelectorAll('#guideline-detail-questions-list .guideline-question').length,
+    ).toBe(catalogCount);
     expect(el.querySelector('#guideline-summary-recs')).toBeNull();
     expect(el.querySelector('#guideline-algorithm')).toBeTruthy();
     expect(el.querySelector('#guideline-evidence')).toBeTruthy();
@@ -208,6 +259,8 @@ describe('Guideline with session', () => {
     expect(el.querySelector('#guideline-references-row #guideline-sidebars')).toBeTruthy();
     expect(el.querySelector('#guideline-sidebars-accordion')).toBeNull();
     expect(el.querySelector('#guideline-sidebar-1')).toBeTruthy();
+    expect(el.querySelector('#guideline-sidebar-1')?.textContent).toMatch(/Lifestyle Medicine/i);
+    expect(el.querySelector('#guideline-sidebar-6')?.textContent).toMatch(/Statin Intolerance/i);
     expect(el.querySelector('#guideline-appendix-i')).toBeTruthy();
     expect(el.querySelectorAll('[id^="guideline-rec-"]').length).toBeGreaterThan(0);
 
@@ -215,17 +268,107 @@ describe('Guideline with session', () => {
     const questions = el.querySelector('#guideline-questions');
     const algorithm = el.querySelector('#guideline-algorithm');
     const recs = el.querySelector('#guideline-recommendations');
-    expect(workspace && questions && algorithm && recs).toBeTruthy();
+    const recRow = el.querySelector('#guideline-recommendations-row');
+    const detailQuestions = el.querySelector('#guideline-detail-questions');
+    expect(workspace && questions && algorithm && recs && recRow && detailQuestions).toBeTruthy();
     expect(el.querySelector('#guideline-questions-col.col-lg-4')).toBeTruthy();
     expect(el.querySelector('#guideline-algorithm-col.col-lg-8')).toBeTruthy();
+    expect(el.querySelector('#guideline-detail-questions-col.col-lg-4')).toBeTruthy();
+    expect(el.querySelector('#guideline-recommendations-col.col-lg-8')).toBeTruthy();
     expect(workspace!.contains(questions!)).toBe(true);
     expect(workspace!.contains(algorithm!)).toBe(true);
+    expect(recRow!.contains(detailQuestions!)).toBe(true);
+    expect(recRow!.contains(recs!)).toBe(true);
     expect(
       questions!.compareDocumentPosition(algorithm!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
     expect(
-      workspace!.compareDocumentPosition(recs!) & Node.DOCUMENT_POSITION_FOLLOWING,
+      detailQuestions!.compareDocumentPosition(recs!) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+    expect(
+      workspace!.compareDocumentPosition(recRow!) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('shows a brief chart or session blurb on questions pre-set from data', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#guideline-question-evidence-lifeExpectancyLimitedUnder5Years')?.textContent).toMatch(
+      /PREVENT <1 y \(2026-07-16\)/,
+    );
+    expect(el.querySelector('#guideline-question-evidence-establishedCvd')?.textContent?.trim()).toBe(
+      'No ASCVD or CABG/PCI on file',
+    );
+    expect(el.querySelector('#guideline-question-evidence-hivInfection')?.textContent?.trim()).toBe(
+      'No active HIV on file',
+    );
+    expect(
+      el.querySelector('#guideline-question-evidence-primaryPreventionStatinIndication')?.textContent,
+    ).toMatch(/no DM · LDL-C 110 mg\/dL · 10y 8\.0% \(2026-07-16\)/);
+    expect(el.querySelector('#guideline-question-evidence-borderlineRiskBand')?.textContent?.trim()).toBe(
+      '10y 8.0% (2026-07-16)',
+    );
+    expect(el.querySelector('#guideline-question-evidence-escalationNeeded')).toBeNull();
+    expect(el.querySelector('#guideline-question-evidence-borderlineRiskPatientDesiresStatin')).toBeNull();
+  });
+
+  it('places decision-tree questions in Visualization Questions and all others in Recommendation questions', () => {
+    const el: HTMLElement = fixture.nativeElement;
+    const allIds = Object.keys(EMPTY_CLINICIAN_ANSWERS) as (keyof typeof EMPTY_CLINICIAN_ANSWERS)[];
+    for (const id of allIds) {
+      const inDiagram = el.querySelector(`#guideline-questions-list #guideline-question-${id}`);
+      const inRec = el.querySelector(`#guideline-detail-questions-list #guideline-question-${id}`);
+      if (questionAffectsDiagram(id)) {
+        expect(inDiagram, `${id} should be in Visualization Questions`).toBeTruthy();
+        expect(inRec, `${id} should not be in Recommendation questions`).toBeNull();
+      } else {
+        expect(inDiagram, `${id} should not be in Visualization Questions`).toBeNull();
+        expect(inRec, `${id} should be in Recommendation questions`).toBeTruthy();
+      }
+    }
+    expect(el.querySelectorAll('#guideline-questions-list .guideline-question').length).toBe(
+      allIds.filter((id) => questionAffectsDiagram(id)).length,
+    );
+    expect(el.querySelectorAll('#guideline-detail-questions-list .guideline-question').length).toBe(
+      allIds.filter((id) => !questionAffectsDiagram(id)).length,
+    );
+  });
+
+  it('shows CQL-dated chart findings on pre-set answers', async () => {
+    evaluate.mockReturnValue(
+      of(
+        evaluationFixture({
+          hasEstablishedCvd: true,
+          hasHivInfection: true,
+          effectiveOnLipidLoweringTherapy: true,
+          chartEvidence: {
+            ...EMPTY_CHART_EVIDENCE,
+            establishedCvd: 'ASCVD (2023-04-12)',
+            hivInfection: 'Active HIV (2021-08-01)',
+            latestLdlDate: '2024-01-03',
+            lipidLoweringTherapy: 'Statin Rx (2025-11-02)',
+          },
+        }),
+      ),
+    );
+    fixture = TestBed.createComponent(Guideline);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#guideline-question-evidence-establishedCvd')?.textContent?.trim()).toBe(
+      'ASCVD (2023-04-12)',
+    );
+    expect(el.querySelector('#guideline-question-evidence-hivInfection')?.textContent?.trim()).toBe(
+      'Active HIV (2021-08-01)',
+    );
+    expect(el.querySelector('#guideline-question-evidence-onLipidLoweringTherapy')?.textContent?.trim()).toBe(
+      'Statin Rx (2025-11-02)',
+    );
+    expect(
+      el.querySelector('#guideline-question-evidence-primaryPreventionStatinIndication')?.textContent,
+    ).toMatch(/LDL-C 110 mg\/dL \(2024-01-03\)/);
+    expect(fixture.componentInstance['answers']().onLipidLoweringTherapy).toBe('yes');
+    expect(fixture.componentInstance['answers']().establishedCvd).toBe('yes');
   });
 
   it('exposes diagram toolbar and focuses a path box', async () => {
@@ -233,7 +376,6 @@ describe('Guideline with session', () => {
     expect(el.querySelector('#guideline-diagram-view-full')).toBeTruthy();
     expect(el.querySelector('#guideline-diagram-view-path')).toBeTruthy();
     expect(el.querySelector('#guideline-diagram-download-svg')).toBeTruthy();
-    expect(el.querySelector('#guideline-diagram-download-png')).toBeTruthy();
     expect(el.querySelector('#guideline-diagram-legend')).toBeTruthy();
 
     fixture.componentInstance.focusDiagramBox(3);
@@ -248,14 +390,9 @@ describe('Guideline with session', () => {
     ).toBeNull();
     expect(
       el.querySelector(
-        '#guideline-path-questions #guideline-question-lifeExpectancyLimitedUnder5Years',
-      ),
-    ).toBeTruthy();
-    expect(
-      el.querySelector(
         '#guideline-questions-list #guideline-question-lifeExpectancyLimitedUnder5Years',
       ),
-    ).toBeNull();
+    ).toBeTruthy();
   });
 
   it('re-evaluates when a clinician answer changes', () => {
@@ -270,6 +407,34 @@ describe('Guideline with session', () => {
     fixture.componentInstance.setAnswer('lifeExpectancyLimitedUnder5Years', 'no');
     fixture.detectChanges();
     expect(evaluate).toHaveBeenCalled();
+  });
+
+  it('lets the clinician override chart-determined Box 5 Existing CVD', () => {
+    evaluate.mockClear();
+    evaluate.mockReturnValue(of(evaluationFixture({ hasEstablishedCvd: true })));
+    fixture.componentInstance.setAnswer('establishedCvd', 'yes');
+    fixture.detectChanges();
+    expect(evaluate).toHaveBeenCalled();
+    const passed = evaluate.mock.calls.at(-1)?.[1] as { establishedCvd: string };
+    expect(passed.establishedCvd).toBe('yes');
+    const el: HTMLElement = fixture.nativeElement;
+    expect(
+      el.querySelector('#guideline-answer-establishedCvd-yes') as HTMLInputElement,
+    ).toBeTruthy();
+  });
+
+  it('lets the clinician override Box 8 DM/LDL/risk composite', () => {
+    evaluate.mockClear();
+    evaluate.mockReturnValue(
+      of(evaluationFixture({ primaryPreventionStatinIndicationBox8: true })),
+    );
+    fixture.componentInstance.setAnswer('primaryPreventionStatinIndication', 'yes');
+    fixture.detectChanges();
+    expect(evaluate).toHaveBeenCalled();
+    const passed = evaluate.mock.calls.at(-1)?.[1] as {
+      primaryPreventionStatinIndication: string;
+    };
+    expect(passed.primaryPreventionStatinIndication).toBe('yes');
   });
 
   it('keeps the algorithm visible outside the CPG population', () => {
@@ -291,7 +456,23 @@ describe('Guideline with session', () => {
     expect(el.querySelector('#guideline-algorithm')).toBeTruthy();
   });
 
-  it('surfaces Box 7 Sidebar 4 questions only in the path-blocking section', async () => {
+  it('shows every clinician question before CQL evaluation returns', async () => {
+    const pending = new Subject<GuidelineEvaluationView>();
+    evaluate.mockReturnValue(pending.asObservable());
+    fixture = TestBed.createComponent(Guideline);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('#guideline-questions-pending')).toBeNull();
+    expect(
+      el.querySelectorAll('#guideline-questions-list .guideline-question').length +
+        el.querySelectorAll('#guideline-detail-questions-list .guideline-question').length,
+    ).toBe(Object.keys(EMPTY_CLINICIAN_ANSWERS).length);
+    expect(el.querySelector('#guideline-detail-questions')).toBeTruthy();
+    expect(el.querySelector('#guideline-recommendations')).toBeNull();
+    pending.complete();
+  });
+
+  it('keeps Box 7 Sidebar 4 questions in Visualization Questions', async () => {
     evaluate.mockReturnValue(
       of(
         evaluationFixture({
@@ -310,16 +491,21 @@ describe('Guideline with session', () => {
     expect(el.querySelector('#guideline-algorithm')).toBeTruthy();
     expect(el.querySelector('#guideline-algorithm-diagram')).toBeTruthy();
     expect(
-      el.querySelector('#guideline-path-questions #guideline-question-onLipidLoweringTherapy'),
+      el.querySelector('#guideline-questions-list #guideline-question-onLipidLoweringTherapy'),
     ).toBeTruthy();
     expect(
       el.querySelector(
-        '#guideline-path-questions #guideline-question-veryHighRiskRecentAcsOrMiOnTherapy',
+        '#guideline-questions-list #guideline-question-veryHighRiskRecentAcsOrMiOnTherapy',
       ),
     ).toBeTruthy();
     expect(
-      el.querySelector('#guideline-questions-list #guideline-question-onLipidLoweringTherapy'),
+      el.querySelector('#guideline-detail-questions-list #guideline-question-onLipidLoweringTherapy'),
     ).toBeNull();
+    expect(el.querySelector('#guideline-path-questions')).toBeNull();
+    expect(
+      el.querySelectorAll('#guideline-questions-list .guideline-question').length +
+        el.querySelectorAll('#guideline-detail-questions-list .guideline-question').length,
+    ).toBe(Object.keys(EMPTY_CLINICIAN_ANSWERS).length);
   });
 
   it('lists applies-now recs in Recommendations 1–24 and highlights mapped table rows', async () => {
@@ -348,9 +534,23 @@ describe('Guideline with session', () => {
     expect(el.querySelector('#guideline-questions')).toBeTruthy();
     expect(el.querySelector('#guideline-questions-confirm-heading')).toBeNull();
     expect(el.querySelector('#guideline-path-questions')).toBeNull();
-    expect(el.querySelector('#guideline-questions-additional-heading')?.textContent).toContain(
-      'Additional',
-    );
+    expect(el.querySelector('#guideline-questions-additional-heading')).toBeNull();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-lifeExpectancyLimitedUnder5Years'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-questions-list #guideline-question-escalationNeeded'),
+    ).toBeTruthy();
+    expect(
+      el.querySelector('#guideline-detail-questions-list #guideline-question-escalationNeeded'),
+    ).toBeNull();
+    expect(
+      el.querySelector('#guideline-detail-questions-list #guideline-question-statinIntoleranceAttested'),
+    ).toBeTruthy();
+    expect(
+      el.querySelectorAll('#guideline-questions-list .guideline-question').length +
+        el.querySelectorAll('#guideline-detail-questions-list .guideline-question').length,
+    ).toBe(Object.keys(EMPTY_CLINICIAN_ANSWERS).length);
 
     fixture.componentInstance.focusDiagramBox(9);
     fixture.detectChanges();
@@ -470,5 +670,8 @@ describe('recommendation catalog', () => {
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 2)?.displayNote).toMatch(/Box 14/);
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 15)?.displayNote).toMatch(/Box 15/);
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 7)?.relatedBoxIds).toEqual([8, 9]);
+    expect(
+      GUIDELINE_RECOMMENDATIONS.filter((r) => r.strength === 'Strong for').map((r) => r.id),
+    ).toEqual([7, 24]);
   });
 });

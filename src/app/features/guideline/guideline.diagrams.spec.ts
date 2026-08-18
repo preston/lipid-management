@@ -6,7 +6,7 @@ import {
   filterDiagramModelToPath,
   toMermaidDefinition,
 } from './guideline.diagrams';
-import { EMPTY_CLINICIAN_ANSWERS, type GuidelineEvaluationView } from './guideline.model';
+import { EMPTY_CLINICIAN_ANSWERS, EMPTY_CHART_EVIDENCE, type GuidelineEvaluationView } from './guideline.model';
 import { GUIDELINE_RECOMMENDATIONS } from './guideline-recommendations';
 
 function baseView(overrides: Partial<GuidelineEvaluationView> = {}): GuidelineEvaluationView {
@@ -22,6 +22,8 @@ function baseView(overrides: Partial<GuidelineEvaluationView> = {}): GuidelineEv
     effectiveDiabetes: true,
     hasEstablishedCvd: false,
     hasHivInfection: false,
+    primaryPreventionStatinIndicationBox8: true,
+    primaryPreventionBorderlineRiskBand: false,
     effectiveOnLipidLoweringTherapy: false,
     veryHighRiskCvd: false,
     box8UsedNullPreventRisk: false,
@@ -38,6 +40,7 @@ function baseView(overrides: Partial<GuidelineEvaluationView> = {}): GuidelineEv
       tier: 'does-not-apply' as const,
     })),
     supportingFactors: [],
+    chartEvidence: EMPTY_CHART_EVIDENCE,
     ...overrides,
   };
 }
@@ -197,7 +200,7 @@ describe('guideline diagram model', () => {
     );
     const def = toMermaidDefinition(model);
     expect(def).toContain('B1(["Box 1\\nAdult patient\\nAge 62; adult"])');
-    expect(def).toContain('B3{{"Box 3\\nLife expectancy <5 years?');
+    expect(def).toContain('B3{{"Box 3\\nIs life expectancy limited (<5 years)?');
     expect(def).not.toContain('Outside adult algorithm');
     expect(def).toContain('B21');
     expect(def).toContain('class B9 active');

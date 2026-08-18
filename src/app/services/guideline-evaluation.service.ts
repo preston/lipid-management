@@ -10,6 +10,7 @@ import type { RiskCalculatorSession } from './risk-calculator-session.service';
 import { GUIDELINE_RECOMMENDATIONS } from '../features/guideline/guideline-recommendations';
 import {
   type AlgorithmStatus,
+  type GuidelineChartEvidence,
   type GuidelineClinicianAnswers,
   type GuidelineEvaluationView,
   type RecommendationStatus,
@@ -27,11 +28,24 @@ export const LIPID_MANAGEMENT_EXPRESSIONS = [
   'LatestLdlMgDl',
   'EffectiveDiabetes',
   'HasEstablishedCvd',
+  'ChartHasEstablishedCvd',
   'HasHivInfection',
+  'ChartHasHivInfection',
+  'PrimaryPreventionStatinIndicationBox8',
+  'PrimaryPreventionBorderlineRiskBand',
   'EffectiveOnLipidLoweringTherapy',
   'VeryHighRiskCvd',
   'Box8UsedNullPreventRisk',
   'ShouldDiscussCardiacRehabReferral',
+  'ChartSuggestsRecentIndexEvent',
+  'EstablishedCvdEvidence',
+  'HivInfectionEvidence',
+  'LatestLdlObservationDate',
+  'DiabetesEvidence',
+  'LipidLoweringTherapyEvidence',
+  'TriglycerideEvidence',
+  'AstAltEvidence',
+  'ChartIndexEventEvidence',
   'ShowComprehensiveLifestyleReminder',
   'ShowReemphasizeLifestyleReminder',
   'ShowBox15ReassessReminder',
@@ -145,6 +159,15 @@ export class GuidelineEvaluationService {
     }
 
     this.applyTriState(params, 'LifeExpectancyLimitedUnder5Years', answers.lifeExpectancyLimitedUnder5Years);
+    this.applyTriState(params, 'EstablishedCvd', answers.establishedCvd);
+    this.applyTriState(params, 'HivInfection', answers.hivInfection);
+    this.applyTriState(params, 'VeryHighRisk', answers.veryHighRiskCvd);
+    this.applyTriState(
+      params,
+      'PrimaryPreventionStatinIndication',
+      answers.primaryPreventionStatinIndication,
+    );
+    this.applyTriState(params, 'BorderlineRiskBand', answers.borderlineRiskBand);
     this.applyTriState(params, 'BorderlineRiskPatientDesiresStatin', answers.borderlineRiskPatientDesiresStatin);
     this.applyTriState(params, 'RecentMiAcsOrCabgPciWithin6Weeks', answers.recentMiAcsOrCabgPciWithin6Weeks);
     this.applyTriState(params, 'VeryHighRiskRecentAcsOrMiOnTherapy', answers.veryHighRiskRecentAcsOrMiOnTherapy);
@@ -165,7 +188,7 @@ export class GuidelineEvaluationService {
     this.applyTriState(params, 'CacWouldChangeManagement', answers.cacWouldChangeManagement);
     this.applyTriState(params, 'ClinicalRiskIntermediateOrHigh', answers.clinicalRiskIntermediateOrHigh);
     this.applyTriState(params, 'ClinicalRiskLow', answers.clinicalRiskLow);
-    this.applyTriState(params, 'AstAltLessThan3xUlnConfirmed', answers.astAltLessThan3xUlnConfirmed);
+    this.applyTriState(params, 'ElevatedAstOrAltLessThan3xUln', answers.elevatedAstOrAltLessThan3xUln);
 
     return params;
   }
@@ -218,6 +241,8 @@ export class GuidelineEvaluationService {
       effectiveDiabetes: diabetes,
       hasEstablishedCvd: raw['HasEstablishedCvd'] === true,
       hasHivInfection: raw['HasHivInfection'] === true,
+      primaryPreventionStatinIndicationBox8: raw['PrimaryPreventionStatinIndicationBox8'] === true,
+      primaryPreventionBorderlineRiskBand: raw['PrimaryPreventionBorderlineRiskBand'] === true,
       effectiveOnLipidLoweringTherapy:
         typeof raw['EffectiveOnLipidLoweringTherapy'] === 'boolean'
           ? raw['EffectiveOnLipidLoweringTherapy']
@@ -233,6 +258,7 @@ export class GuidelineEvaluationService {
       activeBoxes,
       unresolvedBoxes,
       recommendations,
+      chartEvidence: this.mapChartEvidence(raw),
       supportingFactors: [
         {
           label: 'PREVENT model',
@@ -251,12 +277,32 @@ export class GuidelineEvaluationService {
           value: diabetes == null ? 'Unknown' : diabetes ? 'Yes' : 'No',
         },
         {
-          label: 'Established ASCVD (Sidebar 3)',
+          label: 'Chart ASCVD (Sidebar 3)',
+          value: raw['ChartHasEstablishedCvd'] === true ? 'Yes' : 'No',
+        },
+        {
+          label: 'Established ASCVD (effective)',
           value: raw['HasEstablishedCvd'] === true ? 'Yes' : 'No',
         },
         {
-          label: 'HIV',
+          label: 'Chart MI/ACS/CABG/PCI (undated; not Rec 24 auto-yes)',
+          value: raw['ChartSuggestsRecentIndexEvent'] === true ? 'Yes' : 'No',
+        },
+        {
+          label: 'Chart HIV',
+          value: raw['ChartHasHivInfection'] === true ? 'Yes' : 'No',
+        },
+        {
+          label: 'HIV (effective)',
           value: raw['HasHivInfection'] === true ? 'Yes' : 'No',
+        },
+        {
+          label: 'Box 8 DM / LDL-C ≥190 / risk ≥10% (effective)',
+          value: raw['PrimaryPreventionStatinIndicationBox8'] === true ? 'Yes' : 'No',
+        },
+        {
+          label: 'Box 12 5%–<10% risk band (effective)',
+          value: raw['PrimaryPreventionBorderlineRiskBand'] === true ? 'Yes' : 'No',
         },
         {
           label: 'Box 8 used null PREVENT risk',
@@ -320,6 +366,19 @@ export class GuidelineEvaluationService {
     }
   }
 
+  private mapChartEvidence(raw: Record<string, unknown>): GuidelineChartEvidence {
+    return {
+      establishedCvd: this.asOptionalString(raw['EstablishedCvdEvidence']),
+      hivInfection: this.asOptionalString(raw['HivInfectionEvidence']),
+      latestLdlDate: this.asOptionalString(raw['LatestLdlObservationDate']),
+      diabetes: this.asOptionalString(raw['DiabetesEvidence']),
+      lipidLoweringTherapy: this.asOptionalString(raw['LipidLoweringTherapyEvidence']),
+      triglycerides: this.asOptionalString(raw['TriglycerideEvidence']),
+      astAlt: this.asOptionalString(raw['AstAltEvidence']),
+      chartIndexEvent: this.asOptionalString(raw['ChartIndexEventEvidence']),
+    };
+  }
+
   private requireAlgorithmStatus(value: unknown): AlgorithmStatus {
     if (typeof value === 'string' && ALGORITHM_STATUSES.has(value as AlgorithmStatus)) {
       return value as AlgorithmStatus;
@@ -347,5 +406,13 @@ export class GuidelineEvaluationService {
       return value;
     }
     return null;
+  }
+
+  private asOptionalString(value: unknown): string | null {
+    if (typeof value !== 'string') {
+      return null;
+    }
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : null;
   }
 }

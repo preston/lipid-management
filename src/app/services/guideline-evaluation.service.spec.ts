@@ -93,12 +93,22 @@ describe('GuidelineEvaluationService', () => {
     const params = service.buildLibraryParameters(sessionFixture(), {
       ...EMPTY_CLINICIAN_ANSWERS,
       lifeExpectancyLimitedUnder5Years: 'no',
+      establishedCvd: 'no',
+      hivInfection: 'yes',
+      primaryPreventionStatinIndication: 'yes',
+      borderlineRiskBand: 'no',
+      veryHighRiskCvd: 'no',
       borderlineRiskPatientDesiresStatin: 'unknown',
     });
     expect(params['OverrideTenYearTotalCvdPercent']).toEqual({ decimal: 12.5 });
     expect(params['OverrideLdlMgDl']).toEqual({ decimal: 100 });
     expect(params['OverrideHasDiabetes']).toBe(false);
     expect(params['LifeExpectancyLimitedUnder5Years']).toBe(false);
+    expect(params['EstablishedCvd']).toBe(false);
+    expect(params['HivInfection']).toBe(true);
+    expect(params['PrimaryPreventionStatinIndication']).toBe(true);
+    expect(params['BorderlineRiskBand']).toBe(false);
+    expect(params['VeryHighRisk']).toBe(false);
     expect(params['BorderlineRiskPatientDesiresStatin']).toBeUndefined();
   });
 
@@ -129,6 +139,31 @@ describe('GuidelineEvaluationService', () => {
     expect(view?.activeBoxes).toContain(9);
     expect(view?.effectiveOnLipidLoweringTherapy).toBe(true);
     expect(view?.veryHighRiskCvd).toBe(false);
+    expect(LIPID_MANAGEMENT_EXPRESSIONS).toContain('EstablishedCvdEvidence');
+    expect(LIPID_MANAGEMENT_EXPRESSIONS).toContain('LatestLdlObservationDate');
+    expect(view?.chartEvidence.establishedCvd).toBeNull();
+  });
+
+  it('maps CQL evidence strings onto chartEvidence', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        GuidelineEvaluationService,
+        { provide: CqlEvaluateService, useValue: { evaluateLibrary: vi.fn() } },
+      ],
+    });
+    const service = TestBed.inject(GuidelineEvaluationService);
+    const view = service.mapResults(
+      {
+        ...rawCompletePath(),
+        EstablishedCvdEvidence: 'ASCVD (2023-04-12)',
+        LatestLdlObservationDate: '2024-01-03',
+        HivInfectionEvidence: 'No active HIV on file',
+      },
+      sessionFixture(),
+    );
+    expect(view.chartEvidence.establishedCvd).toBe('ASCVD (2023-04-12)');
+    expect(view.chartEvidence.latestLdlDate).toBe('2024-01-03');
+    expect(view.chartEvidence.hivInfection).toBe('No active HIV on file');
   });
 
   it('throws when AlgorithmStatus is malformed', () => {

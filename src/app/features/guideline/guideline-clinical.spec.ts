@@ -27,6 +27,9 @@ describe('Guideline clinical contracts', () => {
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 15)?.displayNote).toMatch(/Box 15/);
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 17)?.relatedBoxIds).toContain(20);
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 24)?.displayNote).toMatch(/Box 6/);
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 22)?.strength).toBe('Weak for');
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 23)?.strength).toBe('Weak for');
+    expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 23)?.text).not.toMatch(/150 minutes/);
   });
 
   it('documents primary algorithm path titles for every complete branch', () => {
@@ -93,6 +96,10 @@ describe('Guideline clinical contracts', () => {
     expect(params['OverrideHasDiabetes']).toBe(true);
     expect(params['OverrideAgeYears']).toEqual({ integer: 60 });
     expect(params['LifeExpectancyLimitedUnder5Years']).toBeUndefined();
+    expect(params['EstablishedCvd']).toBeUndefined();
+    expect(params['PrimaryPreventionStatinIndication']).toBeUndefined();
+    expect(params['BorderlineRiskBand']).toBeUndefined();
+    expect(params['VeryHighRisk']).toBeUndefined();
   });
 
   it('marks unresolved Mermaid boxes for each NeedsClinicalInput path', () => {

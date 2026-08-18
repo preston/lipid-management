@@ -13,7 +13,7 @@
 
   Author: Preston Lee
 */
-library LipidManagement version '0.2.0'
+library LipidManagement version '0.3.9'
 
 using FHIR version '4.0.1'
 
@@ -58,7 +58,13 @@ parameter UnableToTakeStatin Boolean
 parameter CacWouldChangeManagement Boolean
 parameter ClinicalRiskIntermediateOrHigh Boolean
 parameter ClinicalRiskLow Boolean
-parameter AstAltLessThan3xUlnConfirmed Boolean
+parameter ElevatedAstOrAltLessThan3xUln Boolean
+/* Chart-coalesced: null uses ChartHas*; Yes/No override Sidebar 3 / Box 10 chart findings. */
+parameter EstablishedCvd Boolean
+parameter HivInfection Boolean
+parameter PrimaryPreventionStatinIndication Boolean
+parameter BorderlineRiskBand Boolean
+parameter VeryHighRisk Boolean
 
 /* Session replay fallbacks when included OpenCVDRisk Override* binding is unavailable. */
 parameter OverrideTenYearTotalCvdPercent Decimal
@@ -74,11 +80,21 @@ define EffectiveAgeYears:
 define IsAdult:
   EffectiveAgeYears >= 18
 
-define HasEstablishedCvd:
-  /* Sidebar 3 clinical ASCVD: Condition codes only. CAC/CCTA Observation alone does not qualify. */
+define ChartHasEstablishedCvd:
+  /* Sidebar 3 clinical ASCVD. The AHA grouping ValueSet is a proxy, not a line-for-line Sidebar 3 list.
+     History counts: do not require clinicalStatus = active. Exclude entered-in-error and refuted.
+     Completed CABG/PCI (MiAcsCabgPci) also qualifies. Imaging-only Observations do not. */
   exists ( [Condition: "AtheroscleroticCardiovascularDisease"] C
-      where exists ( C.clinicalStatus.coding CS where CS.code ~ 'active' )
+      where not exists ( C.verificationStatus.coding VS
+          where VS.code ~ 'entered-in-error' or VS.code ~ 'refuted'
+      )
   )
+    or exists ( [Procedure: "MiAcsCabgPci"] P
+        where P.status = 'completed'
+    )
+
+define HasEstablishedCvd:
+  Coalesce(EstablishedCvd, ChartHasEstablishedCvd)
 
 define HasDiabetesMellitus:
   exists ( [Condition: "DiabetesMellitus"] C
@@ -91,10 +107,13 @@ define HasDiabetesMellitus:
 define EffectiveDiabetes:
   Coalesce(OverrideHasDiabetes, OpenCVDRisk.EffectiveDiabetes, HasDiabetesMellitus)
 
-define HasHivInfection:
+define ChartHasHivInfection:
   exists ( [Condition: "HIVInfection"] C
       where exists ( C.clinicalStatus.coding CS where CS.code ~ 'active' )
   )
+
+define HasHivInfection:
+  Coalesce(HivInfection, ChartHasHivInfection)
 
 define HasEskd:
   exists ( [Condition: "EndStageKidneyDisease"] C
@@ -221,6 +240,134 @@ define HasTriglyceridesGe150:
 define HasTriglyceridesGt500:
   LatestTriglycerideMgDl is not null and LatestTriglycerideMgDl > 500.0
 
+/* Display only: format via System.Date (no Replace/Substring; no FHIR.dateTime compare/sort). */
+define function FhirDateTimeToDisplay(value FHIR.dateTime):
+  if value is null then null
+  else ToString(date from FHIRHelpers.ToDateTime(value))
+
+define function PeriodStartDisplay(period FHIR.Period):
+  if period is null then null
+  else FhirDateTimeToDisplay(period."start")
+
+define function ObservationDateDisplay(O Observation):
+  if O is null then null
+  else Coalesce(
+    FhirDateTimeToDisplay(O.effective as FHIR.dateTime),
+    PeriodStartDisplay(O.effective as FHIR.Period)
+  )
+
+define function ConditionDateDisplay(C Condition):
+  if C is null then null
+  else Coalesce(
+    FhirDateTimeToDisplay(C.recordedDate),
+    FhirDateTimeToDisplay(C.onset as FHIR.dateTime),
+    PeriodStartDisplay(C.onset as FHIR.Period)
+  )
+
+define function ProcedureDateDisplay(P Procedure):
+  if P is null then null
+  else Coalesce(
+    FhirDateTimeToDisplay(P.performed as FHIR.dateTime),
+    PeriodStartDisplay(P.performed as FHIR.Period)
+  )
+
+define function MedicationDateDisplay(MR MedicationRequest):
+  if MR is null then null
+  else FhirDateTimeToDisplay(MR.authoredOn)
+
+define function WithDate(label String, d String):
+  if d is null then label
+  else label + ' (' + d + ')'
+
+define LatestAscvdCondition:
+  First([Condition: "AtheroscleroticCardiovascularDisease"] C
+      where not exists ( C.verificationStatus.coding VS
+          where VS.code ~ 'entered-in-error' or VS.code ~ 'refuted'
+      ))
+
+define LatestCabgPciProcedure:
+  First([Procedure: "MiAcsCabgPci"] P
+      where P.status = 'completed')
+
+define LatestHivCondition:
+  First([Condition: "HIVInfection"] C
+      where exists ( C.clinicalStatus.coding CS where CS.code ~ 'active' ))
+
+define LatestDiabetesCondition:
+  Coalesce(
+    First([Condition: "DiabetesMellitus"] C
+        where exists ( C.clinicalStatus.coding CS where CS.code ~ 'active' )),
+    First([Condition: "DiabetesMellitusType2"] C
+        where exists ( C.clinicalStatus.coding CS where CS.code ~ 'active' ))
+  )
+
+define LatestActiveLltMedicationRequest:
+  Coalesce(
+    OpenCVDRisk.ActiveStatinMedicationRequest,
+    First([MedicationRequest] MR
+        where MR.status in { 'active', 'on-hold' }
+          and MedicationRequestDrugConcept(MR) in "EzetimibeTherapy"),
+    First([MedicationRequest] MR
+        where MR.status in { 'active', 'on-hold' }
+          and MedicationRequestDrugConcept(MR) in "Pcsk9MonoclonalAntibodyTherapy"),
+    First([MedicationRequest] MR
+        where MR.status in { 'active', 'on-hold' }
+          and MedicationRequestDrugConcept(MR) in "BempedoicAcidTherapy")
+  )
+
+define LatestIndexEventCondition:
+  First([Condition: "MiAcsCabgPci"] C
+      where not exists ( C.verificationStatus.coding VS
+          where VS.code ~ 'entered-in-error' or VS.code ~ 'refuted'
+      ))
+
+define EstablishedCvdEvidence:
+  case
+    when LatestAscvdCondition is not null then WithDate('ASCVD', ConditionDateDisplay(LatestAscvdCondition))
+    when LatestCabgPciProcedure is not null then WithDate('CABG/PCI', ProcedureDateDisplay(LatestCabgPciProcedure))
+    else 'No ASCVD or CABG/PCI on file'
+  end
+
+define HivInfectionEvidence:
+  case
+    when LatestHivCondition is not null then WithDate('Active HIV', ConditionDateDisplay(LatestHivCondition))
+    else 'No active HIV on file'
+  end
+
+define LatestLdlObservationDate:
+  ObservationDateDisplay(OpenCVDRisk.LatestLdlObservation)
+
+define DiabetesEvidence:
+  if LatestDiabetesCondition is null then null
+  else WithDate('DM', ConditionDateDisplay(LatestDiabetesCondition))
+
+define LipidLoweringTherapyEvidence:
+  if LatestActiveLltMedicationRequest is null then null
+  else WithDate(
+    if OpenCVDRisk.ActiveStatinMedicationRequest is not null then 'Statin Rx'
+    else 'LLT Rx',
+    MedicationDateDisplay(LatestActiveLltMedicationRequest)
+  )
+
+define TriglycerideEvidence:
+  if LatestTriglycerideMgDl is null then null
+  else WithDate('TG ' + ToString(Round(LatestTriglycerideMgDl, 0)) + ' mg/dL', ObservationDateDisplay(LatestTriglycerideObservation))
+
+define AstAltEvidence:
+  Coalesce(
+    if LatestAstObservation is null then null
+    else WithDate('AST ' + ToString(Round(FHIRHelpers.ToQuantity(LatestAstObservation.value as FHIR.Quantity).value, 0)), ObservationDateDisplay(LatestAstObservation)),
+    if LatestAltObservation is null then null
+    else WithDate('ALT ' + ToString(Round(FHIRHelpers.ToQuantity(LatestAltObservation.value as FHIR.Quantity).value, 0)), ObservationDateDisplay(LatestAltObservation))
+  )
+
+define ChartIndexEventEvidence:
+  case
+    when LatestIndexEventCondition is not null then WithDate('MI/ACS/CABG/PCI', ConditionDateDisplay(LatestIndexEventCondition))
+    when LatestCabgPciProcedure is not null then WithDate('CABG/PCI', ProcedureDateDisplay(LatestCabgPciProcedure))
+    else null
+  end
+
 /* Chart/condition exclusions excluding the Box 3 life-expectancy branch (which routes to Box 4). */
 define OutsideGuidelinePopulationHard:
   HasHfrefLvefLe35
@@ -240,10 +387,13 @@ define GuidelinePopulationStatus:
     else 'InScope'
   end
 
-define PrimaryPreventionStatinIndicationBox8:
+define ComputedPrimaryPreventionStatinIndicationBox8:
   EffectiveDiabetes is true
     or ( LatestLdlMgDl is not null and LatestLdlMgDl >= 190.0 )
     or ( OpenCVDRiskTenYearTotalCvdPercent is not null and OpenCVDRiskTenYearTotalCvdPercent >= 10.0 )
+
+define PrimaryPreventionStatinIndicationBox8:
+  Coalesce(PrimaryPreventionStatinIndication, ComputedPrimaryPreventionStatinIndicationBox8)
 
 /* True when Box 8 is taken via DM or LDL ≥190 while PREVENT 10-year risk is unavailable. */
 define Box8UsedNullPreventRisk:
@@ -254,7 +404,7 @@ define Box8UsedNullPreventRisk:
         or ( LatestLdlMgDl is not null and LatestLdlMgDl >= 190.0 )
     )
 
-define PrimaryPreventionBorderlineRiskBand:
+define ComputedPrimaryPreventionBorderlineRiskBand:
   not PrimaryPreventionStatinIndicationBox8
     and not HasHivInfection
     and OpenCVDRiskTenYearTotalCvdPercent is not null
@@ -263,20 +413,27 @@ define PrimaryPreventionBorderlineRiskBand:
     and ( LatestLdlMgDl is null or LatestLdlMgDl < 190.0 )
     and not (EffectiveDiabetes is true)
 
+define PrimaryPreventionBorderlineRiskBand:
+  Coalesce(BorderlineRiskBand, ComputedPrimaryPreventionBorderlineRiskBand)
+
 define VeryHighRiskCriterion3AscvdLdlOnTherapy:
   HasEstablishedCvd
     and LatestLdlMgDl is not null
     and LatestLdlMgDl >= 70.0
     and EffectiveOnLipidLoweringTherapy is true
 
-define VeryHighRiskCvd:
+define ComputedVeryHighRiskCvd:
   (VeryHighRiskRecentAcsOrMiOnTherapy is true)
     or (VeryHighRiskRecurrentEventsOnTherapy is true)
     or VeryHighRiskCriterion3AscvdLdlOnTherapy
 
+define VeryHighRiskCvd:
+  Coalesce(VeryHighRisk, ComputedVeryHighRiskCvd)
+
 define VeryHighRiskNeedsInput:
-  HasEstablishedCvd
-    and not (VeryHighRiskCvd)
+  VeryHighRisk is null
+    and HasEstablishedCvd
+    and not ComputedVeryHighRiskCvd
     and (
       VeryHighRiskRecentAcsOrMiOnTherapy is null
         or VeryHighRiskRecurrentEventsOnTherapy is null
@@ -289,8 +446,11 @@ define VeryHighRiskNeedsInput:
     )
 
 define ChartSuggestsRecentIndexEvent:
+  /* Provenance only. Rec 24 does not auto-Applicable from undated chart events. */
   exists ( [Condition: "MiAcsCabgPci"] C
-      where exists ( C.clinicalStatus.coding CS where CS.code ~ 'active' )
+      where not exists ( C.verificationStatus.coding VS
+          where VS.code ~ 'entered-in-error' or VS.code ~ 'refuted'
+      )
   )
     or exists ( [Procedure: "MiAcsCabgPci"] P
         where P.status = 'completed'
@@ -403,7 +563,7 @@ define ActiveBox11: AlgorithmPath in {
   'Box11_PrimaryModerateStatinHiv',
   'Box11_PrimaryModerateStatinBorderlineRiskPatientPreference'
 }
-define ActiveBox12: PrimaryPreventionBorderlineRiskBand
+define ActiveBox12: ActiveBox10 and not HasHivInfection
 define ActiveBox13: AlgorithmPath = 'Box13_14_NoMedicationRepeatRiskEvery5YearsUnlessNewRiskFactors'
 define ActiveBox14: AlgorithmPath = 'Box13_14_NoMedicationRepeatRiskEvery5YearsUnlessNewRiskFactors'
 define ActiveBox15: ShowBox15ReassessReminder
@@ -490,14 +650,21 @@ define Rec10Status:
     else 'NotApplicable'
   end
 
+define HasStatinIndicationForRec11:
+  /* Rec 8 is a statin indication in the 5%–<10% band. Box 12 desire No means no indication for Rec 11.
+     Unknown desire stays a needs-input path rather than silently NotApplicable. */
+  PrimaryPreventionStatinIndicationBox8
+    or HasEstablishedCvd
+    or HasHivInfection
+    or (PrimaryPreventionBorderlineRiskBand and not (BorderlineRiskPatientDesiresStatin is false))
+
 define Rec11Status:
   case
     when not IsAdult then 'NotApplicable'
-    when not (PrimaryPreventionStatinIndicationBox8 or HasEstablishedCvd or HasHivInfection or PrimaryPreventionBorderlineRiskBand) then 'NotApplicable'
-    when AstAltLessThan3xUlnConfirmed is true then 'Applicable'
-    when HasBaselineAstOrAlt and AstAltLessThan3xUlnConfirmed is null then 'NeedsClinicalInput'
-    when AstAltLessThan3xUlnConfirmed is null then 'NeedsClinicalInput'
-    else 'NotApplicable'
+    when not HasStatinIndicationForRec11 then 'NotApplicable'
+    when ElevatedAstOrAltLessThan3xUln is true then 'Applicable'
+    when ElevatedAstOrAltLessThan3xUln is false then 'NotApplicable'
+    else 'NeedsClinicalInput'
   end
 
 define Rec12Status:
@@ -559,7 +726,8 @@ define Rec19Status:
 
 define Rec20Status: 'Informational'
 
-define Rec21Status: 'Applicable'
+define Rec21Status:
+  case when IsAdult then 'Applicable' else 'NotApplicable' end
 
 define Rec22Status:
   case when IsAdult then 'Applicable' else 'NotApplicable' end
@@ -567,14 +735,15 @@ define Rec22Status:
 define Rec23Status:
   case when IsAdult then 'Applicable' else 'NotApplicable' end
 
-/* Rec 24: broader “recent CHD” than Box 6’s six-week cue; chart index event or clinician Yes. */
+/* Rec 24: Table 4 recent occurrence of CHD (MI, CAD diagnosis, CABG, PCI) — broader than Box 6.
+   Box 6 Yes is sufficient for Applicable. Do not auto-Applicable from undated chart events.
+   Box 6 No does not rule out Rec 24 (e.g. recently diagnosed CAD without a 6-week index event). */
 define Rec24Status:
   case
     when not HasEstablishedCvd then 'NotApplicable'
     when RecentMiAcsOrCabgPciWithin6Weeks is true then 'Applicable'
-    when ChartSuggestsRecentIndexEvent then 'Applicable'
     when RecentMiAcsOrCabgPciWithin6Weeks is null then 'NeedsClinicalInput'
-    else 'NotApplicable'
+    else 'Informational'
   end
 
 define ExclusionHfrefLvefLe35: HasHfrefLvefLe35

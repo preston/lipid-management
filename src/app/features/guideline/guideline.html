@@ -1,4 +1,4 @@
-<div class="container py-4" id="guideline-page">
+<div class="container-fluid py-4" id="guideline-page">
   <header class="mb-4 d-flex flex-wrap justify-content-between align-items-start gap-3">
     <div class="guideline-header-copy">
       <h1 class="h2 mb-0" id="guideline-title">Lipid Management Guideline</h1>
@@ -87,6 +87,11 @@
           {{ q.label }}
         </legend>
         <p class="form-text mt-0 mb-2" [id]="'guideline-question-help-' + q.id">{{ q.help }}</p>
+        @if (questionEvidence(q); as evidence) {
+          <p class="form-text mt-0 mb-2" [id]="'guideline-question-evidence-' + q.id">
+            {{ evidence }}
+          </p>
+        }
         <div
           class="btn-group btn-group-segmented guideline-tri-state"
           role="radiogroup"
@@ -133,48 +138,22 @@
       <div class="col-lg-4" id="guideline-questions-col">
         <section class="card" id="guideline-questions">
           <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-            <h2 class="h5 mb-0" id="guideline-questions-heading">Questions</h2>
-            @if (evaluation()) {
-              <span class="badge text-bg-secondary" id="guideline-questions-unresolved-count">
-                {{ pathBlockingUnresolvedCount() + detailUnresolvedCount() }} unresolved
-              </span>
-            }
+            <h2 class="h5 mb-0" id="guideline-questions-heading">Visualization Questions</h2>
+            <span class="badge text-bg-secondary" id="guideline-questions-unresolved-count">
+              {{ unresolvedDiagramQuestionCount() }} unresolved
+            </span>
           </div>
           <div class="card-body">
-            @if (evaluation()) {
-              <div class="vstack gap-4">
-                @if (pathBlockingQuestions().length) {
-                  <div id="guideline-path-questions">
-                    <h3 class="h6" id="guideline-questions-confirm-heading">Confirm</h3>
-                    <div class="vstack gap-3" id="guideline-path-questions-list">
-                      @for (q of pathBlockingQuestions(); track q.id) {
-                        <ng-container
-                          [ngTemplateOutlet]="questionControls"
-                          [ngTemplateOutletContext]="{ $implicit: q }"
-                        />
-                      }
-                    </div>
-                  </div>
-                }
-                @if (detailQuestions().length) {
-                  <div id="guideline-clinician-questions">
-                    <h3 class="h6" id="guideline-questions-additional-heading">Additional</h3>
-                    <div class="vstack gap-3" id="guideline-questions-list">
-                      @for (q of detailQuestions(); track q.id) {
-                        <ng-container
-                          [ngTemplateOutlet]="questionControls"
-                          [ngTemplateOutletContext]="{ $implicit: q }"
-                        />
-                      }
-                    </div>
-                  </div>
+            <div id="guideline-clinician-questions">
+              <div class="vstack gap-3" id="guideline-questions-list">
+                @for (q of diagramQuestions; track q.id) {
+                  <ng-container
+                    [ngTemplateOutlet]="questionControls"
+                    [ngTemplateOutletContext]="{ $implicit: q }"
+                  />
                 }
               </div>
-            } @else {
-              <p class="text-muted mb-0" id="guideline-questions-pending">
-                Waiting for guideline evaluation…
-              </p>
-            }
+            </div>
           </div>
         </section>
       </div>
@@ -207,26 +186,15 @@
                   >Patient path</label
                 >
               </div>
-              <div class="btn-group btn-group-sm" role="group" aria-label="Diagram download">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  id="guideline-diagram-download-svg"
-                  [disabled]="!diagramReady()"
-                  (click)="downloadDiagramSvg()"
-                >
-                  Download SVG
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  id="guideline-diagram-download-png"
-                  [disabled]="!diagramReady()"
-                  (click)="downloadDiagramPng()"
-                >
-                  Download PNG
-                </button>
-              </div>
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-sm"
+                id="guideline-diagram-download-svg"
+                [disabled]="!diagramReady()"
+                (click)="downloadDiagramSvg()"
+              >
+                Download SVG
+              </button>
             </div>
           </div>
           <div class="card-body">
@@ -303,118 +271,149 @@
       </div>
     </div>
 
-    @if (evaluation()) {
-      <section class="card mb-4" id="guideline-recommendations">
-        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
-          <h2 class="h5 mb-0" id="guideline-recommendations-heading">Recommendations 1–24</h2>
-          <div
-            class="btn-group btn-group-sm btn-group-segmented"
-            role="group"
-            aria-label="Recommendation status filters"
-            id="guideline-rec-filters"
-          >
-            @for (filter of recommendationFilterButtons; track filter.id) {
-              <input
-                class="btn-check"
-                type="checkbox"
-                [id]="filter.inputId"
-                [checked]="recommendationFilters()[filter.id]"
-                (change)="onRecommendationFilterChange(filter.id, $event)"
-              />
-              <label class="btn btn-outline-secondary" [for]="filter.inputId">{{
-                filter.label
-              }}</label>
-            }
+    <div class="row g-4 mb-4" id="guideline-recommendations-row">
+      <div class="col-lg-4" id="guideline-detail-questions-col">
+        <section class="card" id="guideline-detail-questions">
+          <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <h2 class="h5 mb-0" id="guideline-detail-questions-heading">Recommendation questions</h2>
+            <span
+              class="badge text-bg-secondary"
+              id="guideline-detail-questions-unresolved-count"
+            >
+              {{ unresolvedRecommendationQuestionCount() }} unresolved
+            </span>
           </div>
-        </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-sm align-middle mb-0 guideline-recommendations-table">
-              <thead class="table-light">
-                <tr>
-                  <th scope="col" class="ps-3 guideline-rec-number-col">Rec</th>
-                  <th scope="col">Recommendation</th>
-                  <th scope="col" class="guideline-rec-strength-col">Strength</th>
-                  <th scope="col" class="guideline-rec-status-col">Status</th>
-                  <th scope="col" class="pe-3 guideline-rec-source-col">Source</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if (visibleRecommendationGroups().length === 0) {
-                  <tr id="guideline-rec-filters-empty">
-                    <td colspan="5" class="ps-3 text-muted">
-                      Turn on a status filter to show recommendation rows.
-                    </td>
-                  </tr>
+          <div class="card-body">
+            <div class="vstack gap-3" id="guideline-detail-questions-list">
+              @for (q of recommendationQuestions; track q.id) {
+                <ng-container
+                  [ngTemplateOutlet]="questionControls"
+                  [ngTemplateOutletContext]="{ $implicit: q }"
+                />
+              }
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-lg-8" id="guideline-recommendations-col">
+        @if (evaluation()) {
+          <section class="card" id="guideline-recommendations">
+            <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2">
+              <h2 class="h5 mb-0" id="guideline-recommendations-heading">Recommendations 1–24</h2>
+              <div
+                class="btn-group btn-group-sm btn-group-segmented"
+                role="group"
+                aria-label="Recommendation status filters"
+                id="guideline-rec-filters"
+              >
+                @for (filter of recommendationFilterButtons; track filter.id) {
+                  <input
+                    class="btn-check"
+                    type="checkbox"
+                    [id]="filter.inputId"
+                    [checked]="recommendationFilters()[filter.id]"
+                    (change)="onRecommendationFilterChange(filter.id, $event)"
+                  />
+                  <label class="btn btn-outline-secondary" [for]="filter.inputId">{{
+                    filter.label
+                  }}</label>
                 }
-                @for (group of visibleRecommendationGroups(); track group.id) {
-                  <tr class="table-secondary" [id]="'guideline-rec-group-' + group.id">
-                    <th scope="rowgroup" colspan="5" [id]="'guideline-rec-group-title-' + group.id">
-                      {{ group.title }}
-                      <span class="fw-normal text-muted">({{ group.items.length }})</span>
-                    </th>
-                  </tr>
-                  @if (group.items.length === 0) {
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0 guideline-recommendations-table">
+                  <thead class="table-light">
                     <tr>
-                      <td colspan="5" class="ps-3 text-muted small">None in this group.</td>
+                      <th scope="col" class="ps-3 guideline-rec-number-col">Rec</th>
+                      <th scope="col">Recommendation</th>
+                      <th scope="col" class="guideline-rec-strength-col">Strength</th>
+                      <th scope="col" class="guideline-rec-status-col">Status</th>
+                      <th scope="col" class="pe-3 guideline-rec-source-col">Source</th>
                     </tr>
-                  } @else {
-                    @for (rec of group.items; track rec.id) {
-                      <tr
-                        [id]="'guideline-rec-' + rec.id"
-                        [class.table-active]="recRowHighlighted(rec)"
-                      >
-                        <th scope="row" class="ps-3 text-nowrap">Rec {{ rec.id }}</th>
-                        <td>
-                          <div class="guideline-rec-text">{{ rec.text }}</div>
-                          <div class="small text-muted mt-1">
-                            {{ rec.category }}
-                            @if (rec.relatedBoxIds.length) {
-                              ·
-                              @for (boxId of rec.relatedBoxIds; track boxId; let last = $last) {
-                                <button
-                                  type="button"
-                                  class="btn btn-link btn-sm p-0 align-baseline"
-                                  [id]="'guideline-rec-' + rec.id + '-box-' + boxId"
-                                  (click)="focusDiagramBox(boxId)"
-                                >
-                                  {{ formatBoxLabel(boxId) }}
-                                </button>
-                                @if (!last) {
-                                  <span>, </span>
-                                }
-                              }
-                            }
-                            @if (rec.relatedSidebars.length) {
-                              · {{ rec.relatedSidebars.join(', ') }}
-                            }
-                          </div>
-                          <div class="small fst-italic mt-1 guideline-rec-note">
-                            {{ rec.displayNote }}
-                          </div>
-                        </td>
-                        <td>
-                          <span class="badge text-bg-secondary">{{ rec.strength }}</span>
-                        </td>
-                        <td>
-                          <span class="badge text-bg-light border">{{ rec.status }}</span>
-                        </td>
-                        <td class="pe-3 small text-muted text-nowrap">
-                          PDF pp. {{ rec.pdfPages }}
-                          @if (rec.relatedBoxIds.length) {
-                            <br />{{ formatRelatedBoxLabels(rec.relatedBoxIds) }}
-                          }
+                  </thead>
+                  <tbody>
+                    @if (visibleRecommendationGroups().length === 0) {
+                      <tr id="guideline-rec-filters-empty">
+                        <td colspan="5" class="ps-3 text-muted">
+                          Turn on a status filter to show recommendation rows.
                         </td>
                       </tr>
                     }
-                  }
-                }
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-    }
+                    @for (group of visibleRecommendationGroups(); track group.id) {
+                      <tr class="table-secondary" [id]="'guideline-rec-group-' + group.id">
+                        <th
+                          scope="rowgroup"
+                          colspan="5"
+                          [id]="'guideline-rec-group-title-' + group.id"
+                        >
+                          {{ group.title }}
+                          <span class="fw-normal text-muted">({{ group.items.length }})</span>
+                        </th>
+                      </tr>
+                      @if (group.items.length === 0) {
+                        <tr>
+                          <td colspan="5" class="ps-3 text-muted small">None in this group.</td>
+                        </tr>
+                      } @else {
+                        @for (rec of group.items; track rec.id) {
+                          <tr
+                            [id]="'guideline-rec-' + rec.id"
+                            [class.table-active]="recRowHighlighted(rec)"
+                          >
+                            <th scope="row" class="ps-3 text-nowrap">Rec {{ rec.id }}</th>
+                            <td>
+                              <div class="guideline-rec-text">{{ rec.text }}</div>
+                              <div class="small text-muted mt-1">
+                                {{ rec.category }}
+                                @if (rec.relatedBoxIds.length) {
+                                  ·
+                                  @for (boxId of rec.relatedBoxIds; track boxId; let last = $last) {
+                                    <button
+                                      type="button"
+                                      class="btn btn-link btn-sm p-0 align-baseline"
+                                      [id]="'guideline-rec-' + rec.id + '-box-' + boxId"
+                                      (click)="focusDiagramBox(boxId)"
+                                    >
+                                      {{ formatBoxLabel(boxId) }}
+                                    </button>
+                                    @if (!last) {
+                                      <span>, </span>
+                                    }
+                                  }
+                                }
+                                @if (rec.relatedSidebars.length) {
+                                  · {{ rec.relatedSidebars.join(', ') }}
+                                }
+                              </div>
+                              <div class="small fst-italic mt-1 guideline-rec-note">
+                                {{ rec.displayNote }}
+                              </div>
+                            </td>
+                            <td>
+                              <span class="badge text-bg-secondary">{{ rec.strength }}</span>
+                            </td>
+                            <td>
+                              <span class="badge text-bg-light border">{{ rec.status }}</span>
+                            </td>
+                            <td class="pe-3 small text-muted text-nowrap">
+                              PDF pp. {{ rec.pdfPages }}
+                              @if (rec.relatedBoxIds.length) {
+                                <br />{{ formatRelatedBoxLabels(rec.relatedBoxIds) }}
+                              }
+                            </td>
+                          </tr>
+                        }
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        }
+      </div>
+    </div>
 
     <div class="row g-4 mb-4" id="guideline-references-row">
       @if (evaluation(); as view) {

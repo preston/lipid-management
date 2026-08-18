@@ -56,7 +56,7 @@ export const CQL_LIBRARY_CATALOG: readonly CqlLibraryCatalogEntry[] = [
     assetPath: '/cql/LipidManagement.cql',
     label: 'LipidManagement',
     description:
-      'VA/DoD Lipids CPG December 2025 (PDF final 2026-01-06): Appendix G management algorithm (Boxes 1–21) plus Recommendation 1–24 applicability signals. Includes OpenCVDRisk 0.5.3 for PREVENT 10-year total CVD. Clinician parameters are nullable (unknown ≠ false). Local OverrideAgeYears / OverrideTenYearTotalCvdPercent / OverrideLdlMgDl / OverrideHasDiabetes support calculator session replay. CDS only — not orders.',
+      'VA/DoD Lipids CPG December 2025 (PDF final 2026-01-06): Appendix G management algorithm (Boxes 1–21) plus Recommendation 1–24 applicability signals. Includes OpenCVDRisk 0.6.0 for PREVENT 10-year total CVD. Clinician parameters are nullable (unknown ≠ false). Local OverrideAgeYears / OverrideTenYearTotalCvdPercent / OverrideLdlMgDl / OverrideHasDiabetes support calculator session replay. CDS only — not orders.',
   },
 ];
 

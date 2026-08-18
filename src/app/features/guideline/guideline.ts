@@ -37,7 +37,7 @@ import {
   boxMeta,
   formatBoxLabel,
   formatRelatedBoxLabels,
-  pathBlockingQuestionIds,
+  questionAffectsDiagram,
   questionsForBox,
 } from './guideline-boxes';
 import {
@@ -45,7 +45,8 @@ import {
   findDiagramSvg,
   type DiagramInteractivityController,
 } from './guideline-diagram-dom';
-import { exportDiagramPng, exportDiagramSvg } from './guideline-diagram-export';
+import { exportDiagramSvg } from './guideline-diagram-export';
+import { formatQuestionEvidence } from './guideline-question-evidence';
 
 interface ClinicianQuestionDef {
   id: keyof GuidelineClinicianAnswers;
@@ -53,31 +54,57 @@ interface ClinicianQuestionDef {
   help: string;
 }
 
-const CLINICIAN_QUESTIONS: ClinicianQuestionDef[] = [
+export const GUIDELINE_CLINICIAN_QUESTIONS: readonly ClinicianQuestionDef[] = [
   {
     id: 'lifeExpectancyLimitedUnder5Years',
     label: 'Is life expectancy limited to less than 5 years? (Box 3)',
     help: 'CPG population / Box 3 uses <5 years. This is not the PREVENT <1 year exclusion flag.',
   },
   {
+    id: 'establishedCvd',
+    label: 'Existing CVD? (Box 5, Sidebar 3)',
+    help: 'Unknown uses Sidebar 3 chart findings (clinical ASCVD or completed CABG/PCI). Yes/No overrides the chart. Imaging-only atherosclerosis does not count.',
+  },
+  {
+    id: 'veryHighRiskCvd',
+    label: 'Very high-risk CVD? (Box 7, Sidebar 4)',
+    help: 'Unknown uses Sidebar 4 criteria (therapy plus recent ACS/MI, recurrent events, or ASCVD with LDL-C ≥70). Yes/No overrides that Box 7 branch.',
+  },
+  {
     id: 'recentMiAcsOrCabgPciWithin6Weeks',
-    label: 'Recent MI, ACS, CABG, or PCI within 6 weeks? (Box 6)',
-    help: 'Narrow concurrent cardiac-rehab cue. Recommendation 24 uses a broader “recent CHD” population.',
+    label: 'Recent MI, ACS, CABG, or PCI within 6 weeks? (Box 6, Rec 24)',
+    help: 'Box 6 concurrent cardiac-rehab cue (MI/ACS/CABG/PCI in 6 weeks). Rec 24 is broader (recent CHD including CAD diagnosis) and is not ruled out by a Box 6 No.',
   },
   {
     id: 'onLipidLoweringTherapy',
-    label: 'Currently on lipid-lowering therapy? (Sidebar 4)',
-    help: 'Required for every very-high-risk arm.',
+    label: 'Currently on lipid-lowering therapy? (Box 7, Sidebar 4)',
+    help: 'Required for every very-high-risk arm at Box 7.',
   },
   {
     id: 'veryHighRiskRecentAcsOrMiOnTherapy',
-    label: 'Recent ACS or MI while on lipid-lowering therapy? (Sidebar 4)',
-    help: 'Very-high-risk criterion; requires therapy.',
+    label: 'MI or ACS in the past 12 months while on lipid-lowering therapy? (Box 7, Sidebar 4)',
+    help: 'Very-high-risk criterion 1 at Box 7; requires current lipid-lowering therapy.',
   },
   {
     id: 'veryHighRiskRecurrentEventsOnTherapy',
-    label: 'Recurrent ASCVD events while on lipid-lowering therapy? (Sidebar 4)',
-    help: 'Very-high-risk criterion; requires therapy.',
+    label:
+      'Recurrent ACS, MI, or atherosclerotic CVA while on lipid-lowering therapy? (Box 7, Sidebar 4)',
+    help: 'Very-high-risk criterion 2 at Box 7; requires current lipid-lowering therapy.',
+  },
+  {
+    id: 'hivInfection',
+    label: 'HIV positive? (Box 10)',
+    help: 'Unknown uses active HIV chart conditions. Yes/No overrides the chart for the Box 10 branch.',
+  },
+  {
+    id: 'primaryPreventionStatinIndication',
+    label: 'Diabetes, LDL-C ≥190, or 10-year estimated risk ≥10%? (Box 8)',
+    help: 'Unknown uses calculator/chart diabetes, LDL-C, and PREVENT 10-year total CVD. Yes/No overrides that Box 8 composite.',
+  },
+  {
+    id: 'borderlineRiskBand',
+    label: 'Estimated 10-year risk 5% to <10%? (Box 12)',
+    help: 'Unknown uses the accepted PREVENT 10-year total CVD session value. Yes/No overrides the Box 12 risk-band half of the diamond.',
   },
   {
     id: 'escalationNeeded',
@@ -86,44 +113,44 @@ const CLINICIAN_QUESTIONS: ClinicianQuestionDef[] = [
   },
   {
     id: 'borderlineRiskPatientDesiresStatin',
-    label: 'Does the patient desire statin treatment? (Box 12)',
-    help: 'Required for Box 11 borderline path. Recommendation 8 remains visible in the 5%–<10% band regardless.',
+    label: 'Does the patient desire statin treatment? (Box 12 → Box 11)',
+    help: 'Box 12 desire Yes routes to Box 11. Rec 8 remains visible in the 5%–<10% band regardless.',
   },
   {
     id: 'clinicalRiskIntermediateOrHigh',
-    label: 'Is clinical ASCVD risk intermediate to high? (Rec 3)',
-    help: 'The CPG does not define PREVENT cutoffs for “intermediate/high.”',
+    label: 'Is clinical ASCVD risk intermediate to high? (Rec 3, Sidebar 7)',
+    help: 'The CPG does not define PREVENT cutoffs for “intermediate/high.” Read the Rec 3 narrative.',
   },
   {
     id: 'cacWouldChangeManagement',
-    label: 'Would CAC testing change management? (Rec 3)',
-    help: 'Required for the weak-for CAC suggestion.',
+    label: 'Would CAC testing change management? (Rec 3, Sidebar 7)',
+    help: 'Required for the weak-for CAC suggestion (Table 4: when deemed to affect clinical decision-making).',
   },
   {
     id: 'clinicalRiskLow',
-    label: 'Is clinical ASCVD risk low? (Rec 4)',
-    help: 'Required for the weak-against CAC suggestion.',
+    label: 'Is clinical ASCVD risk low? (Rec 4, Sidebar 7)',
+    help: 'Required for the weak-against routine CAC suggestion.',
   },
   {
-    id: 'astAltLessThan3xUlnConfirmed',
-    label: 'Baseline AST and ALT <3× ULN confirmed? (Rec 11)',
-    help: 'Confirm when reference-range evidence is missing.',
+    id: 'elevatedAstOrAltLessThan3xUln',
+    label: 'Elevated baseline AST or ALT that is still <3× ULN? (Rec 11)',
+    help: 'Rec 11 applies when there is a statin indication and mildly elevated transaminases (1–3× ULN). Normal LFTs are outside this recommendation’s population.',
   },
   {
     id: 'persistentlyElevatedFastingTriglycerides',
     label:
-      'Persistently elevated fasting triglycerides ≥150 mg/dL after secondary causes? (Rec 16)',
-    help: 'Persistence is clinician-confirmed when chart data are ambiguous.',
+      'Persistently elevated fasting triglycerides ≥150 mg/dL? (Rec 16, Sidebar 8)',
+    help: 'Table 4 Rec 16 is secondary prevention on a statin. Sidebar 8 also addresses secondary causes and elevation despite maximally tolerated statin.',
   },
   {
     id: 'statinIntoleranceAttested',
-    label: 'Statin intolerance attested? (Rec 18)',
-    help: 'Optional clinician confirmation. Yes surfaces the rechallenge suggestion; do not infer from missing chart data.',
+    label: 'Statin intolerance attested? (Rec 18, Sidebar 6)',
+    help: 'Optional. Yes surfaces Sidebar 6 washout then rechallenge (same or different statin or lower dose), then intermittent/nondaily dosing if that fails.',
   },
   {
     id: 'unableToTakeStatin',
-    label: 'Unable to take a statin? (Rec 19)',
-    help: 'Optional clinician confirmation. Yes surfaces unranked non-statin options.',
+    label: 'Unable to take a statin? (Rec 19, Sidebar 6)',
+    help: 'Optional. Yes surfaces Sidebar 6 unranked non-statins: bempedoic acid, ezetimibe, fibrates, or PCSK9 monoclonal antibodies. Rec 12 still suggests against adding fibrates to a statin.',
   },
 ];
 
@@ -136,48 +163,48 @@ interface ReferenceSidebarRow {
 const REFERENCE_SIDEBARS: readonly ReferenceSidebarRow[] = [
   {
     id: 'guideline-sidebar-1',
-    title: '1 — PREVENT calculator',
-    body: 'Use PREVENT for 10-year total CVD risk in eligible adults. Do not insert Lp(a) into PREVENT. Calculator exclusions (<1 year life expectancy, etc.) differ from CPG population exclusions.',
+    title: '1 — Comprehensive Lifestyle Medicine',
+    body: 'Increase physical activity (aerobic and resistance) that maximizes what the patient is willing and able to achieve. Goals: 150 minutes moderate-intensity OR 75 minutes vigorous-intensity OR an equivalent combination per week. Choose a healthy dietary pattern (e.g., Mediterranean diet). Sleep 7–8 hours/night. Socialize: forge and embrace social connections. Quit tobacco and nicotine. Minimize alcohol. Manage stress. Address overweight and obesity (see VA/DoD Obesity and Overweight CPG).',
   },
   {
     id: 'guideline-sidebar-2',
-    title: '2 — Novel markers',
-    body: 'CAC (Recs 3–4), Lp(a) once lifetime (Rec 5), and insufficient evidence for ABI, ApoB, PRS, TPA, hs-CRP (Rec 6). Imaging-only atherosclerosis does not independently define secondary prevention (see Sidebar 3).',
+    title: '2 — Mediterranean and Other Cardioprotective Diets',
+    body: 'Emphasize: fruits and vegetables; whole grains; seafood (primarily fatty fish); skinless poultry; tree nuts, seeds, peanuts, nut butters; beans and legumes; non-tropical vegetable oils (olive, canola, avocado, etc.); low-fat daily products (milk, cheese) — CPG Sidebar 2 wording; Appendix J says dairy. Limit: added sugar; sugar-sweetened beverages; sodium; highly processed foods; refined carbohydrates; saturated fats; tropical vegetable oils (coconut, palm, etc.); high-fat and processed meats; alcoholic beverages.',
   },
   {
     id: 'guideline-sidebar-3',
-    title: '3 — Clinical ASCVD',
-    body: 'Clinical ASCVD for secondary prevention excludes asymptomatic imaging-only atherosclerosis. Use established clinical ASCVD diagnoses for Box 5.',
+    title: '3 — ASCVD (Secondary Prevention)',
+    body: 'MI or ACS; CABG/PCI; stable CAD; CVA/TIA due to atherosclerosis; PAD. Does not include asymptomatic atherosclerosis on imaging (e.g., CCTA, CAC, catheterization). Use this list for Box 5 Existing CVD.',
   },
   {
     id: 'guideline-sidebar-4',
-    title: '4 — Very high risk',
-    body: 'All three very-high-risk criteria require current lipid-lowering therapy. ASCVD with LDL-C ≥70 mg/dL without therapy is not automatically very high risk.',
+    title: '4 — Very High-Risk CVD Patients',
+    body: 'Any one, all on lipid-lowering therapy: MI or ACS in the past 12 months; or recurrent ACS, MI, or atherosclerotic CVA; or ASCVD and LDL-C ≥70 mg/dL. ASCVD with LDL-C ≥70 mg/dL without therapy is not automatically very high risk.',
   },
   {
     id: 'guideline-sidebar-5',
-    title: '5 — Statin intensity',
-    body: 'Moderate- and high-intensity statin definitions as in the CPG. Outputs are intensity guidance and option sets, not prescriptions.',
+    title: '5 — Statin Intensity',
+    body: 'High-intensity in this CPG is only rosuvastatin 20–40 mg and atorvastatin 40–80 mg. Moderate: rosuvastatin 5–10 mg; atorvastatin 10–20 mg; fluvastatin 80 mg XL or 40 mg BID; lovastatin 40–80 mg; pitavastatin 1–4 mg; pravastatin 40–80 mg; simvastatin 20–40 mg. Intensified patient care (calls, education, regimen simplification) may improve adherence.',
   },
   {
     id: 'guideline-sidebar-6',
-    title: '6 — Non-statin therapies',
-    body: 'Ezetimibe, PCSK9 monoclonal antibodies, and bempedoic acid appear in secondary and statin-intolerance option sets (Recs 13–14, 19). Unranked when the CPG presents alternatives.',
+    title: '6 — For Statin Intolerance',
+    body: '1. Washout period (e.g., 1 month) followed by the same or a different statin; continue other lipid-lowering therapy. 2. Lower dose or nondaily dosing (e.g., every other day or 2–3 days per week) of statin (Rec 18). 3. Consider initiating bempedoic acid, ezetimibe, fibrates, or PCSK9 mAb inhibitors in patients unable to take a statin (Rec 19).',
   },
   {
     id: 'guideline-sidebar-7',
-    title: '7 — Statin intolerance',
-    body: 'Rechallenge before switching (Rec 18). Unable-to-take-statin options (Rec 19). Intolerance and inability are clinician-confirmed.',
+    title: '7 — Novel Risk Markers',
+    body: 'Suggest checking Lp(a) to identify intrinsic enhanced risk (Rec 5). Not recommended to routinely measure CAC in patients with low risk (Rec 4). Suggest CAC in patients with intermediate to high risk who question the need for therapy (Rec 3). Routine measurement of hs-CRP, ApoB, PRS, TPA, or ABI is not useful to refine risk (Rec 6).',
   },
   {
     id: 'guideline-sidebar-8',
-    title: '8 — Elevated triglycerides',
-    body: 'Secondary-prevention IPE when statin use and persistently elevated fasting triglycerides ≥150 mg/dL are established (Rec 16). Suggest against non-IPE omega-3 supplements (Rec 21). Triglycerides >500 mg/dL relate to genetic-dyslipidemia population exclusion.',
+    title: '8 — Elevated Triglycerides for Secondary CVD Prevention',
+    body: 'Consider secondary causes of elevated triglycerides (co-occurring conditions, alcohol, and medications such as hormones, immune-related agents, beta blockers, thiazide/loop diuretics, bile acid sequestrants, atypical antipsychotics, isotretinoin). If triglycerides are persistently elevated (≥150 mg/dL) despite maximally tolerated statin, consider icosapent ethyl 2 g BID (Rec 16). Modify diet.',
   },
   {
     id: 'guideline-appendix-i',
     title: 'Appendix I — Pharmacotherapy reference (non-ordering)',
-    body: 'Agents surfaced by recommendations include statins (intensity per Sidebar 5), ezetimibe, PCSK9 monoclonal antibodies, bempedoic acid, fibrates (suggest against adding to statin — Rec 12), and icosapent ethyl. This panel is a reference aid only; it does not authorize or rank orders.',
+    body: 'Agents referenced by recommendations include statins (intensity per Sidebar 5), ezetimibe, PCSK9 monoclonal antibodies, bempedoic acid, fibrates (suggest against adding to a statin — Rec 12; option if unable to take a statin — Rec 19), and icosapent ethyl. Inclisiran is Appendix I only (outcomes pending; do not combine with PCSK9 mAb). This panel is a reference aid only; it does not authorize or rank orders.',
   },
 ];
 
@@ -226,6 +253,7 @@ export class Guideline implements OnDestroy {
   private renderGeneration = 0;
   private diagramController: DiagramInteractivityController | null = null;
   private pendingFocusBox: number | null = null;
+  private chartAnswersSeeded = false;
 
   protected readonly selectedPatient = this.patientContext.selectedPatient;
   protected readonly session = this.riskSession.session;
@@ -281,7 +309,7 @@ export class Guideline implements OnDestroy {
       subtitle: node?.subtitle ?? null,
       questions: questionIds.map((id) => ({
         id,
-        label: CLINICIAN_QUESTIONS.find((q) => q.id === id)?.label ?? id,
+        label: GUIDELINE_CLINICIAN_QUESTIONS.find((q) => q.id === id)?.label ?? id,
       })),
     };
   });
@@ -294,23 +322,20 @@ export class Guideline implements OnDestroy {
     return orderedPathDescription(view.activeBoxes, view.unresolvedBoxes, view.algorithmPath);
   });
 
-  protected readonly pathBlockingQuestions = computed(() => {
-    const unresolved = this.evaluation()?.unresolvedBoxes ?? [];
-    const ids = pathBlockingQuestionIds(unresolved);
-    return CLINICIAN_QUESTIONS.filter((q) => ids.has(q.id));
-  });
-
-  protected readonly detailQuestions = computed(() => {
-    const blocking = new Set(this.pathBlockingQuestions().map((q) => q.id));
-    return CLINICIAN_QUESTIONS.filter((q) => !blocking.has(q.id));
-  });
-
-  protected readonly pathBlockingUnresolvedCount = computed(
-    () => this.pathBlockingQuestions().filter((q) => this.answers()[q.id] === 'unknown').length,
+  protected readonly diagramQuestions = GUIDELINE_CLINICIAN_QUESTIONS.filter((q) =>
+    questionAffectsDiagram(q.id),
   );
 
-  protected readonly detailUnresolvedCount = computed(
-    () => this.detailQuestions().filter((q) => this.answers()[q.id] === 'unknown').length,
+  protected readonly recommendationQuestions = GUIDELINE_CLINICIAN_QUESTIONS.filter(
+    (q) => !questionAffectsDiagram(q.id),
+  );
+
+  protected readonly unresolvedDiagramQuestionCount = computed(
+    () => this.diagramQuestions.filter((q) => this.answers()[q.id] === 'unknown').length,
+  );
+
+  protected readonly unresolvedRecommendationQuestionCount = computed(
+    () => this.recommendationQuestions.filter((q) => this.answers()[q.id] === 'unknown').length,
   );
 
   protected readonly recommendationsByTier = computed(() => {
@@ -385,6 +410,7 @@ export class Guideline implements OnDestroy {
         if (view) {
           this.evaluation.set(view);
           this.loading.set(false);
+          this.seedChartDeterminedAnswers(view);
         }
       });
 
@@ -465,6 +491,10 @@ export class Guideline implements OnDestroy {
     return boxId != null && rec.relatedBoxIds.includes(boxId);
   }
 
+  protected questionEvidence(question: ClinicianQuestionDef): string | null {
+    return formatQuestionEvidence(question.id, this.evaluation(), this.session());
+  }
+
   protected isAnswer(question: ClinicianQuestionDef, value: TriState): boolean {
     return this.answers()[question.id] === value;
   }
@@ -479,21 +509,7 @@ export class Guideline implements OnDestroy {
       this.toasts.show('Diagram is not ready to download.', 'warning');
       return;
     }
-    exportDiagramSvg(svg, this.diagramFilename('svg'));
-  }
-
-  async downloadDiagramPng(): Promise<void> {
-    const svg = this.currentDiagramSvg();
-    if (!svg) {
-      this.toasts.show('Diagram is not ready to download.', 'warning');
-      return;
-    }
-    try {
-      await exportDiagramPng(svg, this.diagramFilename('png'));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      this.toasts.show(`PNG export failed: ${message}. Try SVG instead.`, 'warning');
-    }
+    exportDiagramSvg(svg, this.diagramFilename());
   }
 
   protected patientDisplayName(): string {
@@ -520,14 +536,48 @@ export class Guideline implements OnDestroy {
     }
   }
 
+  private seedChartDeterminedAnswers(view: GuidelineEvaluationView): void {
+    if (this.chartAnswersSeeded) {
+      return;
+    }
+    this.chartAnswersSeeded = true;
+    this.answers.update((a) => {
+      const next = { ...a };
+      if (a.establishedCvd === 'unknown') {
+        next.establishedCvd = view.hasEstablishedCvd ? 'yes' : 'no';
+      }
+      if (a.hivInfection === 'unknown') {
+        next.hivInfection = view.hasHivInfection ? 'yes' : 'no';
+      }
+      if (a.primaryPreventionStatinIndication === 'unknown') {
+        next.primaryPreventionStatinIndication = view.primaryPreventionStatinIndicationBox8
+          ? 'yes'
+          : 'no';
+      }
+      if (a.borderlineRiskBand === 'unknown') {
+        next.borderlineRiskBand = view.primaryPreventionBorderlineRiskBand ? 'yes' : 'no';
+      }
+      if (a.veryHighRiskCvd === 'unknown' && view.veryHighRiskCvd === true) {
+        next.veryHighRiskCvd = 'yes';
+      }
+      if (
+        a.onLipidLoweringTherapy === 'unknown' &&
+        (view.effectiveOnLipidLoweringTherapy === true || view.chartEvidence.lipidLoweringTherapy)
+      ) {
+        next.onLipidLoweringTherapy = 'yes';
+      }
+      return next;
+    });
+  }
+
   private currentDiagramSvg(): SVGSVGElement | null {
     const host = this.diagramHost()?.nativeElement;
     return host ? findDiagramSvg(host) : null;
   }
 
-  private diagramFilename(ext: 'svg' | 'png'): string {
+  private diagramFilename(): string {
     const patientId = this.selectedPatient()?.id ?? 'patient';
-    return `appendix-g-algorithm-${patientId}.${ext}`;
+    return `appendix-g-algorithm-${patientId}.svg`;
   }
 
   private scrollToElement(selector: string): void {
@@ -559,6 +609,8 @@ export class Guideline implements OnDestroy {
         startOnLoad: false,
         securityLevel: 'strict',
         theme: 'default',
+        htmlLabels: false,
+        flowchart: { htmlLabels: false },
       });
       const definition = toMermaidDefinition(model);
       const { svg } = await mermaid.render(`guideline-algorithm-${generation}`, definition);
