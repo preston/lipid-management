@@ -253,9 +253,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:49a378c7-c1da-6756-dd9b-09098017ee8b"
-        },
         "effectiveDateTime": "1965-01-21T19:26:35-07:00",
         "issued": "1965-01-21T19:26:35.093-07:00",
         "valueQuantity": {
@@ -305,9 +302,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:49a378c7-c1da-6756-dd9b-09098017ee8b"
-        },
         "effectiveDateTime": "1965-01-21T19:26:35-07:00",
         "issued": "1965-01-21T19:26:35.093-07:00",
         "valueQuantity": {
@@ -356,9 +350,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:49a378c7-c1da-6756-dd9b-09098017ee8b"
         },
         "effectiveDateTime": "1965-01-21T19:26:35-07:00",
         "issued": "1965-01-21T19:26:35.093-07:00",
@@ -442,9 +433,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:49a378c7-c1da-6756-dd9b-09098017ee8b"
-        },
         "effectiveDateTime": "1965-01-21T19:26:35-07:00",
         "issued": "1965-01-21T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -498,9 +486,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:d1d53dcb-11d0-3c86-3f58-acd4e2e86441"
-        },
         "effectiveDateTime": "1965-02-25T19:26:35-07:00",
         "issued": "1965-02-25T19:26:35.093-07:00",
         "valueQuantity": {
@@ -550,9 +535,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:d1d53dcb-11d0-3c86-3f58-acd4e2e86441"
-        },
         "effectiveDateTime": "1965-02-25T19:26:35-07:00",
         "issued": "1965-02-25T19:26:35.093-07:00",
         "valueQuantity": {
@@ -601,9 +583,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:d1d53dcb-11d0-3c86-3f58-acd4e2e86441"
         },
         "effectiveDateTime": "1965-02-25T19:26:35-07:00",
         "issued": "1965-02-25T19:26:35.093-07:00",
@@ -687,9 +666,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:d1d53dcb-11d0-3c86-3f58-acd4e2e86441"
-        },
         "effectiveDateTime": "1965-02-25T19:26:35-07:00",
         "issued": "1965-02-25T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -743,9 +719,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:887eedc9-0bb4-2c4d-0b21-f3bc669ae886"
-        },
         "effectiveDateTime": "1965-04-29T19:26:35-07:00",
         "issued": "1965-04-29T19:26:35.093-07:00",
         "valueQuantity": {
@@ -795,9 +768,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:887eedc9-0bb4-2c4d-0b21-f3bc669ae886"
-        },
         "effectiveDateTime": "1965-04-29T19:26:35-07:00",
         "issued": "1965-04-29T19:26:35.093-07:00",
         "valueQuantity": {
@@ -846,9 +816,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:887eedc9-0bb4-2c4d-0b21-f3bc669ae886"
         },
         "effectiveDateTime": "1965-04-29T19:26:35-07:00",
         "issued": "1965-04-29T19:26:35.093-07:00",
@@ -932,9 +899,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:887eedc9-0bb4-2c4d-0b21-f3bc669ae886"
-        },
         "effectiveDateTime": "1965-04-29T19:26:35-07:00",
         "issued": "1965-04-29T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -988,9 +952,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3f1b853b-cd89-3aa8-2ab8-6eb50c59c192"
-        },
         "effectiveDateTime": "1965-07-01T19:26:35-07:00",
         "issued": "1965-07-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1040,9 +1001,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3f1b853b-cd89-3aa8-2ab8-6eb50c59c192"
-        },
         "effectiveDateTime": "1965-07-01T19:26:35-07:00",
         "issued": "1965-07-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1091,9 +1049,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3f1b853b-cd89-3aa8-2ab8-6eb50c59c192"
         },
         "effectiveDateTime": "1965-07-01T19:26:35-07:00",
         "issued": "1965-07-01T19:26:35.093-07:00",
@@ -1177,9 +1132,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3f1b853b-cd89-3aa8-2ab8-6eb50c59c192"
-        },
         "effectiveDateTime": "1965-07-01T19:26:35-07:00",
         "issued": "1965-07-01T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -1233,9 +1185,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:d6272780-7608-0052-f896-48c53d2c6565"
-        },
         "effectiveDateTime": "1965-09-30T19:26:35-07:00",
         "issued": "1965-09-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1285,9 +1234,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:d6272780-7608-0052-f896-48c53d2c6565"
-        },
         "effectiveDateTime": "1965-09-30T19:26:35-07:00",
         "issued": "1965-09-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1336,9 +1282,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:d6272780-7608-0052-f896-48c53d2c6565"
         },
         "effectiveDateTime": "1965-09-30T19:26:35-07:00",
         "issued": "1965-09-30T19:26:35.093-07:00",
@@ -1422,9 +1365,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:d6272780-7608-0052-f896-48c53d2c6565"
-        },
         "effectiveDateTime": "1965-09-30T19:26:35-07:00",
         "issued": "1965-09-30T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -1478,9 +1418,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:ab0b0015-4d6d-85d9-9a69-5372c9fb989a"
-        },
         "effectiveDateTime": "1965-12-30T19:26:35-07:00",
         "issued": "1965-12-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1530,9 +1467,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:ab0b0015-4d6d-85d9-9a69-5372c9fb989a"
-        },
         "effectiveDateTime": "1965-12-30T19:26:35-07:00",
         "issued": "1965-12-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1581,9 +1515,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:ab0b0015-4d6d-85d9-9a69-5372c9fb989a"
         },
         "effectiveDateTime": "1965-12-30T19:26:35-07:00",
         "issued": "1965-12-30T19:26:35.093-07:00",
@@ -1667,9 +1598,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:ab0b0015-4d6d-85d9-9a69-5372c9fb989a"
-        },
         "effectiveDateTime": "1965-12-30T19:26:35-07:00",
         "issued": "1965-12-30T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -1723,9 +1651,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:575edc99-bc81-8f24-44e4-aeca6c06d85a"
-        },
         "effectiveDateTime": "1966-03-31T19:26:35-07:00",
         "issued": "1966-03-31T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1775,9 +1700,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:575edc99-bc81-8f24-44e4-aeca6c06d85a"
-        },
         "effectiveDateTime": "1966-03-31T19:26:35-07:00",
         "issued": "1966-03-31T19:26:35.093-07:00",
         "valueQuantity": {
@@ -1826,9 +1748,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:575edc99-bc81-8f24-44e4-aeca6c06d85a"
         },
         "effectiveDateTime": "1966-03-31T19:26:35-07:00",
         "issued": "1966-03-31T19:26:35.093-07:00",
@@ -1912,9 +1831,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:575edc99-bc81-8f24-44e4-aeca6c06d85a"
-        },
         "effectiveDateTime": "1966-03-31T19:26:35-07:00",
         "issued": "1966-03-31T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -1968,9 +1884,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:306eb06d-0764-abc6-414f-67c96efa7107"
-        },
         "effectiveDateTime": "1966-06-30T19:26:35-07:00",
         "issued": "1966-06-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -2020,9 +1933,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:306eb06d-0764-abc6-414f-67c96efa7107"
-        },
         "effectiveDateTime": "1966-06-30T19:26:35-07:00",
         "issued": "1966-06-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -2071,9 +1981,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:306eb06d-0764-abc6-414f-67c96efa7107"
         },
         "effectiveDateTime": "1966-06-30T19:26:35-07:00",
         "issued": "1966-06-30T19:26:35.093-07:00",
@@ -2157,9 +2064,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:306eb06d-0764-abc6-414f-67c96efa7107"
-        },
         "effectiveDateTime": "1966-06-30T19:26:35-07:00",
         "issued": "1966-06-30T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -2213,9 +2117,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c3ff2bbb-cd30-d3da-fbc9-47dbdc7a7c73"
-        },
         "effectiveDateTime": "1966-12-29T19:26:35-07:00",
         "issued": "1966-12-29T19:26:35.093-07:00",
         "valueQuantity": {
@@ -2265,9 +2166,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c3ff2bbb-cd30-d3da-fbc9-47dbdc7a7c73"
-        },
         "effectiveDateTime": "1966-12-29T19:26:35-07:00",
         "issued": "1966-12-29T19:26:35.093-07:00",
         "valueQuantity": {
@@ -2316,9 +2214,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c3ff2bbb-cd30-d3da-fbc9-47dbdc7a7c73"
         },
         "effectiveDateTime": "1966-12-29T19:26:35-07:00",
         "issued": "1966-12-29T19:26:35.093-07:00",
@@ -2402,9 +2297,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c3ff2bbb-cd30-d3da-fbc9-47dbdc7a7c73"
-        },
         "effectiveDateTime": "1966-12-29T19:26:35-07:00",
         "issued": "1966-12-29T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -2458,9 +2350,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3d07f7b5-34ab-8a3c-2373-e5c2db0864f0"
-        },
         "effectiveDateTime": "1967-06-29T20:26:35-06:00",
         "issued": "1967-06-29T20:26:35.093-06:00",
         "valueQuantity": {
@@ -2509,9 +2398,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3d07f7b5-34ab-8a3c-2373-e5c2db0864f0"
         },
         "effectiveDateTime": "1967-06-29T20:26:35-06:00",
         "issued": "1967-06-29T20:26:35.093-06:00",
@@ -2562,9 +2448,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3d07f7b5-34ab-8a3c-2373-e5c2db0864f0"
-        },
         "effectiveDateTime": "1967-06-29T20:26:35-06:00",
         "issued": "1967-06-29T20:26:35.093-06:00",
         "valueQuantity": {
@@ -2613,9 +2496,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3d07f7b5-34ab-8a3c-2373-e5c2db0864f0"
         },
         "effectiveDateTime": "1967-06-29T20:26:35-06:00",
         "issued": "1967-06-29T20:26:35.093-06:00",
@@ -2699,9 +2579,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3d07f7b5-34ab-8a3c-2373-e5c2db0864f0"
-        },
         "effectiveDateTime": "1967-06-29T20:26:35-06:00",
         "issued": "1967-06-29T20:26:35.093-06:00",
         "valueCodeableConcept": {
@@ -2755,9 +2632,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:59b20ee8-7785-e4f5-b710-fa3be2603e35"
-        },
         "effectiveDateTime": "1967-12-28T19:26:35-07:00",
         "issued": "1967-12-28T19:26:35.093-07:00",
         "valueQuantity": {
@@ -2806,9 +2680,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:59b20ee8-7785-e4f5-b710-fa3be2603e35"
         },
         "effectiveDateTime": "1967-12-28T19:26:35-07:00",
         "issued": "1967-12-28T19:26:35.093-07:00",
@@ -2859,9 +2730,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:59b20ee8-7785-e4f5-b710-fa3be2603e35"
-        },
         "effectiveDateTime": "1967-12-28T19:26:35-07:00",
         "issued": "1967-12-28T19:26:35.093-07:00",
         "valueQuantity": {
@@ -2910,9 +2778,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:59b20ee8-7785-e4f5-b710-fa3be2603e35"
         },
         "effectiveDateTime": "1967-12-28T19:26:35-07:00",
         "issued": "1967-12-28T19:26:35.093-07:00",
@@ -2996,9 +2861,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:59b20ee8-7785-e4f5-b710-fa3be2603e35"
-        },
         "effectiveDateTime": "1967-12-28T19:26:35-07:00",
         "issued": "1967-12-28T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -3052,9 +2914,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2d2a0fdc-fb56-539d-bf52-35e2fc9b6b71"
-        },
         "effectiveDateTime": "1968-06-27T19:26:35-07:00",
         "issued": "1968-06-27T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3103,9 +2962,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2d2a0fdc-fb56-539d-bf52-35e2fc9b6b71"
         },
         "effectiveDateTime": "1968-06-27T19:26:35-07:00",
         "issued": "1968-06-27T19:26:35.093-07:00",
@@ -3156,9 +3012,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2d2a0fdc-fb56-539d-bf52-35e2fc9b6b71"
-        },
         "effectiveDateTime": "1968-06-27T19:26:35-07:00",
         "issued": "1968-06-27T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3207,9 +3060,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2d2a0fdc-fb56-539d-bf52-35e2fc9b6b71"
         },
         "effectiveDateTime": "1968-06-27T19:26:35-07:00",
         "issued": "1968-06-27T19:26:35.093-07:00",
@@ -3293,9 +3143,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2d2a0fdc-fb56-539d-bf52-35e2fc9b6b71"
-        },
         "effectiveDateTime": "1968-06-27T19:26:35-07:00",
         "issued": "1968-06-27T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -3349,9 +3196,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c543c11e-558b-c035-e9e2-28b42162f8d9"
-        },
         "effectiveDateTime": "1968-12-26T19:26:35-07:00",
         "issued": "1968-12-26T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3400,9 +3244,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c543c11e-558b-c035-e9e2-28b42162f8d9"
         },
         "effectiveDateTime": "1968-12-26T19:26:35-07:00",
         "issued": "1968-12-26T19:26:35.093-07:00",
@@ -3453,9 +3294,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c543c11e-558b-c035-e9e2-28b42162f8d9"
-        },
         "effectiveDateTime": "1968-12-26T19:26:35-07:00",
         "issued": "1968-12-26T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3504,9 +3342,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c543c11e-558b-c035-e9e2-28b42162f8d9"
         },
         "effectiveDateTime": "1968-12-26T19:26:35-07:00",
         "issued": "1968-12-26T19:26:35.093-07:00",
@@ -3590,9 +3425,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c543c11e-558b-c035-e9e2-28b42162f8d9"
-        },
         "effectiveDateTime": "1968-12-26T19:26:35-07:00",
         "issued": "1968-12-26T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -3646,9 +3478,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:9a705586-d82f-79dd-1001-edd38181f4ac"
-        },
         "effectiveDateTime": "1970-01-01T19:26:35-07:00",
         "issued": "1970-01-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3697,9 +3526,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9a705586-d82f-79dd-1001-edd38181f4ac"
         },
         "effectiveDateTime": "1970-01-01T19:26:35-07:00",
         "issued": "1970-01-01T19:26:35.093-07:00",
@@ -3750,9 +3576,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:9a705586-d82f-79dd-1001-edd38181f4ac"
-        },
         "effectiveDateTime": "1970-01-01T19:26:35-07:00",
         "issued": "1970-01-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3801,9 +3624,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9a705586-d82f-79dd-1001-edd38181f4ac"
         },
         "effectiveDateTime": "1970-01-01T19:26:35-07:00",
         "issued": "1970-01-01T19:26:35.093-07:00",
@@ -3887,9 +3707,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:9a705586-d82f-79dd-1001-edd38181f4ac"
-        },
         "effectiveDateTime": "1970-01-01T19:26:35-07:00",
         "issued": "1970-01-01T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -3943,9 +3760,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2dd55d18-e624-e2c1-1cfd-7842ec614e4e"
-        },
         "effectiveDateTime": "1971-01-07T19:26:35-07:00",
         "issued": "1971-01-07T19:26:35.093-07:00",
         "valueQuantity": {
@@ -3994,9 +3808,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2dd55d18-e624-e2c1-1cfd-7842ec614e4e"
         },
         "effectiveDateTime": "1971-01-07T19:26:35-07:00",
         "issued": "1971-01-07T19:26:35.093-07:00",
@@ -4047,9 +3858,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2dd55d18-e624-e2c1-1cfd-7842ec614e4e"
-        },
         "effectiveDateTime": "1971-01-07T19:26:35-07:00",
         "issued": "1971-01-07T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4098,9 +3906,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2dd55d18-e624-e2c1-1cfd-7842ec614e4e"
         },
         "effectiveDateTime": "1971-01-07T19:26:35-07:00",
         "issued": "1971-01-07T19:26:35.093-07:00",
@@ -4184,9 +3989,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2dd55d18-e624-e2c1-1cfd-7842ec614e4e"
-        },
         "effectiveDateTime": "1971-01-07T19:26:35-07:00",
         "issued": "1971-01-07T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -4240,9 +4042,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:1add4df9-33ee-ccb4-2165-0e6d5d1230ce"
-        },
         "effectiveDateTime": "1972-01-13T19:26:35-07:00",
         "issued": "1972-01-13T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4291,9 +4090,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:1add4df9-33ee-ccb4-2165-0e6d5d1230ce"
         },
         "effectiveDateTime": "1972-01-13T19:26:35-07:00",
         "issued": "1972-01-13T19:26:35.093-07:00",
@@ -4344,9 +4140,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:1add4df9-33ee-ccb4-2165-0e6d5d1230ce"
-        },
         "effectiveDateTime": "1972-01-13T19:26:35-07:00",
         "issued": "1972-01-13T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4395,9 +4188,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:1add4df9-33ee-ccb4-2165-0e6d5d1230ce"
         },
         "effectiveDateTime": "1972-01-13T19:26:35-07:00",
         "issued": "1972-01-13T19:26:35.093-07:00",
@@ -4481,9 +4271,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:1add4df9-33ee-ccb4-2165-0e6d5d1230ce"
-        },
         "effectiveDateTime": "1972-01-13T19:26:35-07:00",
         "issued": "1972-01-13T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -4537,9 +4324,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0cb3a3f1-52f7-0aa9-09f4-ac16eceef2cb"
-        },
         "effectiveDateTime": "1973-01-18T19:26:35-07:00",
         "issued": "1973-01-18T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4588,9 +4372,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0cb3a3f1-52f7-0aa9-09f4-ac16eceef2cb"
         },
         "effectiveDateTime": "1973-01-18T19:26:35-07:00",
         "issued": "1973-01-18T19:26:35.093-07:00",
@@ -4641,9 +4422,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0cb3a3f1-52f7-0aa9-09f4-ac16eceef2cb"
-        },
         "effectiveDateTime": "1973-01-18T19:26:35-07:00",
         "issued": "1973-01-18T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4692,9 +4470,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0cb3a3f1-52f7-0aa9-09f4-ac16eceef2cb"
         },
         "effectiveDateTime": "1973-01-18T19:26:35-07:00",
         "issued": "1973-01-18T19:26:35.093-07:00",
@@ -4778,9 +4553,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0cb3a3f1-52f7-0aa9-09f4-ac16eceef2cb"
-        },
         "effectiveDateTime": "1973-01-18T19:26:35-07:00",
         "issued": "1973-01-18T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -4834,9 +4606,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f009893e-cfe2-1b46-f5ac-cd3c395747bf"
-        },
         "effectiveDateTime": "1974-01-24T19:26:35-07:00",
         "issued": "1974-01-24T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4885,9 +4654,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f009893e-cfe2-1b46-f5ac-cd3c395747bf"
         },
         "effectiveDateTime": "1974-01-24T19:26:35-07:00",
         "issued": "1974-01-24T19:26:35.093-07:00",
@@ -4938,9 +4704,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f009893e-cfe2-1b46-f5ac-cd3c395747bf"
-        },
         "effectiveDateTime": "1974-01-24T19:26:35-07:00",
         "issued": "1974-01-24T19:26:35.093-07:00",
         "valueQuantity": {
@@ -4989,9 +4752,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f009893e-cfe2-1b46-f5ac-cd3c395747bf"
         },
         "effectiveDateTime": "1974-01-24T19:26:35-07:00",
         "issued": "1974-01-24T19:26:35.093-07:00",
@@ -5075,9 +4835,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f009893e-cfe2-1b46-f5ac-cd3c395747bf"
-        },
         "effectiveDateTime": "1974-01-24T19:26:35-07:00",
         "issued": "1974-01-24T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -5131,9 +4888,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c4282450-758b-194a-98fd-50680412f103"
-        },
         "effectiveDateTime": "1975-01-30T19:26:35-07:00",
         "issued": "1975-01-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -5182,9 +4936,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c4282450-758b-194a-98fd-50680412f103"
         },
         "effectiveDateTime": "1975-01-30T19:26:35-07:00",
         "issued": "1975-01-30T19:26:35.093-07:00",
@@ -5235,9 +4986,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c4282450-758b-194a-98fd-50680412f103"
-        },
         "effectiveDateTime": "1975-01-30T19:26:35-07:00",
         "issued": "1975-01-30T19:26:35.093-07:00",
         "valueQuantity": {
@@ -5286,9 +5034,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c4282450-758b-194a-98fd-50680412f103"
         },
         "effectiveDateTime": "1975-01-30T19:26:35-07:00",
         "issued": "1975-01-30T19:26:35.093-07:00",
@@ -5372,9 +5117,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:c4282450-758b-194a-98fd-50680412f103"
-        },
         "effectiveDateTime": "1975-01-30T19:26:35-07:00",
         "issued": "1975-01-30T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -5428,9 +5170,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:7f9fe5d9-3c60-c476-ae6b-07603a85b5b3"
-        },
         "effectiveDateTime": "1976-02-05T19:26:35-07:00",
         "issued": "1976-02-05T19:26:35.093-07:00",
         "valueQuantity": {
@@ -5479,9 +5218,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:7f9fe5d9-3c60-c476-ae6b-07603a85b5b3"
         },
         "effectiveDateTime": "1976-02-05T19:26:35-07:00",
         "issued": "1976-02-05T19:26:35.093-07:00",
@@ -5532,9 +5268,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:7f9fe5d9-3c60-c476-ae6b-07603a85b5b3"
-        },
         "effectiveDateTime": "1976-02-05T19:26:35-07:00",
         "issued": "1976-02-05T19:26:35.093-07:00",
         "valueQuantity": {
@@ -5583,9 +5316,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:7f9fe5d9-3c60-c476-ae6b-07603a85b5b3"
         },
         "effectiveDateTime": "1976-02-05T19:26:35-07:00",
         "issued": "1976-02-05T19:26:35.093-07:00",
@@ -5669,9 +5399,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:7f9fe5d9-3c60-c476-ae6b-07603a85b5b3"
-        },
         "effectiveDateTime": "1976-02-05T19:26:35-07:00",
         "issued": "1976-02-05T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -5725,9 +5452,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:735086db-335e-b370-57c3-c64ba6791228"
-        },
         "effectiveDateTime": "1977-02-10T19:26:35-07:00",
         "issued": "1977-02-10T19:26:35.093-07:00",
         "valueQuantity": {
@@ -5776,9 +5500,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:735086db-335e-b370-57c3-c64ba6791228"
         },
         "effectiveDateTime": "1977-02-10T19:26:35-07:00",
         "issued": "1977-02-10T19:26:35.093-07:00",
@@ -5829,9 +5550,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:735086db-335e-b370-57c3-c64ba6791228"
-        },
         "effectiveDateTime": "1977-02-10T19:26:35-07:00",
         "issued": "1977-02-10T19:26:35.093-07:00",
         "valueQuantity": {
@@ -5880,9 +5598,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:735086db-335e-b370-57c3-c64ba6791228"
         },
         "effectiveDateTime": "1977-02-10T19:26:35-07:00",
         "issued": "1977-02-10T19:26:35.093-07:00",
@@ -5966,9 +5681,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:735086db-335e-b370-57c3-c64ba6791228"
-        },
         "effectiveDateTime": "1977-02-10T19:26:35-07:00",
         "issued": "1977-02-10T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -6022,9 +5734,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6f89627b-5df6-9e57-5213-d370364be362"
-        },
         "effectiveDateTime": "1978-02-16T19:26:35-07:00",
         "issued": "1978-02-16T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6073,9 +5782,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:6f89627b-5df6-9e57-5213-d370364be362"
         },
         "effectiveDateTime": "1978-02-16T19:26:35-07:00",
         "issued": "1978-02-16T19:26:35.093-07:00",
@@ -6126,9 +5832,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6f89627b-5df6-9e57-5213-d370364be362"
-        },
         "effectiveDateTime": "1978-02-16T19:26:35-07:00",
         "issued": "1978-02-16T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6177,9 +5880,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:6f89627b-5df6-9e57-5213-d370364be362"
         },
         "effectiveDateTime": "1978-02-16T19:26:35-07:00",
         "issued": "1978-02-16T19:26:35.093-07:00",
@@ -6263,9 +5963,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6f89627b-5df6-9e57-5213-d370364be362"
-        },
         "effectiveDateTime": "1978-02-16T19:26:35-07:00",
         "issued": "1978-02-16T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -6319,9 +6016,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:e728753e-3ac5-4362-2786-8b0defb42730"
-        },
         "effectiveDateTime": "1979-02-22T19:26:35-07:00",
         "issued": "1979-02-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6370,9 +6064,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e728753e-3ac5-4362-2786-8b0defb42730"
         },
         "effectiveDateTime": "1979-02-22T19:26:35-07:00",
         "issued": "1979-02-22T19:26:35.093-07:00",
@@ -6423,9 +6114,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:e728753e-3ac5-4362-2786-8b0defb42730"
-        },
         "effectiveDateTime": "1979-02-22T19:26:35-07:00",
         "issued": "1979-02-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6474,9 +6162,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e728753e-3ac5-4362-2786-8b0defb42730"
         },
         "effectiveDateTime": "1979-02-22T19:26:35-07:00",
         "issued": "1979-02-22T19:26:35.093-07:00",
@@ -6560,9 +6245,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:e728753e-3ac5-4362-2786-8b0defb42730"
-        },
         "effectiveDateTime": "1979-02-22T19:26:35-07:00",
         "issued": "1979-02-22T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -6616,9 +6298,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0941cba8-10ef-b833-1a63-3e2e53d3e460"
-        },
         "effectiveDateTime": "1980-02-28T19:26:35-07:00",
         "issued": "1980-02-28T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6667,9 +6346,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0941cba8-10ef-b833-1a63-3e2e53d3e460"
         },
         "effectiveDateTime": "1980-02-28T19:26:35-07:00",
         "issued": "1980-02-28T19:26:35.093-07:00",
@@ -6720,9 +6396,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0941cba8-10ef-b833-1a63-3e2e53d3e460"
-        },
         "effectiveDateTime": "1980-02-28T19:26:35-07:00",
         "issued": "1980-02-28T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6771,9 +6444,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0941cba8-10ef-b833-1a63-3e2e53d3e460"
         },
         "effectiveDateTime": "1980-02-28T19:26:35-07:00",
         "issued": "1980-02-28T19:26:35.093-07:00",
@@ -6857,9 +6527,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0941cba8-10ef-b833-1a63-3e2e53d3e460"
-        },
         "effectiveDateTime": "1980-02-28T19:26:35-07:00",
         "issued": "1980-02-28T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -6913,9 +6580,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6c91f14c-6d80-c9d8-b43e-a34fec726f44"
-        },
         "effectiveDateTime": "1981-03-05T19:26:35-07:00",
         "issued": "1981-03-05T19:26:35.093-07:00",
         "valueQuantity": {
@@ -6964,9 +6628,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:6c91f14c-6d80-c9d8-b43e-a34fec726f44"
         },
         "effectiveDateTime": "1981-03-05T19:26:35-07:00",
         "issued": "1981-03-05T19:26:35.093-07:00",
@@ -7017,9 +6678,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6c91f14c-6d80-c9d8-b43e-a34fec726f44"
-        },
         "effectiveDateTime": "1981-03-05T19:26:35-07:00",
         "issued": "1981-03-05T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7068,9 +6726,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:6c91f14c-6d80-c9d8-b43e-a34fec726f44"
         },
         "effectiveDateTime": "1981-03-05T19:26:35-07:00",
         "issued": "1981-03-05T19:26:35.093-07:00",
@@ -7154,9 +6809,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6c91f14c-6d80-c9d8-b43e-a34fec726f44"
-        },
         "effectiveDateTime": "1981-03-05T19:26:35-07:00",
         "issued": "1981-03-05T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -7210,9 +6862,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:09412110-286f-e9da-4bc4-0f8cd070ca03"
-        },
         "effectiveDateTime": "1982-03-11T19:26:35-07:00",
         "issued": "1982-03-11T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7261,9 +6910,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:09412110-286f-e9da-4bc4-0f8cd070ca03"
         },
         "effectiveDateTime": "1982-03-11T19:26:35-07:00",
         "issued": "1982-03-11T19:26:35.093-07:00",
@@ -7314,9 +6960,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:09412110-286f-e9da-4bc4-0f8cd070ca03"
-        },
         "effectiveDateTime": "1982-03-11T19:26:35-07:00",
         "issued": "1982-03-11T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7365,9 +7008,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:09412110-286f-e9da-4bc4-0f8cd070ca03"
         },
         "effectiveDateTime": "1982-03-11T19:26:35-07:00",
         "issued": "1982-03-11T19:26:35.093-07:00",
@@ -7451,9 +7091,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:09412110-286f-e9da-4bc4-0f8cd070ca03"
-        },
         "effectiveDateTime": "1982-03-11T19:26:35-07:00",
         "issued": "1982-03-11T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -7507,9 +7144,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:b80659a8-49d3-d704-d702-7ad4e4cce7dc"
-        },
         "effectiveDateTime": "1983-03-17T19:26:35-07:00",
         "issued": "1983-03-17T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7558,9 +7192,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:b80659a8-49d3-d704-d702-7ad4e4cce7dc"
         },
         "effectiveDateTime": "1983-03-17T19:26:35-07:00",
         "issued": "1983-03-17T19:26:35.093-07:00",
@@ -7611,9 +7242,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:b80659a8-49d3-d704-d702-7ad4e4cce7dc"
-        },
         "effectiveDateTime": "1983-03-17T19:26:35-07:00",
         "issued": "1983-03-17T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7662,9 +7290,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:b80659a8-49d3-d704-d702-7ad4e4cce7dc"
         },
         "effectiveDateTime": "1983-03-17T19:26:35-07:00",
         "issued": "1983-03-17T19:26:35.093-07:00",
@@ -7748,9 +7373,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:b80659a8-49d3-d704-d702-7ad4e4cce7dc"
-        },
         "effectiveDateTime": "1983-03-17T19:26:35-07:00",
         "issued": "1983-03-17T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -7804,9 +7426,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0d157ad4-286c-8f22-e6ff-b06797004cb3"
-        },
         "effectiveDateTime": "1984-03-22T19:26:35-07:00",
         "issued": "1984-03-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7855,9 +7474,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0d157ad4-286c-8f22-e6ff-b06797004cb3"
         },
         "effectiveDateTime": "1984-03-22T19:26:35-07:00",
         "issued": "1984-03-22T19:26:35.093-07:00",
@@ -7908,9 +7524,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0d157ad4-286c-8f22-e6ff-b06797004cb3"
-        },
         "effectiveDateTime": "1984-03-22T19:26:35-07:00",
         "issued": "1984-03-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -7959,9 +7572,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0d157ad4-286c-8f22-e6ff-b06797004cb3"
         },
         "effectiveDateTime": "1984-03-22T19:26:35-07:00",
         "issued": "1984-03-22T19:26:35.093-07:00",
@@ -8045,9 +7655,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0d157ad4-286c-8f22-e6ff-b06797004cb3"
-        },
         "effectiveDateTime": "1984-03-22T19:26:35-07:00",
         "issued": "1984-03-22T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -8101,9 +7708,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:77248809-6261-4d39-a2ea-3b9742f7b8b0"
-        },
         "effectiveDateTime": "1987-03-26T19:26:35-07:00",
         "issued": "1987-03-26T19:26:35.093-07:00",
         "valueQuantity": {
@@ -8152,9 +7756,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:77248809-6261-4d39-a2ea-3b9742f7b8b0"
         },
         "effectiveDateTime": "1987-03-26T19:26:35-07:00",
         "issued": "1987-03-26T19:26:35.093-07:00",
@@ -8205,9 +7806,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:77248809-6261-4d39-a2ea-3b9742f7b8b0"
-        },
         "effectiveDateTime": "1987-03-26T19:26:35-07:00",
         "issued": "1987-03-26T19:26:35.093-07:00",
         "valueQuantity": {
@@ -8256,9 +7854,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:77248809-6261-4d39-a2ea-3b9742f7b8b0"
         },
         "effectiveDateTime": "1987-03-26T19:26:35-07:00",
         "issued": "1987-03-26T19:26:35.093-07:00",
@@ -8342,9 +7937,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:77248809-6261-4d39-a2ea-3b9742f7b8b0"
-        },
         "effectiveDateTime": "1987-03-26T19:26:35-07:00",
         "issued": "1987-03-26T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -8398,9 +7990,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2ab070f3-25fe-567a-5490-b2e836aaf570"
-        },
         "effectiveDateTime": "1987-12-03T19:26:35-07:00",
         "issued": "1987-12-03T19:26:35.093-07:00",
         "valueQuantity": {
@@ -8449,9 +8038,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2ab070f3-25fe-567a-5490-b2e836aaf570"
         },
         "effectiveDateTime": "1987-12-03T19:26:35-07:00",
         "issued": "1987-12-03T19:26:35.093-07:00",
@@ -8502,9 +8088,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2ab070f3-25fe-567a-5490-b2e836aaf570"
-        },
         "effectiveDateTime": "1987-12-03T19:26:35-07:00",
         "issued": "1987-12-03T19:26:35.093-07:00",
         "valueQuantity": {
@@ -8553,9 +8136,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2ab070f3-25fe-567a-5490-b2e836aaf570"
         },
         "effectiveDateTime": "1987-12-03T19:26:35-07:00",
         "issued": "1987-12-03T19:26:35.093-07:00",
@@ -8639,9 +8219,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:2ab070f3-25fe-567a-5490-b2e836aaf570"
-        },
         "effectiveDateTime": "1987-12-03T19:26:35-07:00",
         "issued": "1987-12-03T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -8695,9 +8272,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5a1b3b87-205e-6bdd-6a94-e19be7d15164"
-        },
         "effectiveDateTime": "1990-03-29T19:26:35-07:00",
         "issued": "1990-03-29T19:26:35.093-07:00",
         "valueQuantity": {
@@ -8746,9 +8320,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5a1b3b87-205e-6bdd-6a94-e19be7d15164"
         },
         "effectiveDateTime": "1990-03-29T19:26:35-07:00",
         "issued": "1990-03-29T19:26:35.093-07:00",
@@ -8799,9 +8370,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5a1b3b87-205e-6bdd-6a94-e19be7d15164"
-        },
         "effectiveDateTime": "1990-03-29T19:26:35-07:00",
         "issued": "1990-03-29T19:26:35.093-07:00",
         "valueQuantity": {
@@ -8850,9 +8418,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5a1b3b87-205e-6bdd-6a94-e19be7d15164"
         },
         "effectiveDateTime": "1990-03-29T19:26:35-07:00",
         "issued": "1990-03-29T19:26:35.093-07:00",
@@ -8936,9 +8501,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5a1b3b87-205e-6bdd-6a94-e19be7d15164"
-        },
         "effectiveDateTime": "1990-03-29T19:26:35-07:00",
         "issued": "1990-03-29T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -8992,9 +8554,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f7ebf448-18be-5c59-730f-f45943b312f1"
-        },
         "effectiveDateTime": "1993-04-01T19:26:35-07:00",
         "issued": "1993-04-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9043,9 +8602,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f7ebf448-18be-5c59-730f-f45943b312f1"
         },
         "effectiveDateTime": "1993-04-01T19:26:35-07:00",
         "issued": "1993-04-01T19:26:35.093-07:00",
@@ -9096,9 +8652,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f7ebf448-18be-5c59-730f-f45943b312f1"
-        },
         "effectiveDateTime": "1993-04-01T19:26:35-07:00",
         "issued": "1993-04-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9147,9 +8700,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f7ebf448-18be-5c59-730f-f45943b312f1"
         },
         "effectiveDateTime": "1993-04-01T19:26:35-07:00",
         "issued": "1993-04-01T19:26:35.093-07:00",
@@ -9233,9 +8783,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f7ebf448-18be-5c59-730f-f45943b312f1"
-        },
         "effectiveDateTime": "1993-04-01T19:26:35-07:00",
         "issued": "1993-04-01T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -9289,9 +8836,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
-        },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9340,9 +8884,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
         },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
@@ -9393,9 +8934,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
-        },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9444,9 +8982,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
         },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
@@ -9529,9 +9064,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
-        },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9580,9 +9112,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
         },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
@@ -9633,9 +9162,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
-        },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9684,9 +9210,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
         },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
@@ -9737,9 +9260,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:938b351b-94bc-0fae-22b6-9472cf53bebb"
         },
         "effectiveDateTime": "1996-04-04T19:26:35-07:00",
         "issued": "1996-04-04T19:26:35.093-07:00",
@@ -9794,9 +9314,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
-        },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9845,9 +9362,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
         },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
@@ -9898,9 +9412,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
-        },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -9949,9 +9460,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
         },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
@@ -10034,9 +9542,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
-        },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10085,9 +9590,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
         },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
@@ -10138,9 +9640,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
-        },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10189,9 +9688,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
         },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
@@ -10242,9 +9738,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:cc060a70-adf7-73a6-b803-31deb8c0e43a"
         },
         "effectiveDateTime": "1999-04-08T19:26:35-07:00",
         "issued": "1999-04-08T19:26:35.093-07:00",
@@ -10299,9 +9792,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
-        },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10350,9 +9840,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
         },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
@@ -10403,9 +9890,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
-        },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10454,9 +9938,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
         },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
@@ -10539,9 +10020,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
-        },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10590,9 +10068,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
         },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
@@ -10643,9 +10118,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
-        },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10694,9 +10166,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
         },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
@@ -10747,9 +10216,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dd425fbb-aab5-46d1-d844-47c40afce123"
         },
         "effectiveDateTime": "2002-04-11T19:26:35-07:00",
         "issued": "2002-04-11T19:26:35.093-07:00",
@@ -10804,9 +10270,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0791f048-9b93-8c18-15f4-41ab47588955"
-        },
         "effectiveDateTime": "2003-09-18T19:26:35-07:00",
         "issued": "2003-09-18T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10855,9 +10318,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0791f048-9b93-8c18-15f4-41ab47588955"
         },
         "effectiveDateTime": "2003-09-18T19:26:35-07:00",
         "issued": "2003-09-18T19:26:35.093-07:00",
@@ -10908,9 +10368,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0791f048-9b93-8c18-15f4-41ab47588955"
-        },
         "effectiveDateTime": "2003-09-18T19:26:35-07:00",
         "issued": "2003-09-18T19:26:35.093-07:00",
         "valueQuantity": {
@@ -10959,9 +10416,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0791f048-9b93-8c18-15f4-41ab47588955"
         },
         "effectiveDateTime": "2003-09-18T19:26:35-07:00",
         "issued": "2003-09-18T19:26:35.093-07:00",
@@ -11045,9 +10499,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:0791f048-9b93-8c18-15f4-41ab47588955"
-        },
         "effectiveDateTime": "2003-09-18T19:26:35-07:00",
         "issued": "2003-09-18T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -11101,9 +10552,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:63844daf-ff49-1f58-91c7-7edef4529df0"
-        },
         "effectiveDateTime": "2005-01-27T19:26:35-07:00",
         "issued": "2005-01-27T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11152,9 +10600,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:63844daf-ff49-1f58-91c7-7edef4529df0"
         },
         "effectiveDateTime": "2005-01-27T19:26:35-07:00",
         "issued": "2005-01-27T19:26:35.093-07:00",
@@ -11205,9 +10650,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:63844daf-ff49-1f58-91c7-7edef4529df0"
-        },
         "effectiveDateTime": "2005-01-27T19:26:35-07:00",
         "issued": "2005-01-27T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11256,9 +10698,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:63844daf-ff49-1f58-91c7-7edef4529df0"
         },
         "effectiveDateTime": "2005-01-27T19:26:35-07:00",
         "issued": "2005-01-27T19:26:35.093-07:00",
@@ -11342,9 +10781,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:63844daf-ff49-1f58-91c7-7edef4529df0"
-        },
         "effectiveDateTime": "2005-01-27T19:26:35-07:00",
         "issued": "2005-01-27T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -11398,9 +10834,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
-        },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11449,9 +10882,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
         },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
@@ -11502,9 +10932,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
-        },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11553,9 +10980,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
         },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
@@ -11638,9 +11062,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
-        },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11689,9 +11110,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
         },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
@@ -11742,9 +11160,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
-        },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11793,9 +11208,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
         },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
@@ -11846,9 +11258,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5d65b7d2-f7f9-1516-9472-01b9b3ff0ccf"
         },
         "effectiveDateTime": "2007-02-01T19:26:35-07:00",
         "issued": "2007-02-01T19:26:35.093-07:00",
@@ -11903,9 +11312,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6d6583f1-0003-d882-c358-fb445c2fd07f"
-        },
         "effectiveDateTime": "2009-02-05T19:26:35-07:00",
         "issued": "2009-02-05T19:26:35.093-07:00",
         "valueQuantity": {
@@ -11954,9 +11360,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:6d6583f1-0003-d882-c358-fb445c2fd07f"
         },
         "effectiveDateTime": "2009-02-05T19:26:35-07:00",
         "issued": "2009-02-05T19:26:35.093-07:00",
@@ -12007,9 +11410,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6d6583f1-0003-d882-c358-fb445c2fd07f"
-        },
         "effectiveDateTime": "2009-02-05T19:26:35-07:00",
         "issued": "2009-02-05T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12058,9 +11458,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:6d6583f1-0003-d882-c358-fb445c2fd07f"
         },
         "effectiveDateTime": "2009-02-05T19:26:35-07:00",
         "issued": "2009-02-05T19:26:35.093-07:00",
@@ -12144,9 +11541,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:6d6583f1-0003-d882-c358-fb445c2fd07f"
-        },
         "effectiveDateTime": "2009-02-05T19:26:35-07:00",
         "issued": "2009-02-05T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -12200,9 +11594,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
-        },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12251,9 +11642,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
         },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
@@ -12304,9 +11692,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
-        },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12355,9 +11740,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
         },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
@@ -12440,9 +11822,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
-        },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12491,9 +11870,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
         },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
@@ -12544,9 +11920,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
-        },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12595,9 +11968,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
         },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
@@ -12648,9 +12018,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4f133389-1027-8760-54a1-47b6a87966b9"
         },
         "effectiveDateTime": "2011-02-10T19:26:35-07:00",
         "issued": "2011-02-10T19:26:35.093-07:00",
@@ -12705,9 +12072,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:663eab49-aa07-19e7-5d1e-ad924f430fa3"
-        },
         "effectiveDateTime": "2013-02-14T19:26:35-07:00",
         "issued": "2013-02-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12756,9 +12120,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:663eab49-aa07-19e7-5d1e-ad924f430fa3"
         },
         "effectiveDateTime": "2013-02-14T19:26:35-07:00",
         "issued": "2013-02-14T19:26:35.093-07:00",
@@ -12809,9 +12170,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:663eab49-aa07-19e7-5d1e-ad924f430fa3"
-        },
         "effectiveDateTime": "2013-02-14T19:26:35-07:00",
         "issued": "2013-02-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -12860,9 +12218,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:663eab49-aa07-19e7-5d1e-ad924f430fa3"
         },
         "effectiveDateTime": "2013-02-14T19:26:35-07:00",
         "issued": "2013-02-14T19:26:35.093-07:00",
@@ -12946,9 +12301,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:663eab49-aa07-19e7-5d1e-ad924f430fa3"
-        },
         "effectiveDateTime": "2013-02-14T19:26:35-07:00",
         "issued": "2013-02-14T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -13002,9 +12354,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
-        },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13053,9 +12402,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
         },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
@@ -13106,9 +12452,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
-        },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13157,9 +12500,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
         },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
@@ -13242,9 +12582,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
-        },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13293,9 +12630,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
         },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
@@ -13346,9 +12680,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
-        },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13397,9 +12728,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
         },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
@@ -13450,9 +12778,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a05a044a-a3ae-a142-a4ad-97c1cfab6cc9"
         },
         "effectiveDateTime": "2015-01-22T19:26:35-07:00",
         "issued": "2015-01-22T19:26:35.093-07:00",
@@ -13507,9 +12832,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:386c06fe-e200-f64a-c601-bf69670a787f"
-        },
         "effectiveDateTime": "2016-01-28T19:26:35-07:00",
         "issued": "2016-01-28T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13558,9 +12880,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:386c06fe-e200-f64a-c601-bf69670a787f"
         },
         "effectiveDateTime": "2016-01-28T19:26:35-07:00",
         "issued": "2016-01-28T19:26:35.093-07:00",
@@ -13611,9 +12930,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:386c06fe-e200-f64a-c601-bf69670a787f"
-        },
         "effectiveDateTime": "2016-01-28T19:26:35-07:00",
         "issued": "2016-01-28T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13662,9 +12978,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:386c06fe-e200-f64a-c601-bf69670a787f"
         },
         "effectiveDateTime": "2016-01-28T19:26:35-07:00",
         "issued": "2016-01-28T19:26:35.093-07:00",
@@ -13748,9 +13061,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:386c06fe-e200-f64a-c601-bf69670a787f"
-        },
         "effectiveDateTime": "2016-01-28T19:26:35-07:00",
         "issued": "2016-01-28T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -13804,9 +13114,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:e6e0163a-0e21-739e-d979-fcfec0a5735e"
-        },
         "effectiveDateTime": "2017-02-02T19:26:35-07:00",
         "issued": "2017-02-02T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13855,9 +13162,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e6e0163a-0e21-739e-d979-fcfec0a5735e"
         },
         "effectiveDateTime": "2017-02-02T19:26:35-07:00",
         "issued": "2017-02-02T19:26:35.093-07:00",
@@ -13908,9 +13212,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:e6e0163a-0e21-739e-d979-fcfec0a5735e"
-        },
         "effectiveDateTime": "2017-02-02T19:26:35-07:00",
         "issued": "2017-02-02T19:26:35.093-07:00",
         "valueQuantity": {
@@ -13959,9 +13260,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e6e0163a-0e21-739e-d979-fcfec0a5735e"
         },
         "effectiveDateTime": "2017-02-02T19:26:35-07:00",
         "issued": "2017-02-02T19:26:35.093-07:00",
@@ -14045,9 +13343,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:e6e0163a-0e21-739e-d979-fcfec0a5735e"
-        },
         "effectiveDateTime": "2017-02-02T19:26:35-07:00",
         "issued": "2017-02-02T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -14101,9 +13396,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
-        },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14152,9 +13444,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
         },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
@@ -14205,9 +13494,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
-        },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14256,9 +13542,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
         },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
@@ -14341,9 +13624,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
-        },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14392,9 +13672,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
         },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
@@ -14445,9 +13722,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
-        },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14496,9 +13770,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
         },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
@@ -14549,9 +13820,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8325434a-8576-2f21-4085-6362d2f0061b"
         },
         "effectiveDateTime": "2018-02-08T19:26:35-07:00",
         "issued": "2018-02-08T19:26:35.093-07:00",
@@ -14606,9 +13874,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f369cf67-4e2f-3cbc-95ff-dbef0fc86a2b"
-        },
         "effectiveDateTime": "2018-07-19T19:26:35-07:00",
         "issued": "2018-07-19T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14657,9 +13922,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f369cf67-4e2f-3cbc-95ff-dbef0fc86a2b"
         },
         "effectiveDateTime": "2018-07-19T19:26:35-07:00",
         "issued": "2018-07-19T19:26:35.093-07:00",
@@ -14710,9 +13972,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f369cf67-4e2f-3cbc-95ff-dbef0fc86a2b"
-        },
         "effectiveDateTime": "2018-07-19T19:26:35-07:00",
         "issued": "2018-07-19T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14761,9 +14020,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f369cf67-4e2f-3cbc-95ff-dbef0fc86a2b"
         },
         "effectiveDateTime": "2018-07-19T19:26:35-07:00",
         "issued": "2018-07-19T19:26:35.093-07:00",
@@ -14847,9 +14103,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:f369cf67-4e2f-3cbc-95ff-dbef0fc86a2b"
-        },
         "effectiveDateTime": "2018-07-19T19:26:35-07:00",
         "issued": "2018-07-19T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -14903,9 +14156,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:7d17c84f-00dd-c710-abee-70503eb4d917"
-        },
         "effectiveDateTime": "2019-02-14T19:26:35-07:00",
         "issued": "2019-02-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -14954,9 +14204,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:7d17c84f-00dd-c710-abee-70503eb4d917"
         },
         "effectiveDateTime": "2019-02-14T19:26:35-07:00",
         "issued": "2019-02-14T19:26:35.093-07:00",
@@ -15007,9 +14254,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:7d17c84f-00dd-c710-abee-70503eb4d917"
-        },
         "effectiveDateTime": "2019-02-14T19:26:35-07:00",
         "issued": "2019-02-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15058,9 +14302,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:7d17c84f-00dd-c710-abee-70503eb4d917"
         },
         "effectiveDateTime": "2019-02-14T19:26:35-07:00",
         "issued": "2019-02-14T19:26:35.093-07:00",
@@ -15144,9 +14385,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:7d17c84f-00dd-c710-abee-70503eb4d917"
-        },
         "effectiveDateTime": "2019-02-14T19:26:35-07:00",
         "issued": "2019-02-14T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -15200,9 +14438,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3dd5cb6f-95f1-4ccd-ebf8-e980a971cf8c"
-        },
         "effectiveDateTime": "2020-02-20T19:26:35-07:00",
         "issued": "2020-02-20T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15251,9 +14486,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3dd5cb6f-95f1-4ccd-ebf8-e980a971cf8c"
         },
         "effectiveDateTime": "2020-02-20T19:26:35-07:00",
         "issued": "2020-02-20T19:26:35.093-07:00",
@@ -15304,9 +14536,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3dd5cb6f-95f1-4ccd-ebf8-e980a971cf8c"
-        },
         "effectiveDateTime": "2020-02-20T19:26:35-07:00",
         "issued": "2020-02-20T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15355,9 +14584,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3dd5cb6f-95f1-4ccd-ebf8-e980a971cf8c"
         },
         "effectiveDateTime": "2020-02-20T19:26:35-07:00",
         "issued": "2020-02-20T19:26:35.093-07:00",
@@ -15441,9 +14667,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3dd5cb6f-95f1-4ccd-ebf8-e980a971cf8c"
-        },
         "effectiveDateTime": "2020-02-20T19:26:35-07:00",
         "issued": "2020-02-20T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -15497,9 +14720,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
-        },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15548,9 +14768,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
         },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
@@ -15601,9 +14818,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
-        },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15652,9 +14866,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
         },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
@@ -15737,9 +14948,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
-        },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15788,9 +14996,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
         },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
@@ -15841,9 +15046,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
-        },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
         "valueQuantity": {
@@ -15892,9 +15094,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
         },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
@@ -15945,9 +15144,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4c6590ab-d1b7-6349-5637-d4ced0da1e07"
         },
         "effectiveDateTime": "2021-02-25T19:26:35-07:00",
         "issued": "2021-02-25T19:26:35.093-07:00",
@@ -16004,9 +15200,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:fa854775-8aec-eab3-eb66-6bbde56f355d"
-        },
         "authoredOn": "2021-03-04T19:26:35-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985192",
@@ -16052,9 +15245,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
         },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
@@ -16105,9 +15295,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
-        },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
         "valueQuantity": {
@@ -16156,9 +15343,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
         },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
@@ -16209,9 +15393,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
-        },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
         "valueQuantity": {
@@ -16260,9 +15441,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
         },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
@@ -16313,9 +15491,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
-        },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
         "valueQuantity": {
@@ -16365,9 +15540,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
-        },
         "effectiveDateTime": "2021-03-06T16:44:06-07:00",
         "issued": "2021-03-06T16:44:06.093-07:00",
         "valueQuantity": {
@@ -16406,9 +15578,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:95461e73-ca3f-c056-c7fd-8b6363fcd175"
-        },
         "performedPeriod": {
           "start": "2021-03-06T18:07:45-07:00",
           "end": "2021-03-06T21:32:44-07:00"
@@ -16416,13 +15585,7 @@
         "location": {
           "reference": "Location?identifier=https://github.com/synthetichealth/synthea|81c75a54-2b95-3fdf-9327-b74df8630869",
           "display": "Fitchburg Outpatient Clinic"
-        },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:a6ace19d-3822-7963-266b-c9c63d0441f3",
-            "display": "Ischemic heart disease (disorder)"
-          }
-        ]
+        }
       },
       "request": {
         "method": "PUT",
@@ -16463,9 +15626,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
@@ -16516,9 +15676,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
         "valueQuantity": {
@@ -16567,9 +15724,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
@@ -16620,9 +15774,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
         "valueQuantity": {
@@ -16671,9 +15822,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
@@ -16724,9 +15872,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
         "valueQuantity": {
@@ -16775,9 +15920,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-06T22:21:28-07:00",
         "issued": "2021-03-06T22:21:28.093-07:00",
@@ -16828,9 +15970,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
         "valueQuantity": {
@@ -16879,9 +16018,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
@@ -16932,9 +16068,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
         "valueQuantity": {
@@ -16983,9 +16116,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
@@ -17036,9 +16166,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
         "valueQuantity": {
@@ -17087,9 +16214,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
@@ -17140,9 +16264,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T11:10:51-07:00",
         "issued": "2021-03-07T11:10:51.093-07:00",
         "valueQuantity": {
@@ -17191,9 +16312,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
@@ -17244,9 +16362,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
         "valueQuantity": {
@@ -17295,9 +16410,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
@@ -17348,9 +16460,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
         "valueQuantity": {
@@ -17399,9 +16508,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
@@ -17452,9 +16558,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
         "valueQuantity": {
@@ -17503,9 +16606,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-07T23:10:51-07:00",
         "issued": "2021-03-07T23:10:51.093-07:00",
@@ -17556,9 +16656,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
         "valueQuantity": {
@@ -17607,9 +16704,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
@@ -17660,9 +16754,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
         "valueQuantity": {
@@ -17711,9 +16802,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
@@ -17764,9 +16852,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
         "valueQuantity": {
@@ -17815,9 +16900,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
         },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
@@ -17868,9 +16950,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:06f60c2b-c226-5132-5658-9d2e111160a5"
-        },
         "effectiveDateTime": "2021-03-08T11:55:42-07:00",
         "issued": "2021-03-08T11:55:42.093-07:00",
         "valueQuantity": {
@@ -17919,9 +16998,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5a4ed761-e958-018a-64fb-adec4fbedd5e"
         },
         "effectiveDateTime": "2022-03-03T19:26:35-07:00",
         "issued": "2022-03-03T19:26:35.093-07:00",
@@ -17972,9 +17048,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5a4ed761-e958-018a-64fb-adec4fbedd5e"
-        },
         "effectiveDateTime": "2022-03-03T19:26:35-07:00",
         "issued": "2022-03-03T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18024,9 +17097,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5a4ed761-e958-018a-64fb-adec4fbedd5e"
-        },
         "effectiveDateTime": "2022-03-03T19:26:35-07:00",
         "issued": "2022-03-03T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18075,9 +17145,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5a4ed761-e958-018a-64fb-adec4fbedd5e"
         },
         "effectiveDateTime": "2022-03-03T19:26:35-07:00",
         "issued": "2022-03-03T19:26:35.093-07:00",
@@ -18161,9 +17228,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:5a4ed761-e958-018a-64fb-adec4fbedd5e"
-        },
         "effectiveDateTime": "2022-03-03T19:26:35-07:00",
         "issued": "2022-03-03T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -18217,9 +17281,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:77de2025-862d-c435-410c-acd08b1a4dc2"
-        },
         "effectiveDateTime": "2023-03-09T19:26:35-07:00",
         "issued": "2023-03-09T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18268,9 +17329,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:77de2025-862d-c435-410c-acd08b1a4dc2"
         },
         "effectiveDateTime": "2023-03-09T19:26:35-07:00",
         "issued": "2023-03-09T19:26:35.093-07:00",
@@ -18321,9 +17379,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:77de2025-862d-c435-410c-acd08b1a4dc2"
-        },
         "effectiveDateTime": "2023-03-09T19:26:35-07:00",
         "issued": "2023-03-09T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18372,9 +17427,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:77de2025-862d-c435-410c-acd08b1a4dc2"
         },
         "effectiveDateTime": "2023-03-09T19:26:35-07:00",
         "issued": "2023-03-09T19:26:35.093-07:00",
@@ -18458,9 +17510,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:77de2025-862d-c435-410c-acd08b1a4dc2"
-        },
         "effectiveDateTime": "2023-03-09T19:26:35-07:00",
         "issued": "2023-03-09T19:26:35.093-07:00",
         "valueCodeableConcept": {
@@ -18514,9 +17563,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
-        },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18565,9 +17611,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
         },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
@@ -18618,9 +17661,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
-        },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18669,9 +17709,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
         },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
@@ -18754,9 +17791,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
-        },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18805,9 +17839,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
         },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
@@ -18858,9 +17889,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
-        },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
         "valueQuantity": {
@@ -18909,9 +17937,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
         },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
@@ -18962,9 +17987,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:38110d30-4c18-a8ce-dd16-66087a44c940"
         },
         "effectiveDateTime": "2024-03-14T19:26:35-07:00",
         "issued": "2024-03-14T19:26:35.093-07:00",
@@ -19019,9 +18041,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3fb7a0f0-2486-4de6-0f5e-5c4d5255e71c"
-        },
         "effectiveDateTime": "2025-03-20T19:26:35-07:00",
         "issued": "2025-03-20T19:26:35.093-07:00",
         "valueQuantity": {
@@ -19070,9 +18089,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3fb7a0f0-2486-4de6-0f5e-5c4d5255e71c"
         },
         "effectiveDateTime": "2025-03-20T19:26:35-07:00",
         "issued": "2025-03-20T19:26:35.093-07:00",
@@ -19123,9 +18139,6 @@
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
         },
-        "encounter": {
-          "reference": "urn:uuid:3fb7a0f0-2486-4de6-0f5e-5c4d5255e71c"
-        },
         "effectiveDateTime": "2025-03-20T19:26:35-07:00",
         "issued": "2025-03-20T19:26:35.093-07:00",
         "valueQuantity": {
@@ -19174,9 +18187,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3fb7a0f0-2486-4de6-0f5e-5c4d5255e71c"
         },
         "effectiveDateTime": "2025-03-20T19:26:35-07:00",
         "issued": "2025-03-20T19:26:35.093-07:00",
@@ -19259,9 +18269,6 @@
         },
         "subject": {
           "reference": "urn:uuid:00c57650-013d-27a1-513f-b865c14a29ca"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3fb7a0f0-2486-4de6-0f5e-5c4d5255e71c"
         },
         "effectiveDateTime": "2025-03-20T19:26:35-07:00",
         "issued": "2025-03-20T19:26:35.093-07:00",

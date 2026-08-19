@@ -253,9 +253,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:bd0e62d2-e151-c99d-dce4-3fc40983ae35"
-        },
         "effectiveDateTime": "1979-02-14T15:23:06-07:00",
         "issued": "1979-02-14T15:23:06.331-07:00",
         "valueQuantity": {
@@ -305,9 +302,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:bd0e62d2-e151-c99d-dce4-3fc40983ae35"
-        },
         "effectiveDateTime": "1979-02-14T15:23:06-07:00",
         "issued": "1979-02-14T15:23:06.331-07:00",
         "valueQuantity": {
@@ -356,9 +350,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:bd0e62d2-e151-c99d-dce4-3fc40983ae35"
         },
         "effectiveDateTime": "1979-02-14T15:23:06-07:00",
         "issued": "1979-02-14T15:23:06.331-07:00",
@@ -442,9 +433,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:bd0e62d2-e151-c99d-dce4-3fc40983ae35"
-        },
         "effectiveDateTime": "1979-02-14T15:23:06-07:00",
         "issued": "1979-02-14T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -498,9 +486,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e4811168-352f-fe01-5468-f93b1459c777"
-        },
         "effectiveDateTime": "1979-03-21T15:23:06-07:00",
         "issued": "1979-03-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -550,9 +535,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e4811168-352f-fe01-5468-f93b1459c777"
-        },
         "effectiveDateTime": "1979-03-21T15:23:06-07:00",
         "issued": "1979-03-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -601,9 +583,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e4811168-352f-fe01-5468-f93b1459c777"
         },
         "effectiveDateTime": "1979-03-21T15:23:06-07:00",
         "issued": "1979-03-21T15:23:06.331-07:00",
@@ -687,9 +666,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e4811168-352f-fe01-5468-f93b1459c777"
-        },
         "effectiveDateTime": "1979-03-21T15:23:06-07:00",
         "issued": "1979-03-21T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -743,9 +719,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:ed84ce5b-81aa-015c-d6c5-39ac85957b34"
-        },
         "effectiveDateTime": "1979-05-23T15:23:06-07:00",
         "issued": "1979-05-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -795,9 +768,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:ed84ce5b-81aa-015c-d6c5-39ac85957b34"
-        },
         "effectiveDateTime": "1979-05-23T15:23:06-07:00",
         "issued": "1979-05-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -846,9 +816,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:ed84ce5b-81aa-015c-d6c5-39ac85957b34"
         },
         "effectiveDateTime": "1979-05-23T15:23:06-07:00",
         "issued": "1979-05-23T15:23:06.331-07:00",
@@ -932,9 +899,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:ed84ce5b-81aa-015c-d6c5-39ac85957b34"
-        },
         "effectiveDateTime": "1979-05-23T15:23:06-07:00",
         "issued": "1979-05-23T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -988,9 +952,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e87fb19a-c3aa-e843-71d7-92e5ae294d6e"
-        },
         "effectiveDateTime": "1979-07-25T15:23:06-07:00",
         "issued": "1979-07-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1040,9 +1001,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e87fb19a-c3aa-e843-71d7-92e5ae294d6e"
-        },
         "effectiveDateTime": "1979-07-25T15:23:06-07:00",
         "issued": "1979-07-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1091,9 +1049,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e87fb19a-c3aa-e843-71d7-92e5ae294d6e"
         },
         "effectiveDateTime": "1979-07-25T15:23:06-07:00",
         "issued": "1979-07-25T15:23:06.331-07:00",
@@ -1177,9 +1132,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e87fb19a-c3aa-e843-71d7-92e5ae294d6e"
-        },
         "effectiveDateTime": "1979-07-25T15:23:06-07:00",
         "issued": "1979-07-25T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -1233,9 +1185,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:07480f9e-0ffd-d477-2703-8bdc271b89b2"
-        },
         "effectiveDateTime": "1979-10-24T15:23:06-07:00",
         "issued": "1979-10-24T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1285,9 +1234,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:07480f9e-0ffd-d477-2703-8bdc271b89b2"
-        },
         "effectiveDateTime": "1979-10-24T15:23:06-07:00",
         "issued": "1979-10-24T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1336,9 +1282,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:07480f9e-0ffd-d477-2703-8bdc271b89b2"
         },
         "effectiveDateTime": "1979-10-24T15:23:06-07:00",
         "issued": "1979-10-24T15:23:06.331-07:00",
@@ -1422,9 +1365,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:07480f9e-0ffd-d477-2703-8bdc271b89b2"
-        },
         "effectiveDateTime": "1979-10-24T15:23:06-07:00",
         "issued": "1979-10-24T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -1478,9 +1418,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e8b9d4e5-440d-8997-4fe1-966018122172"
-        },
         "effectiveDateTime": "1980-01-23T15:23:06-07:00",
         "issued": "1980-01-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1530,9 +1467,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e8b9d4e5-440d-8997-4fe1-966018122172"
-        },
         "effectiveDateTime": "1980-01-23T15:23:06-07:00",
         "issued": "1980-01-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1581,9 +1515,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e8b9d4e5-440d-8997-4fe1-966018122172"
         },
         "effectiveDateTime": "1980-01-23T15:23:06-07:00",
         "issued": "1980-01-23T15:23:06.331-07:00",
@@ -1667,9 +1598,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e8b9d4e5-440d-8997-4fe1-966018122172"
-        },
         "effectiveDateTime": "1980-01-23T15:23:06-07:00",
         "issued": "1980-01-23T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -1723,9 +1651,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d5ac80a-d18a-0030-a4fd-f5a4005073d3"
-        },
         "effectiveDateTime": "1980-04-23T15:23:06-07:00",
         "issued": "1980-04-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1775,9 +1700,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d5ac80a-d18a-0030-a4fd-f5a4005073d3"
-        },
         "effectiveDateTime": "1980-04-23T15:23:06-07:00",
         "issued": "1980-04-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -1826,9 +1748,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:5d5ac80a-d18a-0030-a4fd-f5a4005073d3"
         },
         "effectiveDateTime": "1980-04-23T15:23:06-07:00",
         "issued": "1980-04-23T15:23:06.331-07:00",
@@ -1912,9 +1831,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:5d5ac80a-d18a-0030-a4fd-f5a4005073d3"
-        },
         "effectiveDateTime": "1980-04-23T15:23:06-07:00",
         "issued": "1980-04-23T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -1968,9 +1884,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a59289f6-cb23-d76c-47c0-217d2b81b84a"
-        },
         "effectiveDateTime": "1980-07-23T15:23:06-07:00",
         "issued": "1980-07-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2020,9 +1933,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a59289f6-cb23-d76c-47c0-217d2b81b84a"
-        },
         "effectiveDateTime": "1980-07-23T15:23:06-07:00",
         "issued": "1980-07-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2071,9 +1981,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a59289f6-cb23-d76c-47c0-217d2b81b84a"
         },
         "effectiveDateTime": "1980-07-23T15:23:06-07:00",
         "issued": "1980-07-23T15:23:06.331-07:00",
@@ -2157,9 +2064,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a59289f6-cb23-d76c-47c0-217d2b81b84a"
-        },
         "effectiveDateTime": "1980-07-23T15:23:06-07:00",
         "issued": "1980-07-23T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -2213,9 +2117,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:30dbf777-dfdd-9e76-9c94-5efb081612b9"
-        },
         "effectiveDateTime": "1981-01-21T15:23:06-07:00",
         "issued": "1981-01-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2265,9 +2166,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:30dbf777-dfdd-9e76-9c94-5efb081612b9"
-        },
         "effectiveDateTime": "1981-01-21T15:23:06-07:00",
         "issued": "1981-01-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2316,9 +2214,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:30dbf777-dfdd-9e76-9c94-5efb081612b9"
         },
         "effectiveDateTime": "1981-01-21T15:23:06-07:00",
         "issued": "1981-01-21T15:23:06.331-07:00",
@@ -2402,9 +2297,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:30dbf777-dfdd-9e76-9c94-5efb081612b9"
-        },
         "effectiveDateTime": "1981-01-21T15:23:06-07:00",
         "issued": "1981-01-21T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -2458,9 +2350,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:2ab56352-d0b2-02da-1ad4-b98dab7eb5f7"
-        },
         "effectiveDateTime": "1981-07-22T15:23:06-07:00",
         "issued": "1981-07-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2509,9 +2398,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2ab56352-d0b2-02da-1ad4-b98dab7eb5f7"
         },
         "effectiveDateTime": "1981-07-22T15:23:06-07:00",
         "issued": "1981-07-22T15:23:06.331-07:00",
@@ -2562,9 +2448,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:2ab56352-d0b2-02da-1ad4-b98dab7eb5f7"
-        },
         "effectiveDateTime": "1981-07-22T15:23:06-07:00",
         "issued": "1981-07-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2613,9 +2496,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:2ab56352-d0b2-02da-1ad4-b98dab7eb5f7"
         },
         "effectiveDateTime": "1981-07-22T15:23:06-07:00",
         "issued": "1981-07-22T15:23:06.331-07:00",
@@ -2699,9 +2579,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:2ab56352-d0b2-02da-1ad4-b98dab7eb5f7"
-        },
         "effectiveDateTime": "1981-07-22T15:23:06-07:00",
         "issued": "1981-07-22T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -2755,9 +2632,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e3de7869-c936-ed25-c60d-913acaa4a2b7"
-        },
         "effectiveDateTime": "1982-01-20T15:23:06-07:00",
         "issued": "1982-01-20T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2806,9 +2680,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e3de7869-c936-ed25-c60d-913acaa4a2b7"
         },
         "effectiveDateTime": "1982-01-20T15:23:06-07:00",
         "issued": "1982-01-20T15:23:06.331-07:00",
@@ -2859,9 +2730,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e3de7869-c936-ed25-c60d-913acaa4a2b7"
-        },
         "effectiveDateTime": "1982-01-20T15:23:06-07:00",
         "issued": "1982-01-20T15:23:06.331-07:00",
         "valueQuantity": {
@@ -2910,9 +2778,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e3de7869-c936-ed25-c60d-913acaa4a2b7"
         },
         "effectiveDateTime": "1982-01-20T15:23:06-07:00",
         "issued": "1982-01-20T15:23:06.331-07:00",
@@ -2996,9 +2861,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e3de7869-c936-ed25-c60d-913acaa4a2b7"
-        },
         "effectiveDateTime": "1982-01-20T15:23:06-07:00",
         "issued": "1982-01-20T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -3052,9 +2914,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:abb89c23-d814-d594-d504-b3f7a29a1b54"
-        },
         "effectiveDateTime": "1982-07-21T15:23:06-07:00",
         "issued": "1982-07-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3103,9 +2962,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:abb89c23-d814-d594-d504-b3f7a29a1b54"
         },
         "effectiveDateTime": "1982-07-21T15:23:06-07:00",
         "issued": "1982-07-21T15:23:06.331-07:00",
@@ -3156,9 +3012,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:abb89c23-d814-d594-d504-b3f7a29a1b54"
-        },
         "effectiveDateTime": "1982-07-21T15:23:06-07:00",
         "issued": "1982-07-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3207,9 +3060,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:abb89c23-d814-d594-d504-b3f7a29a1b54"
         },
         "effectiveDateTime": "1982-07-21T15:23:06-07:00",
         "issued": "1982-07-21T15:23:06.331-07:00",
@@ -3293,9 +3143,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:abb89c23-d814-d594-d504-b3f7a29a1b54"
-        },
         "effectiveDateTime": "1982-07-21T15:23:06-07:00",
         "issued": "1982-07-21T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -3349,9 +3196,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:eacef930-26e1-080f-cc82-273e226223f1"
-        },
         "effectiveDateTime": "1983-01-19T15:23:06-07:00",
         "issued": "1983-01-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3400,9 +3244,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:eacef930-26e1-080f-cc82-273e226223f1"
         },
         "effectiveDateTime": "1983-01-19T15:23:06-07:00",
         "issued": "1983-01-19T15:23:06.331-07:00",
@@ -3453,9 +3294,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:eacef930-26e1-080f-cc82-273e226223f1"
-        },
         "effectiveDateTime": "1983-01-19T15:23:06-07:00",
         "issued": "1983-01-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3504,9 +3342,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:eacef930-26e1-080f-cc82-273e226223f1"
         },
         "effectiveDateTime": "1983-01-19T15:23:06-07:00",
         "issued": "1983-01-19T15:23:06.331-07:00",
@@ -3590,9 +3425,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:eacef930-26e1-080f-cc82-273e226223f1"
-        },
         "effectiveDateTime": "1983-01-19T15:23:06-07:00",
         "issued": "1983-01-19T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -3646,9 +3478,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9e0996b2-aaaf-5179-919d-607e852e480b"
-        },
         "effectiveDateTime": "1984-01-25T15:23:06-07:00",
         "issued": "1984-01-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3697,9 +3526,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9e0996b2-aaaf-5179-919d-607e852e480b"
         },
         "effectiveDateTime": "1984-01-25T15:23:06-07:00",
         "issued": "1984-01-25T15:23:06.331-07:00",
@@ -3750,9 +3576,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9e0996b2-aaaf-5179-919d-607e852e480b"
-        },
         "effectiveDateTime": "1984-01-25T15:23:06-07:00",
         "issued": "1984-01-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3801,9 +3624,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9e0996b2-aaaf-5179-919d-607e852e480b"
         },
         "effectiveDateTime": "1984-01-25T15:23:06-07:00",
         "issued": "1984-01-25T15:23:06.331-07:00",
@@ -3887,9 +3707,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9e0996b2-aaaf-5179-919d-607e852e480b"
-        },
         "effectiveDateTime": "1984-01-25T15:23:06-07:00",
         "issued": "1984-01-25T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -3943,9 +3760,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:afb08fb1-58c5-7f9e-d1d4-7a9dc7321b29"
-        },
         "effectiveDateTime": "1985-01-30T15:23:06-07:00",
         "issued": "1985-01-30T15:23:06.331-07:00",
         "valueQuantity": {
@@ -3994,9 +3808,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:afb08fb1-58c5-7f9e-d1d4-7a9dc7321b29"
         },
         "effectiveDateTime": "1985-01-30T15:23:06-07:00",
         "issued": "1985-01-30T15:23:06.331-07:00",
@@ -4047,9 +3858,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:afb08fb1-58c5-7f9e-d1d4-7a9dc7321b29"
-        },
         "effectiveDateTime": "1985-01-30T15:23:06-07:00",
         "issued": "1985-01-30T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4098,9 +3906,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:afb08fb1-58c5-7f9e-d1d4-7a9dc7321b29"
         },
         "effectiveDateTime": "1985-01-30T15:23:06-07:00",
         "issued": "1985-01-30T15:23:06.331-07:00",
@@ -4184,9 +3989,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:afb08fb1-58c5-7f9e-d1d4-7a9dc7321b29"
-        },
         "effectiveDateTime": "1985-01-30T15:23:06-07:00",
         "issued": "1985-01-30T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -4240,9 +4042,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0b205a8-22fb-bc49-5a07-f1e0dd0efb89"
-        },
         "effectiveDateTime": "1986-02-05T15:23:06-07:00",
         "issued": "1986-02-05T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4291,9 +4090,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0b205a8-22fb-bc49-5a07-f1e0dd0efb89"
         },
         "effectiveDateTime": "1986-02-05T15:23:06-07:00",
         "issued": "1986-02-05T15:23:06.331-07:00",
@@ -4344,9 +4140,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0b205a8-22fb-bc49-5a07-f1e0dd0efb89"
-        },
         "effectiveDateTime": "1986-02-05T15:23:06-07:00",
         "issued": "1986-02-05T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4395,9 +4188,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0b205a8-22fb-bc49-5a07-f1e0dd0efb89"
         },
         "effectiveDateTime": "1986-02-05T15:23:06-07:00",
         "issued": "1986-02-05T15:23:06.331-07:00",
@@ -4481,9 +4271,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0b205a8-22fb-bc49-5a07-f1e0dd0efb89"
-        },
         "effectiveDateTime": "1986-02-05T15:23:06-07:00",
         "issued": "1986-02-05T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -4537,9 +4324,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e857cfb9-7090-5aef-0f91-b8d5fd8c2fba"
-        },
         "effectiveDateTime": "1986-09-10T15:23:06-07:00",
         "issued": "1986-09-10T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4588,9 +4372,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e857cfb9-7090-5aef-0f91-b8d5fd8c2fba"
         },
         "effectiveDateTime": "1986-09-10T15:23:06-07:00",
         "issued": "1986-09-10T15:23:06.331-07:00",
@@ -4641,9 +4422,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e857cfb9-7090-5aef-0f91-b8d5fd8c2fba"
-        },
         "effectiveDateTime": "1986-09-10T15:23:06-07:00",
         "issued": "1986-09-10T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4692,9 +4470,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e857cfb9-7090-5aef-0f91-b8d5fd8c2fba"
         },
         "effectiveDateTime": "1986-09-10T15:23:06-07:00",
         "issued": "1986-09-10T15:23:06.331-07:00",
@@ -4778,9 +4553,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e857cfb9-7090-5aef-0f91-b8d5fd8c2fba"
-        },
         "effectiveDateTime": "1986-09-10T15:23:06-07:00",
         "issued": "1986-09-10T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -4834,9 +4606,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:58f3d220-2dad-55f3-4e81-b4d885d2993b"
-        },
         "effectiveDateTime": "1987-02-11T15:23:06-07:00",
         "issued": "1987-02-11T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4885,9 +4654,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:58f3d220-2dad-55f3-4e81-b4d885d2993b"
         },
         "effectiveDateTime": "1987-02-11T15:23:06-07:00",
         "issued": "1987-02-11T15:23:06.331-07:00",
@@ -4938,9 +4704,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:58f3d220-2dad-55f3-4e81-b4d885d2993b"
-        },
         "effectiveDateTime": "1987-02-11T15:23:06-07:00",
         "issued": "1987-02-11T15:23:06.331-07:00",
         "valueQuantity": {
@@ -4989,9 +4752,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:58f3d220-2dad-55f3-4e81-b4d885d2993b"
         },
         "effectiveDateTime": "1987-02-11T15:23:06-07:00",
         "issued": "1987-02-11T15:23:06.331-07:00",
@@ -5075,9 +4835,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:58f3d220-2dad-55f3-4e81-b4d885d2993b"
-        },
         "effectiveDateTime": "1987-02-11T15:23:06-07:00",
         "issued": "1987-02-11T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -5131,9 +4888,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:59591fad-7329-725d-e5ee-ce323d7d054a"
-        },
         "effectiveDateTime": "1988-02-17T15:23:06-07:00",
         "issued": "1988-02-17T15:23:06.331-07:00",
         "valueQuantity": {
@@ -5182,9 +4936,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:59591fad-7329-725d-e5ee-ce323d7d054a"
         },
         "effectiveDateTime": "1988-02-17T15:23:06-07:00",
         "issued": "1988-02-17T15:23:06.331-07:00",
@@ -5235,9 +4986,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:59591fad-7329-725d-e5ee-ce323d7d054a"
-        },
         "effectiveDateTime": "1988-02-17T15:23:06-07:00",
         "issued": "1988-02-17T15:23:06.331-07:00",
         "valueQuantity": {
@@ -5286,9 +5034,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:59591fad-7329-725d-e5ee-ce323d7d054a"
         },
         "effectiveDateTime": "1988-02-17T15:23:06-07:00",
         "issued": "1988-02-17T15:23:06.331-07:00",
@@ -5372,9 +5117,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:59591fad-7329-725d-e5ee-ce323d7d054a"
-        },
         "effectiveDateTime": "1988-02-17T15:23:06-07:00",
         "issued": "1988-02-17T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -5428,9 +5170,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a6238fc1-faa0-0982-5f75-8eacc98493c9"
-        },
         "effectiveDateTime": "1989-02-22T15:23:06-07:00",
         "issued": "1989-02-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -5479,9 +5218,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a6238fc1-faa0-0982-5f75-8eacc98493c9"
         },
         "effectiveDateTime": "1989-02-22T15:23:06-07:00",
         "issued": "1989-02-22T15:23:06.331-07:00",
@@ -5532,9 +5268,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a6238fc1-faa0-0982-5f75-8eacc98493c9"
-        },
         "effectiveDateTime": "1989-02-22T15:23:06-07:00",
         "issued": "1989-02-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -5583,9 +5316,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a6238fc1-faa0-0982-5f75-8eacc98493c9"
         },
         "effectiveDateTime": "1989-02-22T15:23:06-07:00",
         "issued": "1989-02-22T15:23:06.331-07:00",
@@ -5669,9 +5399,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a6238fc1-faa0-0982-5f75-8eacc98493c9"
-        },
         "effectiveDateTime": "1989-02-22T15:23:06-07:00",
         "issued": "1989-02-22T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -5725,9 +5452,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:dbdbe65c-b0e7-adb0-b61a-ad3ab572a59f"
-        },
         "effectiveDateTime": "1990-02-28T15:23:06-07:00",
         "issued": "1990-02-28T15:23:06.331-07:00",
         "valueQuantity": {
@@ -5776,9 +5500,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dbdbe65c-b0e7-adb0-b61a-ad3ab572a59f"
         },
         "effectiveDateTime": "1990-02-28T15:23:06-07:00",
         "issued": "1990-02-28T15:23:06.331-07:00",
@@ -5829,9 +5550,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:dbdbe65c-b0e7-adb0-b61a-ad3ab572a59f"
-        },
         "effectiveDateTime": "1990-02-28T15:23:06-07:00",
         "issued": "1990-02-28T15:23:06.331-07:00",
         "valueQuantity": {
@@ -5880,9 +5598,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dbdbe65c-b0e7-adb0-b61a-ad3ab572a59f"
         },
         "effectiveDateTime": "1990-02-28T15:23:06-07:00",
         "issued": "1990-02-28T15:23:06.331-07:00",
@@ -5966,9 +5681,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:dbdbe65c-b0e7-adb0-b61a-ad3ab572a59f"
-        },
         "effectiveDateTime": "1990-02-28T15:23:06-07:00",
         "issued": "1990-02-28T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -6022,9 +5734,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:99c524be-1283-5360-b5f8-f9c4a13f87de"
-        },
         "effectiveDateTime": "1991-03-06T15:23:06-07:00",
         "issued": "1991-03-06T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6073,9 +5782,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:99c524be-1283-5360-b5f8-f9c4a13f87de"
         },
         "effectiveDateTime": "1991-03-06T15:23:06-07:00",
         "issued": "1991-03-06T15:23:06.331-07:00",
@@ -6126,9 +5832,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:99c524be-1283-5360-b5f8-f9c4a13f87de"
-        },
         "effectiveDateTime": "1991-03-06T15:23:06-07:00",
         "issued": "1991-03-06T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6177,9 +5880,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:99c524be-1283-5360-b5f8-f9c4a13f87de"
         },
         "effectiveDateTime": "1991-03-06T15:23:06-07:00",
         "issued": "1991-03-06T15:23:06.331-07:00",
@@ -6263,9 +5963,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:99c524be-1283-5360-b5f8-f9c4a13f87de"
-        },
         "effectiveDateTime": "1991-03-06T15:23:06-07:00",
         "issued": "1991-03-06T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -6319,9 +6016,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:141bc36d-d13b-7770-e6b4-e4ca56b58842"
-        },
         "effectiveDateTime": "1992-03-11T15:23:06-07:00",
         "issued": "1992-03-11T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6370,9 +6064,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:141bc36d-d13b-7770-e6b4-e4ca56b58842"
         },
         "effectiveDateTime": "1992-03-11T15:23:06-07:00",
         "issued": "1992-03-11T15:23:06.331-07:00",
@@ -6423,9 +6114,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:141bc36d-d13b-7770-e6b4-e4ca56b58842"
-        },
         "effectiveDateTime": "1992-03-11T15:23:06-07:00",
         "issued": "1992-03-11T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6474,9 +6162,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:141bc36d-d13b-7770-e6b4-e4ca56b58842"
         },
         "effectiveDateTime": "1992-03-11T15:23:06-07:00",
         "issued": "1992-03-11T15:23:06.331-07:00",
@@ -6560,9 +6245,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:141bc36d-d13b-7770-e6b4-e4ca56b58842"
-        },
         "effectiveDateTime": "1992-03-11T15:23:06-07:00",
         "issued": "1992-03-11T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -6616,9 +6298,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9a2354c4-0143-11f2-e3db-ee3024e9ed35"
-        },
         "effectiveDateTime": "1993-03-17T15:23:06-07:00",
         "issued": "1993-03-17T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6667,9 +6346,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9a2354c4-0143-11f2-e3db-ee3024e9ed35"
         },
         "effectiveDateTime": "1993-03-17T15:23:06-07:00",
         "issued": "1993-03-17T15:23:06.331-07:00",
@@ -6720,9 +6396,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9a2354c4-0143-11f2-e3db-ee3024e9ed35"
-        },
         "effectiveDateTime": "1993-03-17T15:23:06-07:00",
         "issued": "1993-03-17T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6771,9 +6444,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9a2354c4-0143-11f2-e3db-ee3024e9ed35"
         },
         "effectiveDateTime": "1993-03-17T15:23:06-07:00",
         "issued": "1993-03-17T15:23:06.331-07:00",
@@ -6857,9 +6527,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9a2354c4-0143-11f2-e3db-ee3024e9ed35"
-        },
         "effectiveDateTime": "1993-03-17T15:23:06-07:00",
         "issued": "1993-03-17T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -6913,9 +6580,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:dbe7677a-17d6-2d49-d577-ad406588d895"
-        },
         "effectiveDateTime": "1994-03-23T15:23:06-07:00",
         "issued": "1994-03-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -6964,9 +6628,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dbe7677a-17d6-2d49-d577-ad406588d895"
         },
         "effectiveDateTime": "1994-03-23T15:23:06-07:00",
         "issued": "1994-03-23T15:23:06.331-07:00",
@@ -7017,9 +6678,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:dbe7677a-17d6-2d49-d577-ad406588d895"
-        },
         "effectiveDateTime": "1994-03-23T15:23:06-07:00",
         "issued": "1994-03-23T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7068,9 +6726,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:dbe7677a-17d6-2d49-d577-ad406588d895"
         },
         "effectiveDateTime": "1994-03-23T15:23:06-07:00",
         "issued": "1994-03-23T15:23:06.331-07:00",
@@ -7154,9 +6809,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:dbe7677a-17d6-2d49-d577-ad406588d895"
-        },
         "effectiveDateTime": "1994-03-23T15:23:06-07:00",
         "issued": "1994-03-23T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -7210,9 +6862,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:fa8f63cf-2112-bda8-162c-2f38808557b8"
-        },
         "effectiveDateTime": "1995-03-29T15:23:06-07:00",
         "issued": "1995-03-29T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7261,9 +6910,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:fa8f63cf-2112-bda8-162c-2f38808557b8"
         },
         "effectiveDateTime": "1995-03-29T15:23:06-07:00",
         "issued": "1995-03-29T15:23:06.331-07:00",
@@ -7314,9 +6960,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:fa8f63cf-2112-bda8-162c-2f38808557b8"
-        },
         "effectiveDateTime": "1995-03-29T15:23:06-07:00",
         "issued": "1995-03-29T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7365,9 +7008,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:fa8f63cf-2112-bda8-162c-2f38808557b8"
         },
         "effectiveDateTime": "1995-03-29T15:23:06-07:00",
         "issued": "1995-03-29T15:23:06.331-07:00",
@@ -7451,9 +7091,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:fa8f63cf-2112-bda8-162c-2f38808557b8"
-        },
         "effectiveDateTime": "1995-03-29T15:23:06-07:00",
         "issued": "1995-03-29T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -7507,9 +7144,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0bc3f47a-04d2-2f86-46af-265fc0c9b378"
-        },
         "effectiveDateTime": "1996-04-03T15:23:06-07:00",
         "issued": "1996-04-03T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7558,9 +7192,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0bc3f47a-04d2-2f86-46af-265fc0c9b378"
         },
         "effectiveDateTime": "1996-04-03T15:23:06-07:00",
         "issued": "1996-04-03T15:23:06.331-07:00",
@@ -7611,9 +7242,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0bc3f47a-04d2-2f86-46af-265fc0c9b378"
-        },
         "effectiveDateTime": "1996-04-03T15:23:06-07:00",
         "issued": "1996-04-03T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7662,9 +7290,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0bc3f47a-04d2-2f86-46af-265fc0c9b378"
         },
         "effectiveDateTime": "1996-04-03T15:23:06-07:00",
         "issued": "1996-04-03T15:23:06.331-07:00",
@@ -7748,9 +7373,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0bc3f47a-04d2-2f86-46af-265fc0c9b378"
-        },
         "effectiveDateTime": "1996-04-03T15:23:06-07:00",
         "issued": "1996-04-03T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -7804,9 +7426,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:8d1ba3d6-1749-4ca3-ddc0-0338d4b07460"
-        },
         "effectiveDateTime": "1997-04-09T15:23:06-07:00",
         "issued": "1997-04-09T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7855,9 +7474,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8d1ba3d6-1749-4ca3-ddc0-0338d4b07460"
         },
         "effectiveDateTime": "1997-04-09T15:23:06-07:00",
         "issued": "1997-04-09T15:23:06.331-07:00",
@@ -7908,9 +7524,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:8d1ba3d6-1749-4ca3-ddc0-0338d4b07460"
-        },
         "effectiveDateTime": "1997-04-09T15:23:06-07:00",
         "issued": "1997-04-09T15:23:06.331-07:00",
         "valueQuantity": {
@@ -7959,9 +7572,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:8d1ba3d6-1749-4ca3-ddc0-0338d4b07460"
         },
         "effectiveDateTime": "1997-04-09T15:23:06-07:00",
         "issued": "1997-04-09T15:23:06.331-07:00",
@@ -8045,9 +7655,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:8d1ba3d6-1749-4ca3-ddc0-0338d4b07460"
-        },
         "effectiveDateTime": "1997-04-09T15:23:06-07:00",
         "issued": "1997-04-09T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -8101,9 +7708,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9feab9ca-89c5-a45e-9eaa-852648038185"
-        },
         "effectiveDateTime": "1998-04-15T15:23:06-07:00",
         "issued": "1998-04-15T15:23:06.331-07:00",
         "valueQuantity": {
@@ -8152,9 +7756,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9feab9ca-89c5-a45e-9eaa-852648038185"
         },
         "effectiveDateTime": "1998-04-15T15:23:06-07:00",
         "issued": "1998-04-15T15:23:06.331-07:00",
@@ -8205,9 +7806,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9feab9ca-89c5-a45e-9eaa-852648038185"
-        },
         "effectiveDateTime": "1998-04-15T15:23:06-07:00",
         "issued": "1998-04-15T15:23:06.331-07:00",
         "valueQuantity": {
@@ -8256,9 +7854,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:9feab9ca-89c5-a45e-9eaa-852648038185"
         },
         "effectiveDateTime": "1998-04-15T15:23:06-07:00",
         "issued": "1998-04-15T15:23:06.331-07:00",
@@ -8342,9 +7937,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:9feab9ca-89c5-a45e-9eaa-852648038185"
-        },
         "effectiveDateTime": "1998-04-15T15:23:06-07:00",
         "issued": "1998-04-15T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -8398,9 +7990,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:52d02e85-775f-d560-fd63-9aedca877864"
-        },
         "effectiveDateTime": "2001-04-18T15:23:06-07:00",
         "issued": "2001-04-18T15:23:06.331-07:00",
         "valueQuantity": {
@@ -8449,9 +8038,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:52d02e85-775f-d560-fd63-9aedca877864"
         },
         "effectiveDateTime": "2001-04-18T15:23:06-07:00",
         "issued": "2001-04-18T15:23:06.331-07:00",
@@ -8502,9 +8088,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:52d02e85-775f-d560-fd63-9aedca877864"
-        },
         "effectiveDateTime": "2001-04-18T15:23:06-07:00",
         "issued": "2001-04-18T15:23:06.331-07:00",
         "valueQuantity": {
@@ -8553,9 +8136,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:52d02e85-775f-d560-fd63-9aedca877864"
         },
         "effectiveDateTime": "2001-04-18T15:23:06-07:00",
         "issued": "2001-04-18T15:23:06.331-07:00",
@@ -8639,9 +8219,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:52d02e85-775f-d560-fd63-9aedca877864"
-        },
         "effectiveDateTime": "2001-04-18T15:23:06-07:00",
         "issued": "2001-04-18T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -8695,9 +8272,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:69ec3212-2299-f1a8-5d23-66377e49c281"
-        },
         "effectiveDateTime": "2004-04-21T15:23:06-07:00",
         "issued": "2004-04-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -8746,9 +8320,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:69ec3212-2299-f1a8-5d23-66377e49c281"
         },
         "effectiveDateTime": "2004-04-21T15:23:06-07:00",
         "issued": "2004-04-21T15:23:06.331-07:00",
@@ -8799,9 +8370,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:69ec3212-2299-f1a8-5d23-66377e49c281"
-        },
         "effectiveDateTime": "2004-04-21T15:23:06-07:00",
         "issued": "2004-04-21T15:23:06.331-07:00",
         "valueQuantity": {
@@ -8850,9 +8418,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:69ec3212-2299-f1a8-5d23-66377e49c281"
         },
         "effectiveDateTime": "2004-04-21T15:23:06-07:00",
         "issued": "2004-04-21T15:23:06.331-07:00",
@@ -8936,9 +8501,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:69ec3212-2299-f1a8-5d23-66377e49c281"
-        },
         "effectiveDateTime": "2004-04-21T15:23:06-07:00",
         "issued": "2004-04-21T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -8992,9 +8554,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:57d6706f-e2e7-d23f-8bd2-db7111e132ed"
-        },
         "effectiveDateTime": "2007-04-25T15:23:06-07:00",
         "issued": "2007-04-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9043,9 +8602,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:57d6706f-e2e7-d23f-8bd2-db7111e132ed"
         },
         "effectiveDateTime": "2007-04-25T15:23:06-07:00",
         "issued": "2007-04-25T15:23:06.331-07:00",
@@ -9096,9 +8652,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:57d6706f-e2e7-d23f-8bd2-db7111e132ed"
-        },
         "effectiveDateTime": "2007-04-25T15:23:06-07:00",
         "issued": "2007-04-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9147,9 +8700,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:57d6706f-e2e7-d23f-8bd2-db7111e132ed"
         },
         "effectiveDateTime": "2007-04-25T15:23:06-07:00",
         "issued": "2007-04-25T15:23:06.331-07:00",
@@ -9233,9 +8783,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:57d6706f-e2e7-d23f-8bd2-db7111e132ed"
-        },
         "effectiveDateTime": "2007-04-25T15:23:06-07:00",
         "issued": "2007-04-25T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -9289,9 +8836,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
-        },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9340,9 +8884,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
         },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
@@ -9393,9 +8934,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
-        },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9444,9 +8982,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
         },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
@@ -9529,9 +9064,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
-        },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9580,9 +9112,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
         },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
@@ -9633,9 +9162,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
-        },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9684,9 +9210,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
         },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
@@ -9737,9 +9260,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:36ea2688-01f3-9881-44c8-d3664b7a4caf"
         },
         "effectiveDateTime": "2010-04-28T15:23:06-07:00",
         "issued": "2010-04-28T15:23:06.331-07:00",
@@ -9794,9 +9314,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e7e09674-65c9-4fde-b8a9-49430acdb4bd"
-        },
         "effectiveDateTime": "2011-06-08T15:23:06-07:00",
         "issued": "2011-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9845,9 +9362,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e7e09674-65c9-4fde-b8a9-49430acdb4bd"
         },
         "effectiveDateTime": "2011-06-08T15:23:06-07:00",
         "issued": "2011-06-08T15:23:06.331-07:00",
@@ -9898,9 +9412,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e7e09674-65c9-4fde-b8a9-49430acdb4bd"
-        },
         "effectiveDateTime": "2011-06-08T15:23:06-07:00",
         "issued": "2011-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -9949,9 +9460,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:e7e09674-65c9-4fde-b8a9-49430acdb4bd"
         },
         "effectiveDateTime": "2011-06-08T15:23:06-07:00",
         "issued": "2011-06-08T15:23:06.331-07:00",
@@ -10035,9 +9543,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:e7e09674-65c9-4fde-b8a9-49430acdb4bd"
-        },
         "effectiveDateTime": "2011-06-08T15:23:06-07:00",
         "issued": "2011-06-08T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -10091,9 +9596,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
-        },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10142,9 +9644,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
         },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
@@ -10195,9 +9694,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
-        },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10246,9 +9742,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
         },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
@@ -10331,9 +9824,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
-        },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10382,9 +9872,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
         },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
@@ -10435,9 +9922,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
-        },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10486,9 +9970,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
         },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
@@ -10539,9 +10020,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:419324f6-6468-7e21-e362-15438b8a5567"
         },
         "effectiveDateTime": "2013-05-01T15:23:06-07:00",
         "issued": "2013-05-01T15:23:06.331-07:00",
@@ -10596,9 +10074,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
-        },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10647,9 +10122,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
         },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
@@ -10700,9 +10172,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
-        },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10751,9 +10220,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
         },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
@@ -10836,9 +10302,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
-        },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10887,9 +10350,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
         },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
@@ -10940,9 +10400,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
-        },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
         "valueQuantity": {
@@ -10991,9 +10448,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
         },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
@@ -11044,9 +10498,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
         },
         "effectiveDateTime": "2016-05-04T15:23:06-07:00",
         "issued": "2016-05-04T15:23:06.331-07:00",
@@ -11103,20 +10554,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
-        },
         "authoredOn": "2016-05-04T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -11189,20 +10631,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:44239373-269e-f2dd-8bf5-d77c6f00f1c9"
-        },
         "authoredOn": "2016-05-04T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -11273,9 +10706,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:705dbf60-d2e4-a26c-e5a2-91ad761c7679"
-        },
         "effectiveDateTime": "2017-02-15T15:23:06-07:00",
         "issued": "2017-02-15T15:23:06.331-07:00",
         "valueQuantity": {
@@ -11324,9 +10754,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:705dbf60-d2e4-a26c-e5a2-91ad761c7679"
         },
         "effectiveDateTime": "2017-02-15T15:23:06-07:00",
         "issued": "2017-02-15T15:23:06.331-07:00",
@@ -11377,9 +10804,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:705dbf60-d2e4-a26c-e5a2-91ad761c7679"
-        },
         "effectiveDateTime": "2017-02-15T15:23:06-07:00",
         "issued": "2017-02-15T15:23:06.331-07:00",
         "valueQuantity": {
@@ -11428,9 +10852,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:705dbf60-d2e4-a26c-e5a2-91ad761c7679"
         },
         "effectiveDateTime": "2017-02-15T15:23:06-07:00",
         "issued": "2017-02-15T15:23:06.331-07:00",
@@ -11514,9 +10935,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:705dbf60-d2e4-a26c-e5a2-91ad761c7679"
-        },
         "effectiveDateTime": "2017-02-15T15:23:06-07:00",
         "issued": "2017-02-15T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -11572,20 +10990,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:705dbf60-d2e4-a26c-e5a2-91ad761c7679"
-        },
         "authoredOn": "2017-02-15T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999939199",
           "display": "Dr. Terrie907 Ratke343"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -11658,20 +11067,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0199f131-7656-fc54-8572-38113b601315"
-        },
         "authoredOn": "2017-02-22T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -11742,9 +11142,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:359dd803-e720-6128-9650-c82622222fdc"
-        },
         "effectiveDateTime": "2017-05-10T15:23:06-07:00",
         "issued": "2017-05-10T15:23:06.331-07:00",
         "valueQuantity": {
@@ -11793,9 +11190,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:359dd803-e720-6128-9650-c82622222fdc"
         },
         "effectiveDateTime": "2017-05-10T15:23:06-07:00",
         "issued": "2017-05-10T15:23:06.331-07:00",
@@ -11846,9 +11240,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:359dd803-e720-6128-9650-c82622222fdc"
-        },
         "effectiveDateTime": "2017-05-10T15:23:06-07:00",
         "issued": "2017-05-10T15:23:06.331-07:00",
         "valueQuantity": {
@@ -11897,9 +11288,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:359dd803-e720-6128-9650-c82622222fdc"
         },
         "effectiveDateTime": "2017-05-10T15:23:06-07:00",
         "issued": "2017-05-10T15:23:06.331-07:00",
@@ -11983,9 +11371,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:359dd803-e720-6128-9650-c82622222fdc"
-        },
         "effectiveDateTime": "2017-05-10T15:23:06-07:00",
         "issued": "2017-05-10T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -12041,20 +11426,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:359dd803-e720-6128-9650-c82622222fdc"
-        },
         "authoredOn": "2017-05-10T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -12125,9 +11501,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:c41228bd-6b14-aeb5-af6a-5ad5de27fc29"
-        },
         "effectiveDateTime": "2017-07-19T15:23:06-07:00",
         "issued": "2017-07-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -12176,9 +11549,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c41228bd-6b14-aeb5-af6a-5ad5de27fc29"
         },
         "effectiveDateTime": "2017-07-19T15:23:06-07:00",
         "issued": "2017-07-19T15:23:06.331-07:00",
@@ -12229,9 +11599,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:c41228bd-6b14-aeb5-af6a-5ad5de27fc29"
-        },
         "effectiveDateTime": "2017-07-19T15:23:06-07:00",
         "issued": "2017-07-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -12280,9 +11647,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:c41228bd-6b14-aeb5-af6a-5ad5de27fc29"
         },
         "effectiveDateTime": "2017-07-19T15:23:06-07:00",
         "issued": "2017-07-19T15:23:06.331-07:00",
@@ -12366,9 +11730,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:c41228bd-6b14-aeb5-af6a-5ad5de27fc29"
-        },
         "effectiveDateTime": "2017-07-19T15:23:06-07:00",
         "issued": "2017-07-19T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -12424,20 +11785,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:c41228bd-6b14-aeb5-af6a-5ad5de27fc29"
-        },
         "authoredOn": "2017-07-19T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -12508,9 +11860,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:83ba1210-68d6-b875-968f-4437f4d7ab6d"
-        },
         "effectiveDateTime": "2018-05-16T15:23:06-07:00",
         "issued": "2018-05-16T15:23:06.331-07:00",
         "valueQuantity": {
@@ -12559,9 +11908,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:83ba1210-68d6-b875-968f-4437f4d7ab6d"
         },
         "effectiveDateTime": "2018-05-16T15:23:06-07:00",
         "issued": "2018-05-16T15:23:06.331-07:00",
@@ -12612,9 +11958,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:83ba1210-68d6-b875-968f-4437f4d7ab6d"
-        },
         "effectiveDateTime": "2018-05-16T15:23:06-07:00",
         "issued": "2018-05-16T15:23:06.331-07:00",
         "valueQuantity": {
@@ -12663,9 +12006,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:83ba1210-68d6-b875-968f-4437f4d7ab6d"
         },
         "effectiveDateTime": "2018-05-16T15:23:06-07:00",
         "issued": "2018-05-16T15:23:06.331-07:00",
@@ -12749,9 +12089,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:83ba1210-68d6-b875-968f-4437f4d7ab6d"
-        },
         "effectiveDateTime": "2018-05-16T15:23:06-07:00",
         "issued": "2018-05-16T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -12807,20 +12144,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:83ba1210-68d6-b875-968f-4437f4d7ab6d"
-        },
         "authoredOn": "2018-05-16T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -12891,9 +12219,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:7c26491a-d970-f43e-7274-a72fd661ab68"
-        },
         "effectiveDateTime": "2018-12-19T15:23:06-07:00",
         "issued": "2018-12-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -12942,9 +12267,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:7c26491a-d970-f43e-7274-a72fd661ab68"
         },
         "effectiveDateTime": "2018-12-19T15:23:06-07:00",
         "issued": "2018-12-19T15:23:06.331-07:00",
@@ -12995,9 +12317,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:7c26491a-d970-f43e-7274-a72fd661ab68"
-        },
         "effectiveDateTime": "2018-12-19T15:23:06-07:00",
         "issued": "2018-12-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -13046,9 +12365,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:7c26491a-d970-f43e-7274-a72fd661ab68"
         },
         "effectiveDateTime": "2018-12-19T15:23:06-07:00",
         "issued": "2018-12-19T15:23:06.331-07:00",
@@ -13132,9 +12448,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:7c26491a-d970-f43e-7274-a72fd661ab68"
-        },
         "effectiveDateTime": "2018-12-19T15:23:06-07:00",
         "issued": "2018-12-19T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -13190,20 +12503,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:7c26491a-d970-f43e-7274-a72fd661ab68"
-        },
         "authoredOn": "2018-12-19T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -13274,9 +12578,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
-        },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -13325,9 +12626,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
         },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
@@ -13378,9 +12676,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
-        },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -13429,9 +12724,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
         },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
@@ -13514,9 +12806,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
-        },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -13565,9 +12854,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
         },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
@@ -13618,9 +12904,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
-        },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
         "valueQuantity": {
@@ -13669,9 +12952,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
         },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
@@ -13722,9 +13002,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
         },
         "effectiveDateTime": "2019-05-22T15:23:06-07:00",
         "issued": "2019-05-22T15:23:06.331-07:00",
@@ -13781,20 +13058,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a0fd4eef-c2b7-324e-ae60-b36c10acd218"
-        },
         "authoredOn": "2019-05-22T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -13865,9 +13133,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:530ddecd-11da-8be5-1fc5-08051df3168c"
-        },
         "effectiveDateTime": "2020-05-27T15:23:06-07:00",
         "issued": "2020-05-27T15:23:06.331-07:00",
         "valueQuantity": {
@@ -13916,9 +13181,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:530ddecd-11da-8be5-1fc5-08051df3168c"
         },
         "effectiveDateTime": "2020-05-27T15:23:06-07:00",
         "issued": "2020-05-27T15:23:06.331-07:00",
@@ -13969,9 +13231,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:530ddecd-11da-8be5-1fc5-08051df3168c"
-        },
         "effectiveDateTime": "2020-05-27T15:23:06-07:00",
         "issued": "2020-05-27T15:23:06.331-07:00",
         "valueQuantity": {
@@ -14020,9 +13279,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:530ddecd-11da-8be5-1fc5-08051df3168c"
         },
         "effectiveDateTime": "2020-05-27T15:23:06-07:00",
         "issued": "2020-05-27T15:23:06.331-07:00",
@@ -14106,9 +13362,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:530ddecd-11da-8be5-1fc5-08051df3168c"
-        },
         "effectiveDateTime": "2020-05-27T15:23:06-07:00",
         "issued": "2020-05-27T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -14164,20 +13417,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:530ddecd-11da-8be5-1fc5-08051df3168c"
-        },
         "authoredOn": "2020-05-27T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -14248,9 +13492,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0c1d45c9-069d-1d0c-4c43-e9712c25da60"
-        },
         "effectiveDateTime": "2021-06-02T15:23:06-07:00",
         "issued": "2021-06-02T15:23:06.331-07:00",
         "valueQuantity": {
@@ -14299,9 +13540,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0c1d45c9-069d-1d0c-4c43-e9712c25da60"
         },
         "effectiveDateTime": "2021-06-02T15:23:06-07:00",
         "issued": "2021-06-02T15:23:06.331-07:00",
@@ -14352,9 +13590,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0c1d45c9-069d-1d0c-4c43-e9712c25da60"
-        },
         "effectiveDateTime": "2021-06-02T15:23:06-07:00",
         "issued": "2021-06-02T15:23:06.331-07:00",
         "valueQuantity": {
@@ -14403,9 +13638,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:0c1d45c9-069d-1d0c-4c43-e9712c25da60"
         },
         "effectiveDateTime": "2021-06-02T15:23:06-07:00",
         "issued": "2021-06-02T15:23:06.331-07:00",
@@ -14489,9 +13721,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0c1d45c9-069d-1d0c-4c43-e9712c25da60"
-        },
         "effectiveDateTime": "2021-06-02T15:23:06-07:00",
         "issued": "2021-06-02T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -14547,20 +13776,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:0c1d45c9-069d-1d0c-4c43-e9712c25da60"
-        },
         "authoredOn": "2021-06-02T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -14646,9 +13866,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
-        },
         "onsetDateTime": "2021-08-25T15:23:06-07:00",
         "recordedDate": "2021-08-25T15:23:06-07:00"
       },
@@ -14691,9 +13908,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
         },
         "effectiveDateTime": "2021-08-25T15:23:06-07:00",
         "issued": "2021-08-25T15:23:06.331-07:00",
@@ -14744,9 +13958,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
-        },
         "effectiveDateTime": "2021-08-25T15:23:06-07:00",
         "issued": "2021-08-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -14795,9 +14006,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
         },
         "effectiveDateTime": "2021-08-25T15:23:06-07:00",
         "issued": "2021-08-25T15:23:06.331-07:00",
@@ -14848,9 +14056,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
-        },
         "effectiveDateTime": "2021-08-25T15:23:06-07:00",
         "issued": "2021-08-25T15:23:06.331-07:00",
         "valueQuantity": {
@@ -14899,9 +14104,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
         },
         "effectiveDateTime": "2021-08-25T15:23:06-07:00",
         "issued": "2021-08-25T15:23:06.331-07:00",
@@ -14985,9 +14187,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
-        },
         "effectiveDateTime": "2021-08-25T15:23:06-07:00",
         "issued": "2021-08-25T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -15043,20 +14242,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:3e5cee98-ba8f-1ae3-c7e0-44151202e267"
-        },
         "authoredOn": "2021-08-25T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -15127,9 +14317,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
-        },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15178,9 +14365,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
         },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
@@ -15231,9 +14415,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
-        },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15283,9 +14464,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
-        },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15334,9 +14512,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
         },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
@@ -15419,9 +14594,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
-        },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15470,9 +14642,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
         },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
@@ -15523,9 +14692,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
-        },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15574,9 +14740,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
         },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
@@ -15627,9 +14790,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
         },
         "effectiveDateTime": "2022-06-08T15:23:06-07:00",
         "issued": "2022-06-08T15:23:06.331-07:00",
@@ -15686,20 +14846,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:aa268a9e-04f9-d515-7a70-6de264b3bf4a"
-        },
         "authoredOn": "2022-06-08T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -15770,9 +14921,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
-        },
         "effectiveDateTime": "2022-08-24T15:23:06-07:00",
         "issued": "2022-08-24T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15821,9 +14969,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
         },
         "effectiveDateTime": "2022-08-24T15:23:06-07:00",
         "issued": "2022-08-24T15:23:06.331-07:00",
@@ -15874,9 +15019,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
-        },
         "effectiveDateTime": "2022-08-24T15:23:06-07:00",
         "issued": "2022-08-24T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15926,9 +15068,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
-        },
         "effectiveDateTime": "2022-08-24T15:23:06-07:00",
         "issued": "2022-08-24T15:23:06.331-07:00",
         "valueQuantity": {
@@ -15977,9 +15116,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
         },
         "effectiveDateTime": "2022-08-24T15:23:06-07:00",
         "issued": "2022-08-24T15:23:06.331-07:00",
@@ -16063,9 +15199,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
-        },
         "effectiveDateTime": "2022-08-24T15:23:06-07:00",
         "issued": "2022-08-24T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -16121,20 +15254,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:a66e4d32-6329-91b6-77cd-206e8344b277"
-        },
         "authoredOn": "2022-08-24T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -16205,9 +15329,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
-        },
         "effectiveDateTime": "2023-06-14T15:23:06-07:00",
         "issued": "2023-06-14T15:23:06.331-07:00",
         "valueQuantity": {
@@ -16256,9 +15377,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
         },
         "effectiveDateTime": "2023-06-14T15:23:06-07:00",
         "issued": "2023-06-14T15:23:06.331-07:00",
@@ -16309,9 +15427,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
-        },
         "effectiveDateTime": "2023-06-14T15:23:06-07:00",
         "issued": "2023-06-14T15:23:06.331-07:00",
         "valueQuantity": {
@@ -16361,9 +15476,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
-        },
         "effectiveDateTime": "2023-06-14T15:23:06-07:00",
         "issued": "2023-06-14T15:23:06.331-07:00",
         "valueQuantity": {
@@ -16412,9 +15524,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
         },
         "effectiveDateTime": "2023-06-14T15:23:06-07:00",
         "issued": "2023-06-14T15:23:06.331-07:00",
@@ -16498,9 +15607,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
-        },
         "effectiveDateTime": "2023-06-14T15:23:06-07:00",
         "issued": "2023-06-14T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -16556,20 +15662,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:300082f0-25f2-be01-8512-602ce50ee0a6"
-        },
         "authoredOn": "2023-06-14T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -16640,9 +15737,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
-        },
         "effectiveDateTime": "2023-12-13T15:23:06-07:00",
         "issued": "2023-12-13T15:23:06.331-07:00",
         "valueQuantity": {
@@ -16691,9 +15785,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
         },
         "effectiveDateTime": "2023-12-13T15:23:06-07:00",
         "issued": "2023-12-13T15:23:06.331-07:00",
@@ -16744,9 +15835,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
-        },
         "effectiveDateTime": "2023-12-13T15:23:06-07:00",
         "issued": "2023-12-13T15:23:06.331-07:00",
         "valueQuantity": {
@@ -16796,9 +15884,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
-        },
         "effectiveDateTime": "2023-12-13T15:23:06-07:00",
         "issued": "2023-12-13T15:23:06.331-07:00",
         "valueQuantity": {
@@ -16847,9 +15932,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
         },
         "effectiveDateTime": "2023-12-13T15:23:06-07:00",
         "issued": "2023-12-13T15:23:06.331-07:00",
@@ -16933,9 +16015,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
-        },
         "effectiveDateTime": "2023-12-13T15:23:06-07:00",
         "issued": "2023-12-13T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -16991,20 +16070,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:f8962a86-8d0d-fb3d-bb85-b9f4b0fb5b85"
-        },
         "authoredOn": "2023-12-13T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -17075,9 +16145,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
-        },
         "effectiveDateTime": "2024-06-19T15:23:06-07:00",
         "issued": "2024-06-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -17126,9 +16193,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
         },
         "effectiveDateTime": "2024-06-19T15:23:06-07:00",
         "issued": "2024-06-19T15:23:06.331-07:00",
@@ -17179,9 +16243,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
-        },
         "effectiveDateTime": "2024-06-19T15:23:06-07:00",
         "issued": "2024-06-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -17231,9 +16292,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
-        },
         "effectiveDateTime": "2024-06-19T15:23:06-07:00",
         "issued": "2024-06-19T15:23:06.331-07:00",
         "valueQuantity": {
@@ -17282,9 +16340,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
         },
         "effectiveDateTime": "2024-06-19T15:23:06-07:00",
         "issued": "2024-06-19T15:23:06.331-07:00",
@@ -17368,9 +16423,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
-        },
         "effectiveDateTime": "2024-06-19T15:23:06-07:00",
         "issued": "2024-06-19T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -17426,20 +16478,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:75eaa781-4147-096d-b501-7b9293622d29"
-        },
         "authoredOn": "2024-06-19T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,
@@ -17525,9 +16568,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
-        },
         "onsetDateTime": "2024-12-11T15:23:06-07:00",
         "recordedDate": "2024-12-11T15:23:06-07:00"
       },
@@ -17570,9 +16610,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
         },
         "effectiveDateTime": "2024-12-11T15:23:06-07:00",
         "issued": "2024-12-11T15:23:06.331-07:00",
@@ -17623,9 +16660,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
-        },
         "effectiveDateTime": "2024-12-11T15:23:06-07:00",
         "issued": "2024-12-11T15:23:06.331-07:00",
         "valueQuantity": {
@@ -17674,9 +16708,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
         },
         "effectiveDateTime": "2024-12-11T15:23:06-07:00",
         "issued": "2024-12-11T15:23:06.331-07:00",
@@ -17727,9 +16758,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
-        },
         "effectiveDateTime": "2024-12-11T15:23:06-07:00",
         "issued": "2024-12-11T15:23:06.331-07:00",
         "valueQuantity": {
@@ -17778,9 +16806,6 @@
         },
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
-        },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
         },
         "effectiveDateTime": "2024-12-11T15:23:06-07:00",
         "issued": "2024-12-11T15:23:06.331-07:00",
@@ -17864,9 +16889,6 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
-        },
         "effectiveDateTime": "2024-12-11T15:23:06-07:00",
         "issued": "2024-12-11T15:23:06.331-07:00",
         "valueCodeableConcept": {
@@ -17922,20 +16944,11 @@
         "subject": {
           "reference": "urn:uuid:ae2fc04e-7c66-5451-f7a8-dfc489ee265c"
         },
-        "encounter": {
-          "reference": "urn:uuid:4dceb224-adfc-4ca3-c308-ad8d14282d6b"
-        },
         "authoredOn": "2024-12-11T15:23:06-07:00",
         "requester": {
           "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
           "display": "Dr. Preston275 Konopelski743"
         },
-        "reasonReference": [
-          {
-            "reference": "urn:uuid:900d3bb5-9502-74ee-cf42-350d36ce8724",
-            "display": "Essential hypertension (disorder)"
-          }
-        ],
         "dosageInstruction": [
           {
             "sequence": 1,

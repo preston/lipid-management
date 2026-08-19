@@ -84,6 +84,21 @@ describe('FHIR package layout for CQL Studio importer', () => {
     }
   });
 
+  it('resolves every example Bundle urn:uuid reference to a transaction entry', () => {
+    const exampleDir = join(PACKAGE_DIR, 'examples');
+    const exampleFiles = readdirSync(exampleDir).filter((name) => name.endsWith('.json'));
+    expect(exampleFiles.length).toBeGreaterThan(0);
+
+    for (const name of exampleFiles) {
+      const bundle = readJson<Bundle>(join(exampleDir, name));
+      const known = new Set(
+        (bundle.entry ?? []).map((e) => e.fullUrl).filter((u): u is string => Boolean(u)),
+      );
+      const dangling = collectDanglingPlaceholderRefs(bundle, known);
+      expect(dangling, `${name} has unresolved placeholder references`).toEqual([]);
+    }
+  });
+
   it('ships Library JSON whose text/cql attachment matches authored .cql', () => {
     const cqlByContent = new Map(
       readdirSync(join(PACKAGE_DIR, 'cql'))
@@ -106,3 +121,30 @@ describe('FHIR package layout for CQL Studio importer', () => {
     }
   });
 });
+
+/** HAPI HAPI-0541: every urn:uuid Reference in a transaction Bundle must match an entry.fullUrl. */
+function collectDanglingPlaceholderRefs(value: unknown, known: Set<string>): string[] {
+  const dangling: string[] = [];
+  walk(value);
+  return dangling;
+
+  function walk(node: unknown): void {
+    if (Array.isArray(node)) {
+      for (const item of node) {
+        walk(item);
+      }
+      return;
+    }
+    if (node == null || typeof node !== 'object') {
+      return;
+    }
+    const obj = node as Record<string, unknown>;
+    const ref = obj['reference'];
+    if (typeof ref === 'string' && ref.startsWith('urn:uuid:') && !known.has(ref)) {
+      dangling.push(ref);
+    }
+    for (const child of Object.values(obj)) {
+      walk(child);
+    }
+  }
+}
