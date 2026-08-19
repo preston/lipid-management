@@ -10556,7 +10556,7 @@
         },
         "authoredOn": "2016-05-04T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -10633,7 +10633,7 @@
         },
         "authoredOn": "2016-05-04T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -10992,7 +10992,7 @@
         },
         "authoredOn": "2017-02-15T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999939199",
+          "reference": "urn:uuid:85ae9dfd-62f9-5f62-b804-feb61471e9a7",
           "display": "Dr. Terrie907 Ratke343"
         },
         "dosageInstruction": [
@@ -11069,7 +11069,7 @@
         },
         "authoredOn": "2017-02-22T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -11428,7 +11428,7 @@
         },
         "authoredOn": "2017-05-10T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -11787,7 +11787,7 @@
         },
         "authoredOn": "2017-07-19T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -12146,7 +12146,7 @@
         },
         "authoredOn": "2018-05-16T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -12505,7 +12505,7 @@
         },
         "authoredOn": "2018-12-19T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -13060,7 +13060,7 @@
         },
         "authoredOn": "2019-05-22T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -13419,7 +13419,7 @@
         },
         "authoredOn": "2020-05-27T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -13778,7 +13778,7 @@
         },
         "authoredOn": "2021-06-02T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -14244,7 +14244,7 @@
         },
         "authoredOn": "2021-08-25T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -14848,7 +14848,7 @@
         },
         "authoredOn": "2022-06-08T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -15256,7 +15256,7 @@
         },
         "authoredOn": "2022-08-24T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -15664,7 +15664,7 @@
         },
         "authoredOn": "2023-06-14T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -16072,7 +16072,7 @@
         },
         "authoredOn": "2023-12-13T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -16480,7 +16480,7 @@
         },
         "authoredOn": "2024-06-19T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -16946,7 +16946,7 @@
         },
         "authoredOn": "2024-12-11T15:23:06-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984393",
+          "reference": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
           "display": "Dr. Preston275 Konopelski743"
         },
         "dosageInstruction": [
@@ -16982,6 +16982,50 @@
       "request": {
         "method": "PUT",
         "url": "MedicationRequest/8f48dae5-8bb7-2761-07cb-9caee1fbad4b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:307d8efa-1574-5f90-9103-f0b589921e3d",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "307d8efa-1574-5f90-9103-f0b589921e3d",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999984393"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Preston275 Konopelski743"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/307d8efa-1574-5f90-9103-f0b589921e3d"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:85ae9dfd-62f9-5f62-b804-feb61471e9a7",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "85ae9dfd-62f9-5f62-b804-feb61471e9a7",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999939199"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Terrie907 Ratke343"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/85ae9dfd-62f9-5f62-b804-feb61471e9a7"
       }
     }
   ]

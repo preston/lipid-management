@@ -10748,7 +10748,7 @@
         },
         "authoredOn": "2022-04-13T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -10825,7 +10825,7 @@
         },
         "authoredOn": "2022-04-13T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -10951,7 +10951,7 @@
         },
         "authoredOn": "2022-04-20T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -11440,7 +11440,7 @@
         },
         "authoredOn": "2022-06-08T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -12206,7 +12206,7 @@
         },
         "authoredOn": "2023-04-26T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -12332,7 +12332,7 @@
         },
         "authoredOn": "2023-05-03T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -12740,7 +12740,7 @@
         },
         "authoredOn": "2024-05-01T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -13148,7 +13148,7 @@
         },
         "authoredOn": "2024-06-26T03:12:12-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985093",
+          "reference": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
           "display": "Dr. Peter292 Cartwright189"
         },
         "dosageInstruction": [
@@ -13184,6 +13184,28 @@
       "request": {
         "method": "PUT",
         "url": "MedicationRequest/8aa8ceb9-4e2f-b50a-5b59-5bb146cc1255"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7f961f89-fcb9-5849-acfa-fc4140209d72",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "7f961f89-fcb9-5849-acfa-fc4140209d72",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999985093"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Peter292 Cartwright189"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/7f961f89-fcb9-5849-acfa-fc4140209d72"
       }
     }
   ]

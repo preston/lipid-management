@@ -84,18 +84,15 @@ describe('FHIR package layout for CQL Studio importer', () => {
     }
   });
 
-  it('resolves every example Bundle urn:uuid reference to a transaction entry', () => {
+  it('resolves every example Bundle reference without HAPI placeholders or match URLs', () => {
     const exampleDir = join(PACKAGE_DIR, 'examples');
     const exampleFiles = readdirSync(exampleDir).filter((name) => name.endsWith('.json'));
     expect(exampleFiles.length).toBeGreaterThan(0);
 
     for (const name of exampleFiles) {
       const bundle = readJson<Bundle>(join(exampleDir, name));
-      const known = new Set(
-        (bundle.entry ?? []).map((e) => e.fullUrl).filter((u): u is string => Boolean(u)),
-      );
-      const dangling = collectDanglingPlaceholderRefs(bundle, known);
-      expect(dangling, `${name} has unresolved placeholder references`).toEqual([]);
+      const dangling = collectUnresolvableRefs(bundle);
+      expect(dangling, `${name} has unresolved transaction references`).toEqual([]);
     }
   });
 
@@ -122,10 +119,22 @@ describe('FHIR package layout for CQL Studio importer', () => {
   });
 });
 
-/** HAPI HAPI-0541: every urn:uuid Reference in a transaction Bundle must match an entry.fullUrl. */
-function collectDanglingPlaceholderRefs(value: unknown, known: Set<string>): string[] {
+/**
+ * HAPI-0541: urn:uuid references must match an entry.fullUrl.
+ * HAPI-1091: Type?search=... conditional matches must already exist on the server.
+ */
+function collectUnresolvableRefs(bundle: Bundle): string[] {
+  const knownFullUrls = new Set(
+    (bundle.entry ?? []).map((e) => e.fullUrl).filter((u): u is string => Boolean(u)),
+  );
+  const knownTypeIds = new Set(
+    (bundle.entry ?? [])
+      .map((e) => e.resource)
+      .filter((r): r is Resource => Boolean(r?.resourceType && r.id))
+      .map((r) => `${r.resourceType}/${r.id}`),
+  );
   const dangling: string[] = [];
-  walk(value);
+  walk(bundle);
   return dangling;
 
   function walk(node: unknown): void {
@@ -140,11 +149,29 @@ function collectDanglingPlaceholderRefs(value: unknown, known: Set<string>): str
     }
     const obj = node as Record<string, unknown>;
     const ref = obj['reference'];
-    if (typeof ref === 'string' && ref.startsWith('urn:uuid:') && !known.has(ref)) {
+    if (typeof ref === 'string' && isUnresolvableTransactionRef(ref, knownFullUrls, knownTypeIds)) {
       dangling.push(ref);
     }
     for (const child of Object.values(obj)) {
       walk(child);
     }
   }
+}
+
+function isUnresolvableTransactionRef(
+  ref: string,
+  knownFullUrls: Set<string>,
+  knownTypeIds: Set<string>,
+): boolean {
+  if (ref.startsWith('urn:uuid:')) {
+    return !knownFullUrls.has(ref);
+  }
+  if (ref.includes('?')) {
+    return true;
+  }
+  const relative = /^([A-Za-z]+)\/([^/?#]+)$/.exec(ref);
+  if (relative) {
+    return !knownTypeIds.has(`${relative[1]}/${relative[2]}`) && !knownFullUrls.has(ref);
+  }
+  return false;
 }

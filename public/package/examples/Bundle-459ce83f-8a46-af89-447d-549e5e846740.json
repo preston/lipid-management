@@ -12641,7 +12641,7 @@
         },
         "authoredOn": "2005-05-19T08:17:35-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999982595",
+          "reference": "urn:uuid:78ba531b-dc53-5518-b833-fba9384279e6",
           "display": "Dr. Rosemarie149 Gutmann970"
         }
       },
@@ -12679,7 +12679,7 @@
           "end": "2005-05-22T23:33:29-07:00"
         },
         "location": {
-          "reference": "Location?identifier=https://github.com/synthetichealth/synthea|81c75a54-2b95-3fdf-9327-b74df8630869",
+          "reference": "urn:uuid:a63581ac-9531-5a72-b493-3875c05dff30",
           "display": "Fitchburg Outpatient Clinic"
         }
       },
@@ -16061,7 +16061,7 @@
         },
         "authoredOn": "2015-12-24T08:48:57-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984591",
+          "reference": "urn:uuid:da35e046-212b-5709-b187-5eaa22fe3c30",
           "display": "Dr. Ted955 Reilly981"
         },
         "dosageInstruction": [
@@ -16398,7 +16398,7 @@
         },
         "authoredOn": "2016-06-02T08:17:35-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999982595",
+          "reference": "urn:uuid:78ba531b-dc53-5518-b833-fba9384279e6",
           "display": "Dr. Rosemarie149 Gutmann970"
         },
         "dosageInstruction": [
@@ -16833,7 +16833,7 @@
         },
         "authoredOn": "2017-06-08T08:17:35-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999982595",
+          "reference": "urn:uuid:78ba531b-dc53-5518-b833-fba9384279e6",
           "display": "Dr. Rosemarie149 Gutmann970"
         },
         "dosageInstruction": [
@@ -19404,6 +19404,69 @@
       "request": {
         "method": "PUT",
         "url": "Observation/752d650d-8ae4-76a7-1914-78cbea9c41ec"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:78ba531b-dc53-5518-b833-fba9384279e6",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "78ba531b-dc53-5518-b833-fba9384279e6",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999982595"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Rosemarie149 Gutmann970"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/78ba531b-dc53-5518-b833-fba9384279e6"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a63581ac-9531-5a72-b493-3875c05dff30",
+      "resource": {
+        "resourceType": "Location",
+        "id": "a63581ac-9531-5a72-b493-3875c05dff30",
+        "identifier": [
+          {
+            "system": "https://github.com/synthetichealth/synthea",
+            "value": "81c75a54-2b95-3fdf-9327-b74df8630869"
+          }
+        ],
+        "status": "active",
+        "name": "Fitchburg Outpatient Clinic"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/a63581ac-9531-5a72-b493-3875c05dff30"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:da35e046-212b-5709-b187-5eaa22fe3c30",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "da35e046-212b-5709-b187-5eaa22fe3c30",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999984591"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Ted955 Reilly981"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/da35e046-212b-5709-b187-5eaa22fe3c30"
       }
     }
   ]

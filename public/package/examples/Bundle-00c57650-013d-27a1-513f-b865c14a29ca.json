@@ -15202,7 +15202,7 @@
         },
         "authoredOn": "2021-03-04T19:26:35-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999985192",
+          "reference": "urn:uuid:37c36959-403d-594b-8e76-e536e7021c84",
           "display": "Dr. Desmond566 Schaefer657"
         }
       },
@@ -15583,7 +15583,7 @@
           "end": "2021-03-06T21:32:44-07:00"
         },
         "location": {
-          "reference": "Location?identifier=https://github.com/synthetichealth/synthea|81c75a54-2b95-3fdf-9327-b74df8630869",
+          "reference": "urn:uuid:a63581ac-9531-5a72-b493-3875c05dff30",
           "display": "Fitchburg Outpatient Clinic"
         }
       },
@@ -18286,6 +18286,47 @@
       "request": {
         "method": "PUT",
         "url": "Observation/f1a93e02-ffd2-6663-b116-afb476f79622"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:37c36959-403d-594b-8e76-e536e7021c84",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "37c36959-403d-594b-8e76-e536e7021c84",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999985192"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Desmond566 Schaefer657"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/37c36959-403d-594b-8e76-e536e7021c84"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a63581ac-9531-5a72-b493-3875c05dff30",
+      "resource": {
+        "resourceType": "Location",
+        "id": "a63581ac-9531-5a72-b493-3875c05dff30",
+        "identifier": [
+          {
+            "system": "https://github.com/synthetichealth/synthea",
+            "value": "81c75a54-2b95-3fdf-9327-b74df8630869"
+          }
+        ],
+        "status": "active",
+        "name": "Fitchburg Outpatient Clinic"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/a63581ac-9531-5a72-b493-3875c05dff30"
       }
     }
   ]

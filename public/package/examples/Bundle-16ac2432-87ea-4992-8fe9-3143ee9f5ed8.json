@@ -14751,7 +14751,7 @@
         },
         "authoredOn": "2010-11-30T16:33:35-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999983692",
+          "reference": "urn:uuid:fec58048-f650-55eb-9778-a631abf1f95d",
           "display": "Dr. Kenia28 Eichmann909"
         }
       },
@@ -15150,6 +15150,28 @@
       "request": {
         "method": "PUT",
         "url": "Observation/9e8c7bcf-6457-16cb-97da-db5e6d44ee53"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fec58048-f650-55eb-9778-a631abf1f95d",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "fec58048-f650-55eb-9778-a631abf1f95d",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999983692"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Kenia28 Eichmann909"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/fec58048-f650-55eb-9778-a631abf1f95d"
       }
     }
   ]

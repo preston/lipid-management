@@ -14453,7 +14453,7 @@
         },
         "authoredOn": "2022-01-04T09:13:43-07:00",
         "requester": {
-          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999984997",
+          "reference": "urn:uuid:2551deda-5ac3-5091-bd25-4fb9e355f0dd",
           "display": "Dr. Gisele901 Lehner980"
         }
       },
@@ -14883,7 +14883,7 @@
           "end": "2022-01-25T16:45:49-07:00"
         },
         "location": {
-          "reference": "Location?identifier=https://github.com/synthetichealth/synthea|81c75a54-2b95-3fdf-9327-b74df8630869",
+          "reference": "urn:uuid:a63581ac-9531-5a72-b493-3875c05dff30",
           "display": "Fitchburg Outpatient Clinic"
         }
       },
@@ -16618,6 +16618,47 @@
       "request": {
         "method": "PUT",
         "url": "Observation/3a2c4eaf-6d69-c3d1-1c1a-b790a6256276"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2551deda-5ac3-5091-bd25-4fb9e355f0dd",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "2551deda-5ac3-5091-bd25-4fb9e355f0dd",
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "9999984997"
+          }
+        ],
+        "name": [
+          {
+            "text": "Dr. Gisele901 Lehner980"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/2551deda-5ac3-5091-bd25-4fb9e355f0dd"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a63581ac-9531-5a72-b493-3875c05dff30",
+      "resource": {
+        "resourceType": "Location",
+        "id": "a63581ac-9531-5a72-b493-3875c05dff30",
+        "identifier": [
+          {
+            "system": "https://github.com/synthetichealth/synthea",
+            "value": "81c75a54-2b95-3fdf-9327-b74df8630869"
+          }
+        ],
+        "status": "active",
+        "name": "Fitchburg Outpatient Clinic"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/a63581ac-9531-5a72-b493-3875c05dff30"
       }
     }
   ]
