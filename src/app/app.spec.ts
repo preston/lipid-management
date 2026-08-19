@@ -33,7 +33,7 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     expect(compiled.querySelector('#app-nav-calculator')?.textContent).toContain(
-      'OpenCVDRisk Calculator',
+      'CVD Risk Calculator',
     );
     expect(compiled.querySelector('#app-nav-guideline')?.textContent).toContain('Guideline');
     expect(compiled.querySelector('#app-nav-documentation')?.textContent).toContain('Documentation');
@@ -42,5 +42,6 @@ describe('App', () => {
       'Interpretation',
     );
     expect(compiled.querySelector('#app-nav-settings')?.textContent).toContain('Settings');
+    expect(compiled.querySelector('#app-nav-loader')).toBeNull();
   });
 });

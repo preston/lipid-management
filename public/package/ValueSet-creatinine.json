@@ -1,0 +1,26 @@
+{
+  "resourceType": "ValueSet",
+  "id": "creatinine",
+  "url": "https://asu.edu/fhir/ValueSet/creatinine",
+  "name": "Creatinine",
+  "title": "Creatinine Laboratory Test",
+  "status": "active",
+  "version": "2026-07-15",
+  "experimental": false,
+  "date": "2026-07-15",
+  "publisher": "ASU CDS",
+  "description": "Includes LOINC 2160-0. Prefer VSAC expansion when available.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://loinc.org",
+        "concept": [
+          {
+            "code": "2160-0",
+            "display": "Creatinine [Mass/volume] in Serum or Plasma"
+          }
+        ]
+      }
+    ]
+  }
+}

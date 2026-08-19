@@ -1,0 +1,30 @@
+{
+  "resourceType": "ValueSet",
+  "id": "aspartate-aminotransferase",
+  "url": "https://asu.edu/fhir/ValueSet/aspartate-aminotransferase",
+  "name": "AspartateAminotransferase",
+  "title": "Aspartate Aminotransferase (AST)",
+  "status": "active",
+  "version": "2026-07-16",
+  "experimental": false,
+  "date": "2026-07-16",
+  "publisher": "ASU CDS",
+  "description": "LOINC AST observations for Recommendation 11. Prefer VSAC expansion when available.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://loinc.org",
+        "concept": [
+          {
+            "code": "1920-8",
+            "display": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
+          },
+          {
+            "code": "30239-8",
+            "display": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma by With P-5'-P"
+          }
+        ]
+      }
+    ]
+  }
+}

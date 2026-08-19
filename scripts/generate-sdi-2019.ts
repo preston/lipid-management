@@ -1,7 +1,7 @@
 // Author: Preston Lee
 
 /**
- * Generate public/cql/SDI-2019.cql from the raw Graham Center ZCTA CSV in doc/sdi/.
+ * Generate public/package/cql/SDI-2019.cql from the raw Graham Center ZCTA CSV in doc/sdi/.
  *
  * Usage: npx tsx scripts/generate-sdi-2019.ts
  */
@@ -10,10 +10,11 @@ import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseSdiZctaCsv, type SdiDecileMap } from '../src/app/features/open-cvd-risk-calculator/sdi/sdi-lookup';
+import { writeFhirLibraries } from './generate-fhir-libraries';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CSV_PATH = resolve(ROOT, 'doc/sdi/asset_rgc_sdi_2015_through_2019_zcta.csv');
-const OUT_CQL = resolve(ROOT, 'public/cql/SDI-2019.cql');
+const OUT_CQL = resolve(ROOT, 'public/package/cql/SDI-2019.cql');
 
 function emitCql(mapping: SdiDecileMap): string {
   const whens = Object.keys(mapping)
@@ -34,7 +35,7 @@ function emitCql(mapping: SdiDecileMap): string {
 
   Author: Preston Lee
 */
-library SDI2019 version '1.0.0'
+library SDI2019 version '1.0.1'
 
 using FHIR version '4.0.1'
 
@@ -115,7 +116,9 @@ function main(): void {
     throw new Error(`Suspiciously small map: ${n}`);
   }
   mkdirSync(dirname(OUT_CQL), { recursive: true });
-  writeFileSync(OUT_CQL, emitCql(mapping), 'utf8');
+  const cql = emitCql(mapping);
+  writeFileSync(OUT_CQL, cql, 'utf8');
+  writeFhirLibraries();
   console.log(`Wrote ${OUT_CQL} (${n} ZCTAs, ${statSync(OUT_CQL).size} bytes)`);
 }
 

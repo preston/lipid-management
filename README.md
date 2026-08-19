@@ -51,9 +51,10 @@ docker run -d --name hapi-r4-data -p 8080:8080 \
 
 Once the container is running:
 - Open your browser and navigate to `http://localhost:4200/`.
-- Go to applications Settings and enable Experimental and Developer mode to show the "Loader" menu.
-- Use the Loader to load the CQL libraries and value sets, and optionally the example patient records.
+- Install the FHIR NPM package on the FHIR server so `$evaluate` can find Libraries and ValueSets.
+- Optionally POST the Synthea patient Bundles under `public/package/examples/` if you want sample patients.
 
+See [FHIR package](#fhir-package) for how to build that tarball.
 
 ## Running from Source Code
 
@@ -81,16 +82,29 @@ Runtime configuration is loaded from `public/configuration.js` (Docker substitut
 
 Users can override these in the in-app **Settings** page (browser local storage).
 
+## FHIR package
+
+The FHIR NPM package is the tree at `public/package/`. Author CQL in `cql/*.cql`, and `Library-*.json` files will be generated from those sources.
+
+```bash
+npm run generate:sdi-2019         # Regenerates cql/SDI-2019.cql from the Graham Center CSV, then Library JSON
+npm run generate:fhir-libraries   # CQL → Library-*.json and .index.json
+npm run package:fhir              # generate:fhir-libraries, then write the .tgz at the repo root
+```
+
+`package:fhir` writes `com.prestonlee.fhir.lipid-management-<version>.tgz`. `<version>` comes from `public/package/package.json` (keep that in sync with `library LipidManagement version` in `cql/LipidManagement.cql`). Import the `.tgz` with CQL Studio's FHIR package importer, or any FHIR NPM installer.
+
+
 ### ValueSets
 
-Canonical ValueSets live under `public/value-sets/` and are loaded onto the FHIR server via the in-app Loader.
+Canonical ValueSets live under `public/package/ValueSet-*.json` and are included in the FHIR NPM package.
 
 | Origin | Meaning |
 |---|---|
 | **VSAC** | Committed expansions of NLM CTS ValueSets with original VSAC metadata (publisher, purpose, CTS URL). Refresh with a one-off CTS `$expand` + metadata fetch when upstream changes. |
 | **ASU** | Custom composes maintained in this repo (`publisher: ASU CDS`) for LOINC/RxNorm observations, therapy flags, and hybrid PREVENT-based criteria. |
 
-Loader labels each pack as VSAC or ASU. CQL references VSAC packs by their CTS `ValueSet.url` and ASU packs by `https://asu.edu/fhir/ValueSet/...`.
+CQL references VSAC packs by their CTS `ValueSet.url` and ASU packs by `https://asu.edu/fhir/ValueSet/...`.
 
 ## License and Attribution
 

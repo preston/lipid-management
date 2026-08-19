@@ -15,5 +15,6 @@ import { SettingsService } from './services/settings.service';
   },
 })
 export class App {
-  protected readonly settingsService = inject(SettingsService);
+  /** Eagerly apply persisted theme on shell load. */
+  private readonly settingsService = inject(SettingsService);
 }

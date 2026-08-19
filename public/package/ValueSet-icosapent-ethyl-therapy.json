@@ -1,0 +1,26 @@
+{
+  "resourceType": "ValueSet",
+  "id": "icosapent-ethyl-therapy",
+  "url": "https://asu.edu/fhir/ValueSet/icosapent-ethyl-therapy",
+  "name": "IcosapentEthylTherapy",
+  "title": "Icosapent Ethyl Therapy",
+  "status": "active",
+  "version": "2026-07-16",
+  "experimental": false,
+  "date": "2026-07-16",
+  "publisher": "ASU CDS",
+  "description": "RxNorm icosapent ethyl concepts for Recommendations 9 and 16. Prefer VSAC expansion when available.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "concept": [
+          {
+            "code": "1487514",
+            "display": "icosapent ethyl"
+          }
+        ]
+      }
+    ]
+  }
+}

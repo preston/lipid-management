@@ -63,13 +63,12 @@ describe('SettingsService', () => {
     expect(service.getDefaultFhirBaseUrl()).toBe('http://localhost:8080/fhir');
   });
 
-  it('defaults experimental and developer to false', () => {
+  it('defaults experimental to false', () => {
     const service = TestBed.inject(SettingsService);
     expect(service.settings().experimental).toBe(false);
-    expect(service.settings().developer).toBe(false);
   });
 
-  it('backfills missing experimental and developer flags on reload', () => {
+  it('backfills missing experimental flag on reload', () => {
     memory.set(
       SettingsService.SETTINGS_KEY,
       JSON.stringify({ theme_preferred: 'light', fhirBaseUrl: 'http://x/fhir' }),
@@ -77,6 +76,5 @@ describe('SettingsService', () => {
     const service = TestBed.inject(SettingsService);
     service.reload();
     expect(service.settings().experimental).toBe(false);
-    expect(service.settings().developer).toBe(false);
   });
 });

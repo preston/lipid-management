@@ -1,0 +1,77 @@
+{
+  "resourceType": "ValueSet",
+  "id": "hiv-infection",
+  "language": "en",
+  "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.120.12.1003",
+  "identifier": [
+    {
+      "system": "urn:ietf:rfc:3986",
+      "value": "urn:oid:2.16.840.1.113883.3.464.1003.120.12.1003"
+    }
+  ],
+  "version": "20260513",
+  "name": "HIV",
+  "title": "HIV",
+  "status": "active",
+  "date": "2026-07-16",
+  "publisher": "NCQA",
+  "description": "VSAC-aligned HIV infection concepts for LipidManagement Box 10 / Recommendation 10. Includes common SNOMED and ICD-10-CM codes used in VA/DoD lipid pathway CDS. Refresh from CTS $expand when credentials are available.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "86406008",
+            "display": "Human immunodeficiency virus infection"
+          },
+          {
+            "code": "165816005",
+            "display": "Human immunodeficiency virus positive"
+          },
+          {
+            "code": "165817001",
+            "display": "Human immunodeficiency virus antibody positive"
+          },
+          {
+            "code": "52079000",
+            "display": "Congenital human immunodeficiency virus infection"
+          },
+          {
+            "code": "79019005",
+            "display": "Human immunodeficiency virus II infection"
+          },
+          {
+            "code": "111880001",
+            "display": "Acute human immunodeficiency virus infection"
+          },
+          {
+            "code": "186706006",
+            "display": "Human immunodeficiency virus infection constitutional disease"
+          },
+          {
+            "code": "186707002",
+            "display": "Human immunodeficiency virus disease resulting in infectious and parasitic diseases"
+          },
+          {
+            "code": "186708007",
+            "display": "Human immunodeficiency virus disease resulting in malignant neoplastic disease"
+          }
+        ]
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "concept": [
+          {
+            "code": "B20",
+            "display": "Human immunodeficiency virus [HIV] disease"
+          },
+          {
+            "code": "Z21",
+            "display": "Asymptomatic human immunodeficiency virus [HIV] infection status"
+          }
+        ]
+      }
+    ]
+  }
+}

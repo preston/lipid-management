@@ -47,8 +47,8 @@ describe('sdi-lookup', () => {
 
   it('keeps ZctaMapSize in CQL aligned with parsed CSV key count', () => {
     const map = parseSdiZctaCsv(readFileSync(SDI_CSV_PATH, 'utf8'));
-    const cql = readFileSync(resolve(process.cwd(), 'public/cql/SDI-2019.cql'), 'utf8');
-    expect(cql).toContain("library SDI2019 version '1.0.0'");
+    const cql = readFileSync(resolve(process.cwd(), 'public/package/cql/SDI-2019.cql'), 'utf8');
+    expect(cql).toContain("library SDI2019 version '1.0.1'");
     const m = cql.match(/define ZctaMapSize:\s*\n\s*(\d+)/);
     expect(m).toBeTruthy();
     expect(Number(m![1])).toBe(Object.keys(map).length);

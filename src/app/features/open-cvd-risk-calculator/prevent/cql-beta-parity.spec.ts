@@ -39,8 +39,8 @@ function parseCqlDecimalList(body: string): number[] {
 
 describe('OpenCVDRisk.cql beta literals vs S12 goldens', () => {
   it('matches every generated Beta define to golden vectors', () => {
-    const cql = readFileSync(resolve(process.cwd(), 'public/cql/OpenCVDRisk.cql'), 'utf8');
-    expect(cql).toContain("library OpenCVDRisk version '0.5.3'");
+    const cql = readFileSync(resolve(process.cwd(), 'public/package/cql/OpenCVDRisk.cql'), 'utf8');
+    expect(cql).toContain("library OpenCVDRisk version '0.6.0'");
     expect(cql).toContain('* 0.02586');
 
     for (const [sheetKey, sheet] of Object.entries(PREVENT_S12_GOLDENS.sheets)) {

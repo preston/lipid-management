@@ -1,0 +1,95 @@
+{
+  "resourceType": "ValueSet",
+  "id": "inherited-cardiovascular-condition",
+  "url": "https://asu.edu/fhir/ValueSet/inherited-cardiovascular-condition",
+  "name": "InheritedCardiovascularCondition",
+  "title": "Inherited Cardiovascular Condition",
+  "status": "active",
+  "version": "2026-07-15",
+  "experimental": false,
+  "date": "2026-07-15",
+  "publisher": "ASU CDS",
+  "description": "Custom ASU compose for PREVENT applicability: familial hypercholesterolemia concepts aligned with VSAC 2.16.840.1.113762.1.4.1047.100 plus selected familial/genetic cardiomyopathy and inherited arrhythmia diagnoses.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "238077000",
+            "display": "Polygenic hypercholesterolemia (disorder)"
+          },
+          {
+            "code": "238078005",
+            "display": "Familial hypercholesterolemia - homozygous (disorder)"
+          },
+          {
+            "code": "238079002",
+            "display": "Familial hypercholesterolemia - heterozygous (disorder)"
+          },
+          {
+            "code": "398036000",
+            "display": "Familial hypercholesterolemia (disorder)"
+          },
+          {
+            "code": "398796005",
+            "display": "Familial type 3 hyperlipoproteinemia (disorder)"
+          },
+          {
+            "code": "403829002",
+            "display": "Familial hypercholesterolemia due to heterozygous low density lipoprotein receptor mutation (disorder)"
+          },
+          {
+            "code": "403830007",
+            "display": "Familial hypercholesterolemia due to homozygous low density lipoprotein receptor mutation (disorder)"
+          },
+          {
+            "code": "403831006",
+            "display": "Familial hypercholesterolemia due to genetic defect of apolipoprotein B (disorder)"
+          },
+          {
+            "code": "83978005",
+            "display": "Primary familial hypertrophic cardiomyopathy (disorder)"
+          },
+          {
+            "code": "471885006",
+            "display": "Hypertrophic cardiomyopathy with genetic marker (disorder)"
+          },
+          {
+            "code": "35728003",
+            "display": "Familial cardiomyopathy (disorder)"
+          },
+          {
+            "code": "418818005",
+            "display": "Brugada syndrome (disorder)"
+          },
+          {
+            "code": "281170005",
+            "display": "Arrhythmogenic right ventricular cardiomyopathy (disorder)"
+          }
+        ]
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "concept": [
+          {
+            "code": "E78.010",
+            "display": "Homozygous familial hypercholesterolemia [HoFH]"
+          },
+          {
+            "code": "E78.011",
+            "display": "Heterozygous familial hypercholesterolemia [HeFH]"
+          },
+          {
+            "code": "E78.019",
+            "display": "Familial hypercholesterolemia, unspecified"
+          },
+          {
+            "code": "I45.81",
+            "display": "Long QT syndrome"
+          }
+        ]
+      }
+    ]
+  }
+}

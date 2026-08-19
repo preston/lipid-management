@@ -98,10 +98,6 @@ export class SettingsService {
           merged.experimental = false;
           shouldSave = true;
         }
-        if (parsed.developer == null) {
-          merged.developer = false;
-          shouldSave = true;
-        }
         for (const key of [
           'fhirBaseUrl',
           'smartClientId',

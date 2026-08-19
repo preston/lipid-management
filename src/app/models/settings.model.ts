@@ -8,7 +8,6 @@ export enum ThemeType {
 
 export class Settings {
   public experimental: boolean = false;
-  public developer: boolean = false;
   public theme_preferred: ThemeType = ThemeType.AUTOMATIC;
   public fhirBaseUrl: string = '';
   public smartClientId: string = '';

@@ -1,7 +1,6 @@
 // Author: Preston Lee
 
 import { Routes } from '@angular/router';
-import { loaderGuard } from './features/loader/loader.guard';
 
 export const routes: Routes = [
   {
@@ -29,11 +28,6 @@ export const routes: Routes = [
   {
     path: 'settings',
     loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
-  },
-  {
-    path: 'loader',
-    canActivate: [loaderGuard],
-    loadComponent: () => import('./features/loader/loader').then((m) => m.Loader),
   },
   {
     path: 'launch',

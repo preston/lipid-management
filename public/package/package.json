@@ -1,0 +1,20 @@
+{
+  "name": "com.prestonlee.fhir.lipid-management",
+  "version": "0.3.9",
+  "type": "Conformance",
+  "date": "20260818225849",
+  "license": "Apache-2.0",
+  "title": "Lipid Management CDS",
+  "description": "VA/DoD Lipids CPG 2025 clinical decision support: CQL libraries, terminology ValueSets, and Synthea patient examples for FHIR R4.",
+  "dependencies": {
+    "hl7.fhir.r4.core": "4.0.1",
+    "hl7.fhir.uv.cql": "2.0.0"
+  },
+  "author": "Preston Lee",
+  "fhirVersions": [
+    "4.0.1"
+  ],
+  "directories": {
+    "examples": "examples"
+  }
+}

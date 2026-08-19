@@ -1,18 +1,21 @@
 // Author: Preston Lee
 
 import { describe, expect, it } from 'vitest';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { VALUE_SET_CATALOG, CQL_LIBRARY_CATALOG } from '../loader/loader.catalog';
 import { APPENDIX_G_BOXES } from './guideline-boxes';
 import { GUIDELINE_RECOMMENDATIONS } from './guideline-recommendations';
 
 const ROOT = join(process.cwd());
+const PACKAGE_DIR = join(ROOT, 'public/package');
+const VALUE_SET_FILES = readdirSync(PACKAGE_DIR).filter(
+  (name) => name.startsWith('ValueSet-') && name.endsWith('.json'),
+);
 const VALID_BOX_IDS = new Set(APPENDIX_G_BOXES.map((b) => b.id));
 
 describe('Guideline terminology and catalog integrity', () => {
-  it('registers LipidManagement and keeps recommendation catalog complete', () => {
-    expect(CQL_LIBRARY_CATALOG.some((e) => e.id === 'LipidManagement')).toBe(true);
+  it('ships LipidManagement.cql and keeps recommendation catalog complete', () => {
+    expect(existsSync(join(PACKAGE_DIR, 'cql/LipidManagement.cql'))).toBe(true);
     expect(GUIDELINE_RECOMMENDATIONS.map((r) => r.id)).toEqual(
       Array.from({ length: 24 }, (_, i) => i + 1),
     );
@@ -48,22 +51,20 @@ describe('Guideline terminology and catalog integrity', () => {
     expect(GUIDELINE_RECOMMENDATIONS.find((r) => r.id === 16)?.text).not.toMatch(/secondary causes/);
   });
 
-  it('has on-disk ValueSet bundles for every catalog entry', () => {
-    for (const entry of VALUE_SET_CATALOG) {
-      const path = join(ROOT, 'public', entry.assetPath.replace(/^\//, ''));
-      expect(existsSync(path), entry.id).toBe(true);
-      const json = JSON.parse(readFileSync(path, 'utf8')) as {
+  it('has on-disk ValueSet resources', () => {
+    expect(VALUE_SET_FILES.length).toBeGreaterThan(10);
+    for (const file of VALUE_SET_FILES) {
+      const json = JSON.parse(readFileSync(join(PACKAGE_DIR, file), 'utf8')) as {
         resourceType?: string;
-        entry?: { resource?: { resourceType?: string; url?: string } }[];
+        url?: string;
       };
-      expect(json.resourceType).toBe('Bundle');
-      const vs = json.entry?.find((e) => e.resource?.resourceType === 'ValueSet')?.resource;
-      expect(vs?.url, entry.id).toBeTruthy();
+      expect(json.resourceType, file).toBe('ValueSet');
+      expect(json.url, file).toBeTruthy();
     }
   });
 
   it('LipidManagement.cql pins 0.3.9 and Rec 11/21/24 population rules', () => {
-    const cql = readFileSync(join(ROOT, 'public/cql/LipidManagement.cql'), 'utf8');
+    const cql = readFileSync(join(ROOT, 'public/package/cql/LipidManagement.cql'), 'utf8');
     expect(cql).toMatch(/library LipidManagement version '0.3.9'/);
     expect(cql).toContain('parameter ElevatedAstOrAltLessThan3xUln Boolean');
     expect(cql).toContain('parameter EstablishedCvd Boolean');
@@ -99,20 +100,20 @@ describe('Guideline terminology and catalog integrity', () => {
   });
 
   it('LipidManagement.cql references committed ValueSet URLs', () => {
-    const cql = readFileSync(join(ROOT, 'public/cql/LipidManagement.cql'), 'utf8');
+    const cql = readFileSync(join(ROOT, 'public/package/cql/LipidManagement.cql'), 'utf8');
     const urls = [...cql.matchAll(/valueset\s+"[^"]+"\s*:\s*'([^']+)'/g)].map((m) => m[1]);
     expect(urls.length).toBeGreaterThan(10);
-    for (const url of urls) {
-      const match = VALUE_SET_CATALOG.find((e) => {
-        const path = join(ROOT, 'public', e.assetPath.replace(/^\//, ''));
-        const json = JSON.parse(readFileSync(path, 'utf8')) as {
-          entry?: { resource?: { resourceType?: string; url?: string } }[];
+    const committedUrls = new Set(
+      VALUE_SET_FILES.map((file) => {
+        const json = JSON.parse(readFileSync(join(PACKAGE_DIR, file), 'utf8')) as {
+          resourceType?: string;
+          url?: string;
         };
-        return json.entry?.some(
-          (x) => x.resource?.resourceType === 'ValueSet' && x.resource.url === url,
-        );
-      });
-      expect(match, url).toBeTruthy();
+        return json.resourceType === 'ValueSet' ? json.url : undefined;
+      }).filter((url): url is string => Boolean(url)),
+    );
+    for (const url of urls) {
+      expect(committedUrls.has(url), url).toBe(true);
     }
   });
 });

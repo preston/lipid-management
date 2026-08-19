@@ -1,0 +1,79 @@
+{
+  "resourceType": "ValueSet",
+  "id": "diabetes-mellitus",
+  "url": "https://asu.edu/fhir/ValueSet/diabetes-mellitus",
+  "name": "DiabetesMellitus",
+  "title": "Diabetes Mellitus",
+  "status": "active",
+  "version": "2026-07-16",
+  "experimental": false,
+  "date": "2026-07-16",
+  "publisher": "ASU CDS",
+  "description": "Broader diabetes mellitus concepts for VA/DoD Lipids CPG Box 8 / Recommendation 7 (diabetes, not T2DM-only). Includes type 1 and type 2 stand-alone concepts used by LipidManagement. Prefer VSAC expansion when available.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "73211009",
+            "display": "Diabetes mellitus"
+          },
+          {
+            "code": "46635009",
+            "display": "Diabetes mellitus type 1"
+          },
+          {
+            "code": "44054006",
+            "display": "Diabetes mellitus type 2"
+          },
+          {
+            "code": "190368000",
+            "display": "Type 1 diabetes mellitus with ketoacidosis"
+          },
+          {
+            "code": "190389009",
+            "display": "Type 2 diabetes mellitus with ketoacidosis"
+          },
+          {
+            "code": "313436004",
+            "display": "Type 1 diabetes mellitus without complication"
+          },
+          {
+            "code": "313435000",
+            "display": "Type 2 diabetes mellitus without complication"
+          },
+          {
+            "code": "111552007",
+            "display": "Diabetes mellitus without complication"
+          },
+          {
+            "code": "127013003",
+            "display": "Diabetic renal disease"
+          },
+          {
+            "code": "4855003",
+            "display": "Diabetic retinopathy"
+          }
+        ]
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "concept": [
+          {
+            "code": "E10.9",
+            "display": "Type 1 diabetes mellitus without complications"
+          },
+          {
+            "code": "E11.9",
+            "display": "Type 2 diabetes mellitus without complications"
+          },
+          {
+            "code": "E13.9",
+            "display": "Other specified diabetes mellitus without complications"
+          }
+        ]
+      }
+    ]
+  }
+}

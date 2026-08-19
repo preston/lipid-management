@@ -44,3 +44,6 @@ Thumbs.db
 public/configuration.js
 
 doc/private
+
+# FHIR NPM package tarball produced by npm run package:fhir
+com.prestonlee.fhir.lipid-management-*.tgz

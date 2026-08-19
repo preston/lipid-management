@@ -1,0 +1,64 @@
+{
+  "resourceType": "ValueSet",
+  "id": "end-stage-kidney-disease",
+  "language": "en",
+  "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.526.3.353",
+  "identifier": [
+    {
+      "system": "urn:ietf:rfc:3986",
+      "value": "urn:oid:2.16.840.1.113883.3.526.3.353"
+    }
+  ],
+  "version": "20200307",
+  "name": "EndStageRenalDisease",
+  "title": "End Stage Renal Disease",
+  "status": "active",
+  "experimental": false,
+  "date": "2026-02-04T15:50:11-05:00",
+  "publisher": "American Institutes for Research",
+  "jurisdiction": [
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        }
+      ]
+    }
+  ],
+  "purpose": "(Clinical Focus: The purpose of this value set is to represent concepts for diagnoses of end stage renal disease (ESRD).),(Data Element Scope: This value set may use a model element related to Diagnosis.),(Inclusion Criteria: Includes concepts that represent a diagnosis of end stage renal disease (ESRD).),(Exclusion Criteria: No exclusions.)",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "236434000",
+            "display": "End stage renal failure without renal replacement therapy (disorder)"
+          },
+          {
+            "code": "236435004",
+            "display": "End stage renal failure on dialysis (disorder)"
+          },
+          {
+            "code": "236436003",
+            "display": "End stage renal failure with renal transplant (disorder)"
+          },
+          {
+            "code": "46177005",
+            "display": "End-stage renal disease (disorder)"
+          }
+        ]
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "concept": [
+          {
+            "code": "N18.6",
+            "display": "End stage renal disease"
+          }
+        ]
+      }
+    ]
+  }
+}

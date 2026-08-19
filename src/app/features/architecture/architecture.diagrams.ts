@@ -56,11 +56,6 @@ sequenceDiagram
   participant UI as Browser app
   participant FHIR as FHIR server
 
-  Note over UI,FHIR: Optional Loader when developer mode is on
-  UI->>FHIR: PUT Library resources from app CQL
-  UI->>FHIR: POST ValueSet transaction Bundles
-  FHIR-->>UI: Resources stored
-
   alt Search server patient
     Clinician->>UI: Search patients
     UI->>FHIR: GET Patient search
@@ -125,19 +120,16 @@ export const ARCHITECTURE_DIAGRAM_CQL_PACKAGING: ArchitectureDiagram = {
   hostId: 'architecture-cql-packaging-diagram',
   definition: `
 sequenceDiagram
-  participant App as App bundle
-  participant Loader as Loader page
+  participant Disk as public package
+  participant Tar as FHIR NPM tarball
   participant FHIR as FHIR server
   participant Calc as Calculator
 
-  Note over Loader: Requires developer mode in Settings
-  App->>Loader: Ship public/cql libraries
-  App->>Loader: Ship public/value-sets Bundles
-  Loader->>FHIR: PUT Library with text/cql content
-  Loader->>FHIR: POST ValueSet transaction Bundles
-  FHIR-->>Loader: Libraries and ValueSets stored
+  Disk->>Tar: npm run package:fhir
+  Tar->>FHIR: Install CQL Libraries and ValueSets
+  FHIR-->>Tar: Resources stored
 
-  Note over Calc,FHIR: Runtime evaluate uses uploaded Resources
+  Note over Calc,FHIR: Runtime evaluate uses installed resources
   Calc->>FHIR: POST Library id $evaluate with subject Patient
   FHIR-->>Calc: Expression results for UI
 `.trim(),

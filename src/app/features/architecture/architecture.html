@@ -39,14 +39,14 @@
       <h3 class="h6" id="architecture-standalone-heading">Standalone mode</h3>
       <p class="small text-muted" id="architecture-standalone-caption">
         Connect to a health data server in Settings, then search for a patient or open a patient
-        data file. Developer mode can upload the scoring rules to that server.
+        data file. Scoring rules and terminology must already be installed on that server.
       </p>
       <div
         class="architecture-diagram border rounded p-2 bg-body-tertiary"
         id="architecture-standalone-diagram"
         #standaloneDiagram
         role="img"
-        aria-label="Standalone mode sequence from loader setup through risk calculation"
+        aria-label="Standalone mode sequence from patient selection through risk calculation"
       ></div>
     </section>
 
@@ -68,8 +68,8 @@
     <section class="mb-0" id="architecture-cql-packaging">
       <h3 class="h6" id="architecture-cql-packaging-heading">How clinical logic is packaged</h3>
       <p class="small text-muted" id="architecture-cql-packaging-caption">
-        Scoring rules and related terminology ship with the app. The Loader uploads them to the
-        configured server before scoring runs.
+        Scoring rules and related terminology ship as a FHIR NPM package. Install that package on
+        the FHIR server before scoring runs.
       </p>
       <div
         class="architecture-diagram border rounded p-2 bg-body-tertiary"
@@ -79,9 +79,9 @@
         aria-label="Sequence of packaging CQL and ValueSets onto the FHIR server for evaluate"
       ></div>
       <ul class="small mt-3 mb-0" id="architecture-cql-packaging-notes">
-        <li>Rules and terminology are uploaded once, then reused for each calculation.</li>
-        <li>The browser does not score patients itself; the server runs the uploaded rules.</li>
-        <li>Uploaded terminology must match what the scoring rules expect.</li>
+        <li>Rules and terminology are installed once, then reused for each calculation.</li>
+        <li>The browser does not score patients itself; the server runs the installed rules.</li>
+        <li>Installed terminology must match what the scoring rules expect.</li>
       </ul>
     </section>
   </section>

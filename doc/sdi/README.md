@@ -36,7 +36,7 @@ Do not hand-edit. Regenerate with:
 npm run generate:sdi-2019
 ```
 
-- `public/cql/SDI-2019.cql` (`library SDI2019`) — only generated file from this source; deploy that Library, not the CSV.
+- `public/package/cql/SDI-2019.cql` (`library SDI2019`) and `public/package/Library-SDI2019.json` — deploy the Library resource, not the CSV.
 
 ## Citation
 

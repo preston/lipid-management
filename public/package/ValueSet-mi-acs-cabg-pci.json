@@ -1,0 +1,59 @@
+{
+  "resourceType": "ValueSet",
+  "id": "mi-acs-cabg-pci",
+  "url": "https://asu.edu/fhir/ValueSet/mi-acs-cabg-pci",
+  "name": "MiAcsCabgPci",
+  "title": "MI, ACS, CABG, or PCI",
+  "status": "active",
+  "version": "2026-07-16",
+  "experimental": false,
+  "date": "2026-07-16",
+  "publisher": "ASU CDS",
+  "description": "Condition and procedure concepts for Box 6 / Recommendation 24 cardiac rehabilitation timing (MI, ACS, CABG, PCI). Prefer VSAC expansion when available.",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "22298006",
+            "display": "Myocardial infarction"
+          },
+          {
+            "code": "57054005",
+            "display": "Acute myocardial infarction"
+          },
+          {
+            "code": "394659003",
+            "display": "Acute coronary syndrome"
+          },
+          {
+            "code": "232717009",
+            "display": "Coronary artery bypass graft"
+          },
+          {
+            "code": "415070008",
+            "display": "Percutaneous coronary intervention"
+          },
+          {
+            "code": "67166006",
+            "display": "Aortocoronary bypass grafting"
+          }
+        ]
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "concept": [
+          {
+            "code": "I21.9",
+            "display": "Acute myocardial infarction, unspecified"
+          },
+          {
+            "code": "I24.9",
+            "display": "Acute ischemic heart disease, unspecified"
+          }
+        ]
+      }
+    ]
+  }
+}

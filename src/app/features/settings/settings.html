@@ -43,7 +43,7 @@
           <h2 class="h6 card-title mb-0">Advanced</h2>
         </div>
         <div class="card-body">
-          <div class="form-check form-switch mb-3">
+          <div class="form-check form-switch mb-0">
             <input
               class="form-check-input"
               type="checkbox"
@@ -56,21 +56,6 @@
             <small class="form-text text-body-secondary d-block"
               >Used for testing upcoming features and may break existing functionality. You probably
               don't want to use this!</small
-            >
-          </div>
-          <div class="form-check form-switch mb-0">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="developer_switch"
-              name="developer"
-              [(ngModel)]="settingsService.settings().developer"
-            />
-            <label class="form-check-label" for="developer_switch">Developer Mode</label>
-            <small class="form-text text-body-secondary d-block"
-              >Enable more advanced technical settings and tools (such as the Loader). This is mostly
-              for development.</small
             >
           </div>
         </div>
