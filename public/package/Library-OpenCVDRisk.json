@@ -6,7 +6,7 @@
   "title": "OpenCVDRisk",
   "status": "active",
   "version": "0.6.0",
-  "description": "OpenCVDRisk: open-source implementation of the AHA PREVENT™ simplified regression (10- and 30-year) cardiovascular risk estimates. Not an official American Heart Association (AHA) product and not affiliated with or endorsed by the AHA. Statistical model: Khan SS et al., Circulation. 2024;149:430-449. DOI: 10.1161/CIRCULATIONAHA.123.067626 Simplified logistic coefficients and transforms are taken from Khan Supplemental Table S12A-J (base / UACR / HbA1c / SDI / full × 10- and 30-year). Cholesterol",
+  "description": "CQL Library: OpenCVDRisk",
   "type": {
     "coding": [
       {

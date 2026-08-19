@@ -36,6 +36,8 @@
     "@angular/build": "^22.1.4",
     "@angular/cli": "^22.1.4",
     "@angular/compiler-cli": "^22.1.2",
+    "@cqframework/cql": "^4.0.0-beta.1",
+    "@lhncbc/ucum-lhc": "^7.1.9",
     "@types/fhir": "^0.0.44",
     "jsdom": "^30.0.1",
     "prettier": "^3.9.6",

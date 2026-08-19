@@ -10,6 +10,7 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Library } from 'fhir/r4';
+import { compilePackageCqlSources } from './cql-to-elm/translate';
 
 const PACKAGE_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../public/package');
 const CQL_DIR = join(PACKAGE_DIR, 'cql');
@@ -28,31 +29,7 @@ interface PackageIndex {
   }>;
 }
 
-function stripCqlComments(cqlContent: string): string {
-  const withoutBlockComments = cqlContent.replace(/\/\*[\s\S]*?\*\//g, '');
-  return withoutBlockComments.replace(/^\s*\/\/[^\n\r]*/gm, '');
-}
-
-function parseCqlLibraryHeader(cqlContent: string, fileName: string): { name: string; version: string } {
-  const stripped = stripCqlComments(cqlContent);
-  const match = stripped.match(
-    /library\s+(?:"([^"]+)"|'([^']+)'|([A-Za-z_][\w.]*))\s+version\s+['"]([^'"]+)['"]/i,
-  );
-  const name = match?.[1] || match?.[2] || match?.[3] || fileName.replace(/\.cql$/i, '');
-  const version = match?.[4] ?? '0.0.0';
-  return { name, version };
-}
-
-function libraryDescription(cqlContent: string, libraryName: string): string {
-  const match = cqlContent.match(/\/\*([\s\S]*?)\*\//);
-  if (!match) {
-    return `CQL Library: ${libraryName}`;
-  }
-  return match[1].trim().replace(/\s+/g, ' ').slice(0, 500);
-}
-
-function buildLibraryFromCql(cqlContent: string, fileName: string): Library {
-  const { name, version } = parseCqlLibraryHeader(cqlContent, fileName);
+function buildLibraryFromCompiled(name: string, version: string, cqlContent: string): Library {
   const id = name.replace(/[^A-Za-z0-9.-]/g, '-');
   return {
     resourceType: 'Library',
@@ -62,7 +39,7 @@ function buildLibraryFromCql(cqlContent: string, fileName: string): Library {
     title: name,
     status: 'active',
     version,
-    description: libraryDescription(cqlContent, name),
+    description: `CQL Library: ${name}`,
     type: {
       coding: [
         {
@@ -87,10 +64,17 @@ function writeJson(path: string, value: unknown): void {
 export function writeFhirLibraries(): string[] {
   const written: string[] = [];
   const index = JSON.parse(readFileSync(INDEX_PATH, 'utf8')) as PackageIndex;
+  const sources = readdirSync(CQL_DIR)
+    .filter((n) => n.endsWith('.cql'))
+    .sort()
+    .map((fileName) => ({
+      fileName,
+      cql: readFileSync(join(CQL_DIR, fileName), 'utf8'),
+    }));
+  const compiled = compilePackageCqlSources(sources);
 
-  for (const fileName of readdirSync(CQL_DIR).filter((n) => n.endsWith('.cql')).sort()) {
-    const cql = readFileSync(join(CQL_DIR, fileName), 'utf8');
-    const library = buildLibraryFromCql(cql, fileName);
+  for (const item of compiled) {
+    const library = buildLibraryFromCompiled(item.name, item.version, item.cql);
     const filename = `Library-${library.id}.json`;
     writeJson(join(PACKAGE_DIR, filename), library);
     written.push(filename);

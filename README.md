@@ -84,11 +84,11 @@ Users can override these in the in-app **Settings** page (browser local storage)
 
 ## FHIR package
 
-The FHIR NPM package is the tree at `public/package/`. Author CQL in `cql/*.cql`, and `Library-*.json` files will be generated from those sources.
+The FHIR NPM package is the tree at `public/package/`. Author CQL in `cql/*.cql`. `npm run generate:fhir-libraries` compiles those sources to ELM with `@cqframework/cql` and writes `Library-*.json` from the ELM library identifier (name and version). Generation fails if the translator reports any errors.
 
 ```bash
 npm run generate:sdi-2019         # Regenerates cql/SDI-2019.cql from the Graham Center CSV, then Library JSON
-npm run generate:fhir-libraries   # CQL → Library-*.json and .index.json
+npm run generate:fhir-libraries   # CQL → ELM → Library-*.json and .index.json
 npm run package:fhir              # generate:fhir-libraries, then write the .tgz at the repo root
 ```
 

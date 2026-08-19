@@ -13,7 +13,7 @@
 
   Author: Preston Lee
 */
-library LipidManagement version '0.3.9'
+library LipidManagement version '0.4.0'
 
 using FHIR version '4.0.1'
 

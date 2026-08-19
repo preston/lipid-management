@@ -6,5 +6,11 @@
     "outDir": "./out-tsc/spec",
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/test-setup.ts"]
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/test-setup.ts",
+    "scripts/cql-to-elm/translate.ts",
+    "scripts/cql-to-elm/cqframework-cql.d.ts"
+  ]
 }

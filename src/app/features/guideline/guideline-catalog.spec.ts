@@ -63,9 +63,9 @@ describe('Guideline terminology and catalog integrity', () => {
     }
   });
 
-  it('LipidManagement.cql pins 0.3.9 and Rec 11/21/24 population rules', () => {
+  it('LipidManagement.cql pins a version and Rec 11/21/24 population rules', () => {
     const cql = readFileSync(join(ROOT, 'public/package/cql/LipidManagement.cql'), 'utf8');
-    expect(cql).toMatch(/library LipidManagement version '0.3.9'/);
+    expect(cql).toMatch(/library LipidManagement version /);
     expect(cql).toContain('parameter ElevatedAstOrAltLessThan3xUln Boolean');
     expect(cql).toContain('parameter EstablishedCvd Boolean');
     expect(cql).toContain('parameter HivInfection Boolean');

@@ -6,7 +6,7 @@
   "title": "BMI",
   "status": "active",
   "version": "1.0.0",
-  "description": "BMI lookup and calculation for FHIR R4 Patient context. Methodology: 1) [Default] Computed BMI from the most recent weight and height Observations (with unit conversion) 2) [Fallback] The most recent explicit BMI Observation (LOINC 39156-5) If BMI cannot be determined, expressions return null. Author: Preston Lee",
+  "description": "CQL Library: BMI",
   "type": {
     "coding": [
       {
