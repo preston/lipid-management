@@ -54,21 +54,21 @@
       "resourceType": "Library",
       "id": "BMI",
       "url": "https://asu.edu/fhir/Library/BMI",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "filename": "Library-LipidManagement.json",
       "resourceType": "Library",
       "id": "LipidManagement",
       "url": "https://asu.edu/fhir/Library/LipidManagement",
-      "version": "0.4.0"
+      "version": "0.4.1"
     },
     {
       "filename": "Library-OpenCVDRisk.json",
       "resourceType": "Library",
       "id": "OpenCVDRisk",
       "url": "https://asu.edu/fhir/Library/OpenCVDRisk",
-      "version": "0.6.0"
+      "version": "0.6.1"
     },
     {
       "filename": "Library-SDI2019.json",

@@ -10,7 +10,7 @@
   Author: Preston Lee
 */
 
-library BMI version '1.0.0'
+library BMI version '1.0.1'
 
 using FHIR version '4.0.1'
 include FHIRHelpers version '4.0.1'
@@ -27,28 +27,29 @@ code "Body Weight": '29463-7' from "LOINC" display 'Body weight'
 
 context Patient
 
+/* Prefer Last + ascending sort: some FHIR CQL engines mishandle `sort ... desc` with First. */
 define function RecordedBodyWeight():
-  First([Observation: "BodyWeight"] W
+  Last([Observation: "BodyWeight"] W
       where W.status in { 'final', 'amended', 'corrected' }
         and W.effective is not null
         and W.value is FHIR.Quantity
-      sort by start of effective desc
+      sort by start of effective
   )
 
 define function RecordedBodyHeight():
-  First([Observation: "BodyHeight"] H
+  Last([Observation: "BodyHeight"] H
       where H.status in { 'final', 'amended', 'corrected' }
         and H.effective is not null
         and H.value is FHIR.Quantity
-      sort by start of effective desc
+      sort by start of effective
   )
 
 define function RecordedBMI():
-  First([Observation: "BodyMassIndex"] O
+  Last([Observation: "BodyMassIndex"] O
       where O.status in { 'final', 'amended', 'corrected' }
         and O.effective is not null
         and O.value is FHIR.Quantity
-      sort by start of effective desc
+      sort by start of effective
   )
 
 define function ComputeBMIFromWeightAndHeight():

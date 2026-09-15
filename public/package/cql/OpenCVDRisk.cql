@@ -25,12 +25,12 @@
 
   Author: Preston Lee
 */
-library OpenCVDRisk version '0.6.0'
+library OpenCVDRisk version '0.6.1'
 
 using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.0.1'
-include BMI version '1.0.0' called BMI
+include BMI version '1.0.1' called BMI
 
 codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED": 'http://snomed.info/sct'

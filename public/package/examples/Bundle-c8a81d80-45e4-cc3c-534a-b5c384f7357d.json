@@ -12273,6 +12273,153 @@
         "method": "PUT",
         "url": "Observation/bf55d5dd-4d1b-daf8-c695-0c9745a7c4c0"
       }
+    },
+    {
+      "fullUrl": "urn:uuid:c6b396c1-73ea-5aa3-8576-7403f7173b03",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "c6b396c1-73ea-5aa3-8576-7403f7173b03",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-body-height"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "8302-2",
+              "display": "Body Height"
+            }
+          ],
+          "text": "Body Height"
+        },
+        "subject": {
+          "reference": "urn:uuid:c8a81d80-45e4-cc3c-534a-b5c384f7357d"
+        },
+        "effectiveDateTime": "2026-04-21T13:09:57-07:00",
+        "issued": "2026-04-21T13:09:57.000-07:00",
+        "valueQuantity": {
+          "value": 155.7,
+          "unit": "cm",
+          "system": "http://unitsofmeasure.org",
+          "code": "cm"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/c6b396c1-73ea-5aa3-8576-7403f7173b03"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1e15ab43-0362-5d01-8d6e-c822cd0261b0",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "1e15ab43-0362-5d01-8d6e-c822cd0261b0",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-body-weight"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "29463-7",
+              "display": "Body Weight"
+            }
+          ],
+          "text": "Body Weight"
+        },
+        "subject": {
+          "reference": "urn:uuid:c8a81d80-45e4-cc3c-534a-b5c384f7357d"
+        },
+        "effectiveDateTime": "2026-04-21T13:09:57-07:00",
+        "issued": "2026-04-21T13:09:57.000-07:00",
+        "valueQuantity": {
+          "value": 57.3,
+          "unit": "kg",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/1e15ab43-0362-5d01-8d6e-c822cd0261b0"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:287ecf0d-e898-5632-88b9-5880b1587786",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "287ecf0d-e898-5632-88b9-5880b1587786",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-bmi"
+          ]
+        },
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs",
+                "display": "Vital signs"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "39156-5",
+              "display": "Body mass index (BMI) [Ratio]"
+            }
+          ],
+          "text": "Body mass index (BMI) [Ratio]"
+        },
+        "subject": {
+          "reference": "urn:uuid:c8a81d80-45e4-cc3c-534a-b5c384f7357d"
+        },
+        "effectiveDateTime": "2026-04-21T13:09:57-07:00",
+        "issued": "2026-04-21T13:09:57.000-07:00",
+        "valueQuantity": {
+          "value": 23.65,
+          "unit": "kg/m2",
+          "system": "http://unitsofmeasure.org",
+          "code": "kg/m2"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/287ecf0d-e898-5632-88b9-5880b1587786"
+      }
     }
   ]
 }
