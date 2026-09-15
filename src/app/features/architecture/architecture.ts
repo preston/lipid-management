@@ -37,10 +37,13 @@ export class Architecture {
     };
 
     const { default: mermaid } = await import('mermaid');
+    // Mermaid 12 defaults to ELK + redux-color/neo; keep prior dagre/classic visuals.
     mermaid.initialize({
       startOnLoad: false,
       securityLevel: 'strict',
       theme: 'default',
+      look: 'classic',
+      layout: 'dagre',
     });
 
     for (const diagram of ARCHITECTURE_DIAGRAMS) {

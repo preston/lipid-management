@@ -32,10 +32,6 @@ let translatorAssets: TranslatorAssets | null = null;
 let sharedModelManager: ModelManager | null = null;
 let sharedUcumService: unknown = null;
 
-interface ElmJsonEmitter {
-  toJson(): string;
-}
-
 interface ElmVersionedIdentifier {
   id?: string;
   version?: string;
@@ -88,17 +84,16 @@ function sourceKey(id: string, version: string | null | undefined): string {
   return `${id}|${version ?? ''}`;
 }
 
-function kotlinList(list: { asJsReadonlyArrayView?: () => unknown[] } | undefined): CqlCompilerException[] {
-  const items = list?.asJsReadonlyArrayView?.() ?? [];
-  return items.filter((item): item is CqlCompilerException => item != null);
+function kotlinList(list: { asJsReadonlyArrayView(): ReadonlyArray<CqlCompilerException> }): CqlCompilerException[] {
+  return [...list.asJsReadonlyArrayView()];
 }
 
 function exceptionMessage(exception: CqlCompilerException): string {
   const locator = exception.locator as
-    | { startLine?: number; startChar?: number; x8z_1?: number; y8z_1?: number }
+    | { startLine?: number | null; startChar?: number | null }
     | undefined;
-  const line = locator?.startLine ?? locator?.x8z_1;
-  const column = locator?.startChar ?? locator?.y8z_1;
+  const line = locator?.startLine ?? undefined;
+  const column = locator?.startChar ?? undefined;
   const where = typeof line === 'number' ? ` (${line}:${typeof column === 'number' ? column : 0})` : '';
   return `${exception.message ?? 'Unknown CQL translator error'}${where}`;
 }
@@ -139,19 +134,25 @@ function getModelManager(): ModelManager {
   return modelManager;
 }
 
+function unsupportedUcumArithmetic(): never {
+  throw new Error('Unsupported UCUM quantity arithmetic');
+}
+
 function getUcumService(): unknown {
   if (sharedUcumService) {
     return sharedUcumService;
   }
   const ucumUtils = ucum.UcumLhcUtils.getInstance();
   sharedUcumService = createUcumService(
-    () => {
+    (_value: string, _fromUnit: string, _toUnit: string) => {
       throw new Error('Unsupported operation');
     },
     (unit: string) => {
       const result = ucumUtils.validateUnitString(unit);
       return result.status === 'valid' ? null : result.msg[0];
     },
+    unsupportedUcumArithmetic,
+    unsupportedUcumArithmetic,
   );
   return sharedUcumService;
 }
@@ -175,7 +176,7 @@ function translateCql(cql: string, libraryManager: LibraryManager): TranslationA
   const errors = kotlinList(translator.errors).map(exceptionMessage);
   let elmJson: string | null = null;
   try {
-    elmJson = (translator as unknown as ElmJsonEmitter).toJson();
+    elmJson = translator.toJson();
   } catch {
     elmJson = null;
   }

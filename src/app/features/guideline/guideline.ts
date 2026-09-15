@@ -605,13 +605,15 @@ export class Guideline implements OnDestroy {
       if (generation !== this.renderGeneration) {
         return;
       }
+      // Mermaid 12 defaults to ELK + redux-color/neo; keep prior dagre/classic visuals and node ids.
       mermaid.initialize({
         startOnLoad: false,
         securityLevel: 'strict',
         theme: 'default',
+        look: 'classic',
+        layout: 'dagre',
         htmlLabels: false,
         markdownAutoWrap: false,
-        flowchart: { htmlLabels: false },
       });
       const definition = toMermaidDefinition(model);
       const { svg } = await mermaid.render(`guideline-algorithm-${generation}`, definition);
